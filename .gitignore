@@ -11,3 +11,4 @@ xcuserdata
 play_config.*
 keystore.*
 Gemfile.lock
+**/*.podspec
