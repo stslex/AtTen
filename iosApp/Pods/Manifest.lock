@@ -9,7 +9,7 @@ EXTERNAL SOURCES:
     :path: "../commonApp"
 
 SPEC CHECKSUMS:
-  commonApp: e0303d89757d4fe8560dd0f67d81362beef826e5
+  commonApp: 33b6d3132933d31fcab23eb081e06ed88bc74466
 
 PODFILE CHECKSUM: 5e5644ffb905eafaba6959582c3434bd5c2d1f31
 
