@@ -1,16 +1,16 @@
 PODS:
-  - shared (1.0)
+  - commonApp (1.0)
 
 DEPENDENCIES:
-  - shared (from `../shared`)
+  - commonApp (from `../commonApp`)
 
 EXTERNAL SOURCES:
-  shared:
-    :path: "../shared"
+  commonApp:
+    :path: "../commonApp"
 
 SPEC CHECKSUMS:
-  shared: c133c49697085ba65e4031b78e671fc97617a40d
+  commonApp: e0303d89757d4fe8560dd0f67d81362beef826e5
 
-PODFILE CHECKSUM: 78d6cc1b71b232202c48a29d4e6c34972c534c73
+PODFILE CHECKSUM: 5e5644ffb905eafaba6959582c3434bd5c2d1f31
 
 COCOAPODS: 1.14.3

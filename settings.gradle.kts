@@ -1,5 +1,6 @@
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         google()
         gradlePluginPortal()
@@ -15,5 +16,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "AtTen"
-include(":androidApp")
-include(":shared")
+include(":commonApp")
