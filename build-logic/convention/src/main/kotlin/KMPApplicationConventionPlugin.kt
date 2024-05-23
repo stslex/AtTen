@@ -3,6 +3,7 @@ import AppExt.findVersionInt
 import AppExt.findVersionString
 import AppExt.libs
 import com.android.build.api.dsl.ApplicationExtension
+import com.google.devtools.ksp.gradle.KspExtension
 import com.stslex.atten.convention.configureKMPCompose
 import com.stslex.atten.convention.configureKotlinAndroid
 import com.stslex.atten.convention.configureKotlinAndroidCompose
@@ -22,18 +23,23 @@ class KMPApplicationConventionPlugin : Plugin<Project> {
             apply(libs.findPlugin("kotlinCocoapods").get().get().pluginId)
             apply(libs.findPlugin("androidApplication").get().get().pluginId)
             apply(libs.findPlugin("jetbrainsCompose").get().get().pluginId)
-//            apply(libs.findPlugin("kotlin.serialization").get().get().pluginId)
+            apply(libs.findPlugin("composeCompiler").get().get().pluginId)
+            apply(libs.findPlugin("ksp").get().get().pluginId)
         }
 
         extensions.configure<KotlinMultiplatformExtension> {
-            configureKotlinMultiplatform(this)
+            val kspExtension = extensions.getByType<KspExtension>()
+            configureKotlinMultiplatform(this, kspExtension)
             configureKMPCompose(
                 extension = this,
                 compose = extensions.getByType<ComposeExtension>().dependencies
             )
         }
         extensions.configure<ApplicationExtension> {
-            configureKotlinAndroid(this)
+            configureKotlinAndroid(
+                extension = this,
+                extensions.getByType<KspExtension>()
+            )
             configureKotlinAndroidCompose(this)
             defaultConfig.apply {
                 applicationId = APP_PREFIX

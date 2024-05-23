@@ -2,6 +2,7 @@ package com.stslex.atten
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,7 +21,9 @@ fun InitialApp(
     modifier: Modifier = Modifier
 ) {
     Box(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier
+            .fillMaxSize()
+            .systemBarsPadding()
     ) {
         Text(
             text = "Hello, World!",

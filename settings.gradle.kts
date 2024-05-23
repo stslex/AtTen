@@ -17,3 +17,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "AtTen"
 include(":commonApp")
+
+include(":core:ui")
+include(":core:core")
