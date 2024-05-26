@@ -1,5 +1,6 @@
 package com.stslex.atten.convention
 
+import AppExt.libs
 import org.gradle.api.Project
 import org.jetbrains.compose.ComposePlugin
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
@@ -17,6 +18,9 @@ fun Project.configureKMPCompose(
             implementation(compose.foundation)
             implementation(compose.components.uiToolingPreview)
             implementation(compose.components.resources)
+            implementation(compose.runtime)
+            implementation(libs.findLibrary("kotlinx-collections-immutable").get())
+            implementation(libs.findLibrary("koin-compose").get())
         }
 
     }

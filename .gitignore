@@ -1,6 +1,7 @@
 *.iml
 .gradle
 .idea
+.kotlin
 .DS_Store
 build
 captures
@@ -11,4 +12,12 @@ xcuserdata
 play_config.*
 keystore.*
 Gemfile.lock
+
+**/*.xcodeproj/*
+**/*.xcworkspace/*
+!**/*.xcodeproj/project.pbxproj
+!**/*.xcworkspace/contents.xcworkspacedata
 **/*.podspec
+
+/iosApp/Podfile.lock
+/iosApp/Pods
