@@ -8,6 +8,7 @@ kotlin {
             dependencies {
                 implementation(project(":core:core"))
                 implementation(project(":core:ui"))
+                implementation(project(":core:database"))
             }
         }
     }

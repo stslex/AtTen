@@ -30,5 +30,9 @@ gradlePlugin {
             id = "convention.android.library.compose"
             implementationClass = "KotlinLibraryComposePlugin"
         }
+        register("kotlinLibraryRoom") {
+            id = "convention.kmp.library.room"
+            implementationClass = "RoomLibraryConventionPlugin"
+        }
     }
 }

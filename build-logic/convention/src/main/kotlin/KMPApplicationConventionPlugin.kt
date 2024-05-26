@@ -1,4 +1,5 @@
 import AppExt.APP_PREFIX
+import AppExt.findPluginId
 import AppExt.findVersionInt
 import AppExt.findVersionString
 import AppExt.libs
@@ -19,12 +20,13 @@ class KMPApplicationConventionPlugin : Plugin<Project> {
 
     override fun apply(target: Project): Unit = with(target) {
         with(pluginManager) {
-            apply(libs.findPlugin("kotlinMultiplatform").get().get().pluginId)
-            apply(libs.findPlugin("kotlinCocoapods").get().get().pluginId)
-            apply(libs.findPlugin("androidApplication").get().get().pluginId)
-            apply(libs.findPlugin("jetbrainsCompose").get().get().pluginId)
-            apply(libs.findPlugin("composeCompiler").get().get().pluginId)
-            apply(libs.findPlugin("ksp").get().get().pluginId)
+            apply(libs.findPluginId("kotlinMultiplatform"))
+            apply(libs.findPluginId("kotlinCocoapods"))
+            apply(libs.findPluginId("androidApplication"))
+            apply(libs.findPluginId("jetbrainsCompose"))
+            apply(libs.findPluginId("composeCompiler"))
+            apply(libs.findPluginId("ksp"))
+            apply(libs.findPluginId("serialization"))
         }
 
         extensions.configure<KotlinMultiplatformExtension> {
@@ -38,7 +40,7 @@ class KMPApplicationConventionPlugin : Plugin<Project> {
         extensions.configure<ApplicationExtension> {
             configureKotlinAndroid(
                 extension = this,
-                extensions.getByType<KspExtension>()
+                isApp = true
             )
             configureKotlinAndroidCompose(this)
             defaultConfig.apply {

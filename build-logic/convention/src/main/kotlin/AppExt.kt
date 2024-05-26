@@ -6,6 +6,7 @@ import org.gradle.kotlin.dsl.getByType
 internal object AppExt {
 
     const val APP_PREFIX = "com.stslex.atten"
+
     /**
      * Get the version catalog for the project
      * */
@@ -19,6 +20,14 @@ internal object AppExt {
         .get()
         .requiredVersion
         .toInt()
+
+    /**
+     * Find the id of plugin
+     */
+    fun VersionCatalog.findPluginId(name: String) = findPlugin(name)
+        .get()
+        .get()
+        .pluginId
 
     /**
      * Find the version of the library

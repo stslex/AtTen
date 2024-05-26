@@ -28,19 +28,22 @@ internal fun Project.configureKotlinMultiplatform(
     //common dependencies
     sourceSets.apply {
         dependencies {
-            add("ksp", libs.findLibrary("koin-ksp-compiler").get())
+            val koinCompiler = libs.findLibrary("koin-ksp-compiler").get()
+            add("kspAndroid", koinCompiler)
+            add("kspIosSimulatorArm64", koinCompiler)
+            add("kspIosX64", koinCompiler)
+            add("kspIosArm64", koinCompiler)
         }
         commonMain {
-            kotlin.srcDir("build/generated/ksp/commonMain/kotlin")
             dependencies {
                 implementation(libs.findLibrary("koin-core").get())
                 implementation(libs.findLibrary("koin-annotations").get())
                 implementation(libs.findLibrary("coroutine-core").get())
+                implementation(libs.findLibrary("kotlinx-serialization-json").get())
             }
         }
 
         androidMain {
-            kotlin.srcDir("build/generated/ksp/androidMain/kotlin")
             dependencies {
                 implementation(libs.findLibrary("koin-android").get())
                 implementation(libs.findLibrary("coroutine-core").get())
@@ -49,7 +52,6 @@ internal fun Project.configureKotlinMultiplatform(
         }
 
         commonTest {
-            kotlin.srcDir("build/generated/ksp/commonTest/kotlin")
             dependencies {
                 implementation(kotlin("test"))
             }

@@ -1,10 +1,8 @@
 package com.stslex.atten.core.coroutine.scope
 
 import com.stslex.atten.core.coroutine.dispatcher.AppDispatcher
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 

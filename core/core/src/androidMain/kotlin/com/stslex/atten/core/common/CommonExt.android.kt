@@ -1,6 +1,6 @@
 package com.stslex.atten.core.common
 
-import com.stslex.atten.core.BuildConfig
+import com.stslex.atten.core.core.BuildConfig
 import java.util.UUID
 
 actual val randomUuid: String

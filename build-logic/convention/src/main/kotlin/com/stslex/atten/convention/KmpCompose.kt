@@ -22,6 +22,5 @@ fun Project.configureKMPCompose(
             implementation(libs.findLibrary("kotlinx-collections-immutable").get())
             implementation(libs.findLibrary("koin-compose").get())
         }
-
     }
 }

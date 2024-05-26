@@ -4,20 +4,23 @@ import AppExt.APP_PREFIX
 import AppExt.findVersionInt
 import AppExt.libs
 import com.android.build.api.dsl.CommonExtension
-import com.google.devtools.ksp.gradle.KspExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
 
 internal fun Project.configureKotlinAndroid(
     extension: CommonExtension<*, *, *, *, *>,
-    kspExtension: KspExtension
+    isApp: Boolean = false
 ) = extension.apply {
-    kspExtension.arg("KOIN_CONFIG_CHECK", "true")
 
     //get module name from module path
-    val moduleName = path.split(":").drop(2).joinToString(".")
+    val dropValue = if (isApp) 2 else 1
+    val moduleName = path.split(":")
+        .drop(dropValue)
+        .joinToString(".")
     namespace = if (moduleName.isNotEmpty()) "$APP_PREFIX.$moduleName" else APP_PREFIX
+
+    println("android namespace: $namespace")
 
     compileSdk = libs.findVersionInt("compileSdk")
 
@@ -44,6 +47,5 @@ internal fun Project.configureKotlinAndroid(
         "implementation"(libs.findLibrary("koin-android").get())
         "implementation"(libs.findLibrary("coroutine-core").get())
         "implementation"(libs.findLibrary("coroutine-android").get())
-        "ksp"(libs.findLibrary("koin-ksp-compiler").get())
     }
 }
