@@ -1,4 +1,4 @@
-package com.stslex.atten
+package com.stslex.atten.core.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme

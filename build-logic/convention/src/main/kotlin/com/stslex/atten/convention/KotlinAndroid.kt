@@ -34,6 +34,10 @@ internal fun Project.configureKotlinAndroid(
         }
     }
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     dependencies {
         "implementation"(libs.findLibrary("koin-core").get())
         "implementation"(libs.findLibrary("koin-annotations").get())

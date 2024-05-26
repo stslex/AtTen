@@ -18,6 +18,8 @@ fun Project.configureKMPCompose(
             implementation(compose.foundation)
             implementation(compose.components.uiToolingPreview)
             implementation(compose.components.resources)
+            implementation(compose.runtime)
+            implementation(libs.findLibrary("kotlinx-collections-immutable").get())
             implementation(libs.findLibrary("koin-compose").get())
         }
 
