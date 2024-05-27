@@ -2,7 +2,7 @@
 agp = "8.2.2"
 kotlin = "2.0.0"
 compose-plugin = "1.6.10"
-compose-compiler = "1.5.4"
+compose-compiler = "1.5.12"
 androidx-activityCompose = "1.9.0"
 compose-material3 = "1.2.1"
 android-compose = "1.6.7"
@@ -25,9 +25,10 @@ junit = "4.13.2"
 mockito = "2.19.0"
 
 kermit = "2.0.3"
-lifecycle = "2.8.0-beta02"
+lifecycle = "2.8.0"
 immutableCollection = "0.3.5"
 serialization = "1.7.0-RC"
+navigation = "2.7.0-alpha07"
 
 [libraries]
 android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
@@ -70,6 +71,8 @@ sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sql
 sqlite = { module = "androidx.sqlite:sqlite", version.ref = "sqlite" }
 
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
+
+navigation-compose = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
 [bundles]
 test = [
     "kotlin-test",

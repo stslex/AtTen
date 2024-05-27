@@ -9,6 +9,7 @@ kotlin {
                 implementation(project(":core:core"))
                 implementation(project(":core:ui"))
                 implementation(project(":core:database"))
+                implementation(project(":core:navigation"))
             }
         }
     }

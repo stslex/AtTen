@@ -12,6 +12,7 @@ internal fun getDatabaseBuilder(context: Context): RoomDatabase.Builder<AppDatab
     return Room.databaseBuilder<AppDatabase>(
         context = appContext,
         name = dbFile.absolutePath
-    ).setDriver(BundledSQLiteDriver())
+    )
+        .setDriver(BundledSQLiteDriver())
         .setQueryCoroutineContext(Dispatchers.IO)
 }
