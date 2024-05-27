@@ -1,3 +1,4 @@
+import AppExt.findPluginId
 import AppExt.libs
 import com.android.build.api.dsl.LibraryExtension
 import com.stslex.atten.convention.configureKotlinAndroidCompose
@@ -9,8 +10,8 @@ class KotlinLibraryComposePlugin : Plugin<Project> {
 
     override fun apply(target: Project): Unit = with(target) {
         with(pluginManager) {
-            apply(libs.findPlugin("androidLibrary").get().get().pluginId)
-            apply(libs.findPlugin("ksp").get().get().pluginId)
+            apply(libs.findPluginId("androidLibrary"))
+            apply(libs.findPluginId("ksp"))
         }
         extensions.configure<LibraryExtension>(::configureKotlinAndroidCompose)
     }

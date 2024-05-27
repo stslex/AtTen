@@ -20,3 +20,4 @@ include(":commonApp")
 
 include(":core:core")
 include(":core:ui")
+include(":core:database")

@@ -6,6 +6,7 @@ import org.koin.core.module.Module
 
 val appModules: List<Module> = listOf<AppModule>(
     ModuleCore(),
+//    ModuleCoreDatabase()
 )
     .map {
         it.module
