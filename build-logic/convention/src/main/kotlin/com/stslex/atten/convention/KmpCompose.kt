@@ -21,6 +21,7 @@ fun Project.configureKMPCompose(
             implementation(compose.runtime)
             implementation(libs.findLibrary("kotlinx-collections-immutable").get())
             implementation(libs.findLibrary("koin-compose").get())
+            implementation(libs.findLibrary("lifecycle-viewmodel").get())
         }
     }
 }

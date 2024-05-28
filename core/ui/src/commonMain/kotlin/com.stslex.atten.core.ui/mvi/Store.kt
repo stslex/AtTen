@@ -32,7 +32,7 @@ abstract class Store<S : State, E : Event, A : Action, N : Navigation>(
     private val _state: MutableStateFlow<S> = MutableStateFlow(initialState)
     override val state: StateFlow<S> = _state.asStateFlow()
 
-    private val scope: AppCoroutineScope = AppCoroutineScopeImpl(
+    protected val scope: AppCoroutineScope = AppCoroutineScopeImpl(
         scope = viewModelScope,
         appDispatcher = appDispatcher
     )
@@ -41,7 +41,7 @@ abstract class Store<S : State, E : Event, A : Action, N : Navigation>(
     protected val lastAction: A?
         get() = _lastAction
 
-    override fun sendAction(action: A) {
+    override fun dispatch(action: A) {
         if (lastAction != action && action !is Action.RepeatLastAction) {
             _lastAction = action
         }

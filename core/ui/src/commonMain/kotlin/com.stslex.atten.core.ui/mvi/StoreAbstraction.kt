@@ -20,5 +20,5 @@ interface StoreAbstraction<out S : State, out E : Event, in A : Action> {
      * The action is then processed.
      * @param action - action to be sent
      */
-    fun sendAction(action: A)
+    fun dispatch(action: A)
 }
