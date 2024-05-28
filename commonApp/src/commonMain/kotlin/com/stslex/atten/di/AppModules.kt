@@ -1,13 +1,14 @@
 package com.stslex.atten.di
 
-import com.stslex.atten.core.di.AppModule
+import com.stslex.atten.core.database.di.ModuleCoreDatabase
 import com.stslex.atten.core.di.ModuleCore
+import com.stslex.atten.core.todo.di.ModuleCoreToDo
+import com.stslex.atten.feature.home.di.ModuleFeatureHome
 import org.koin.core.module.Module
 
-val appModules: List<Module> = listOf<AppModule>(
+val appModules: List<Module> = listOf(
     ModuleCore(),
-//    ModuleCoreDatabase()
-)
-    .map {
-        it.module
-    }
+    ModuleCoreDatabase(),
+    ModuleCoreToDo(),
+    ModuleFeatureHome(),
+).map { it.module }

@@ -9,30 +9,15 @@ import androidx.compose.ui.Modifier
 import com.stslex.atten.core.navigation.AppHostGraph
 import com.stslex.atten.core.navigation.navigator.AppNavigator
 import com.stslex.atten.core.navigation.screen.AppScreen
+import com.stslex.atten.feature.home.navigation.HomeInitScreen
 import org.koin.compose.getKoin
-
-private var localId = 0
 
 @Composable
 fun NavHostGraph() {
     AppHostGraph { screen ->
         val navigator = getKoin().get<AppNavigator>()
         when (screen) {
-            AppScreen.Home -> {
-                Column {
-                    Text("Home")
-                    Button(
-                        onClick = {
-                            navigator.navigate(
-                                AppScreen.Details(id = localId++)
-                            )
-                        }
-                    ) {
-                        Text("Go to Details")
-                    }
-                }
-            }
-
+            AppScreen.Home -> HomeInitScreen()
             is AppScreen.Details -> {
                 Column(
                     modifier = Modifier.fillMaxSize(),

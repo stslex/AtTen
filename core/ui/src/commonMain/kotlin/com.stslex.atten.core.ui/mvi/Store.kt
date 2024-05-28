@@ -41,7 +41,7 @@ abstract class Store<S : State, E : Event, A : Action, N : Navigation>(
     protected val lastAction: A?
         get() = _lastAction
 
-    override fun sendAction(action: A) {
+    override fun dispatch(action: A) {
         if (lastAction != action && action !is Action.RepeatLastAction) {
             _lastAction = action
         }

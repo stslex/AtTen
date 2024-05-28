@@ -73,6 +73,7 @@ sqlite = { module = "androidx.sqlite:sqlite", version.ref = "sqlite" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
 
 navigation-compose = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
+
 [bundles]
 test = [
     "kotlin-test",
