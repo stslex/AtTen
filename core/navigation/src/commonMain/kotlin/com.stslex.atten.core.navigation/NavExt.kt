@@ -8,11 +8,11 @@ internal fun NavBackStackEntry.getDestination(
     appScreenHost: AppScreenHost
 ): AppScreen = when (appScreenHost) {
     AppScreenHost.HOME -> AppScreen.Home
-    AppScreenHost.ToDoDetail -> AppScreen.Details(id = getInt("id"))
+    AppScreenHost.ToDoDetail -> AppScreen.Details(id = getLong("id"))
 }
 
-internal fun NavBackStackEntry.getInt(key: String): Int =
-    requireNotNull(arguments?.getString(key)?.toIntOrNull()) {
+internal fun NavBackStackEntry.getLong(key: String): Long =
+    requireNotNull(arguments?.getString(key)?.toLongOrNull()) {
         "$key is required"
     }
 

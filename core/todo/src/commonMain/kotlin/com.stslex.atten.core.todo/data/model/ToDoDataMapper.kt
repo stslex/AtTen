@@ -5,5 +5,6 @@ import com.stslex.atten.core.database.model.ToDoEntity
 fun ToDoEntity.toData() = ToDoDataModel(
     id = id,
     title = title,
-    description = description
+    description = description,
+    uniqueKey = id
 )

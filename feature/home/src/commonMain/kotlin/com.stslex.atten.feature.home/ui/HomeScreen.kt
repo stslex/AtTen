@@ -5,22 +5,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
+import com.stslex.atten.core.paging.ui.PagingColumn
 import com.stslex.atten.core.ui.theme.AppDimension
+import com.stslex.atten.feature.home.ui.model.TodoUiModel
 import com.stslex.atten.feature.home.ui.store.HomeStoreComponent.State
-import com.stslex.atten.feature.home.ui.store.HomeStoreComponent.State.Companion.PAGE_SIZE
-import com.stslex.atten.feature.home.ui.store.ScreenState
-import com.stslex.atten.feature.home.ui.store.TodoUiModel
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.filterNotNull
 
 @Composable
 internal fun HomeScreen(
@@ -29,33 +21,16 @@ internal fun HomeScreen(
     onLoadNext: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val lazyListState = rememberLazyListState()
-    LaunchedEffect(lazyListState, state.items) {
-        snapshotFlow {
-            lazyListState.layoutInfo.visibleItemsInfo.lastOrNull()?.index
-        }
-            .filterNotNull()
-            .filter { index ->
-                // todo 10 - page size - replace  to paging item
-                val hasMore = state.items.size % PAGE_SIZE == 0
-                hasMore &&
-                        index >= (state.items.size - PAGE_SIZE * 0.5) &&
-                        state.state is ScreenState.Content
-            }
-            .distinctUntilChanged()
-            .collect {
-                onLoadNext()
-            }
-    }
-    LazyColumn(
+    PagingColumn(
         modifier = modifier,
-        state = lazyListState,
+        pagingState = state.paging,
+        onLoadNext = onLoadNext
     ) {
         items(
-            count = state.items.size,
-            key = { index -> state.items[index].id }
+            count = state.paging.items.size,
+            key = state.paging.key
         ) { index ->
-            state.items.getOrNull(index)?.let { item ->
+            state.paging.items.getOrNull(index)?.let { item ->
                 HomeScreenItem(
                     item = item,
                     onItemClick = onItemClicked,

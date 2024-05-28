@@ -1,6 +1,5 @@
 package com.stslex.atten.core.navigation.screen
 
-import androidx.navigation.NavBackStackEntry
 import com.stslex.atten.core.navigation.navigator.NavigationTarget
 
 sealed class AppScreen(
@@ -15,7 +14,7 @@ sealed class AppScreen(
     )
 
     data class Details(
-        val id: Int
+        val id: Long
     ) : AppScreen(
         screen = AppScreenHost.ToDoDetail,
         id.toString()

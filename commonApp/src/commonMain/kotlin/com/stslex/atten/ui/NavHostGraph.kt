@@ -18,23 +18,28 @@ fun NavHostGraph() {
         val navigator = getKoin().get<AppNavigator>()
         when (screen) {
             AppScreen.Home -> HomeInitScreen()
-            is AppScreen.Details -> {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally,
-                ) {
-                    Text("Details :${screen.id}")
-                    Button(
-                        onClick = {
-                            navigator.navigate(
-                                AppScreen.Home
-                            )
-                        }
-                    ) {
-                        Text("Go to Home")
-                    }
-                }
-            }
+            is AppScreen.Details -> DetailsInitScreen(
+                id = screen.id,
+                navHome = { navigator.navigate(AppScreen.Home) }
+            )
+        }
+    }
+}
+
+@Composable
+fun DetailsInitScreen(
+    id: Long,
+    navHome: () -> Unit,
+) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally,
+    ) {
+        Text("Details :$id")
+        Button(
+            onClick = navHome
+        ) {
+            Text("Go to Home")
         }
     }
 }

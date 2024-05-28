@@ -1,23 +1,26 @@
 package com.stslex.atten.feature.home.ui.store
 
 import androidx.compose.runtime.Stable
+import com.stslex.atten.core.paging.model.PagingConfig
+import com.stslex.atten.core.paging.model.PagingUiState
 import com.stslex.atten.core.ui.mvi.StoreComponent
+import com.stslex.atten.feature.home.ui.model.TodoUiModel
 
 interface HomeStoreComponent : StoreComponent {
 
     @Stable
     data class State(
-        val items: List<TodoUiModel>,
-        val state: ScreenState
+        val query: String,
+        val paging: PagingUiState<TodoUiModel>,
+        val screen: ScreenState,
     ) : StoreComponent.State {
 
         companion object {
             val INIT = State(
-                items = emptyList(),
-                state = ScreenState.Shimmer
+                query = "",
+                paging = PagingUiState.default(PagingConfig.DEFAULT),
+                screen = ScreenState.Shimmer
             )
-
-            const val PAGE_SIZE = 10
         }
     }
 
@@ -41,6 +44,12 @@ interface HomeStoreComponent : StoreComponent {
 
         @Stable
         data class OnItemClicked(val id: Long) : Action
+
+        @Stable
+        data object Refresh : Action
+
+        @Stable
+        data object Retry : Action
     }
 
     @Stable

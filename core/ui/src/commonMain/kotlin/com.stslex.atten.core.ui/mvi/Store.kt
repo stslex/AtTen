@@ -32,7 +32,7 @@ abstract class Store<S : State, E : Event, A : Action, N : Navigation>(
     private val _state: MutableStateFlow<S> = MutableStateFlow(initialState)
     override val state: StateFlow<S> = _state.asStateFlow()
 
-    private val scope: AppCoroutineScope = AppCoroutineScopeImpl(
+    protected val scope: AppCoroutineScope = AppCoroutineScopeImpl(
         scope = viewModelScope,
         appDispatcher = appDispatcher
     )

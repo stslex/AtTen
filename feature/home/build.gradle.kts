@@ -8,5 +8,6 @@ kotlin {
         implementation(project(":core:ui"))
         implementation(project(":core:todo"))
         implementation(project(":core:navigation"))
+        implementation(project(":core:paging"))
     }
 }
