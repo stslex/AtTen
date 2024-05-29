@@ -1,7 +1,7 @@
 package com.stslex.atten.feature.home.navigation
 
 import com.stslex.atten.core.navigation.navigator.AppNavigator
-import com.stslex.atten.core.navigation.screen.AppScreen
+import com.stslex.atten.core.navigation.screen.Configuration
 import com.stslex.atten.feature.home.ui.store.HomeStoreComponent.Navigation
 
 class HomeRouterImpl(
@@ -10,7 +10,7 @@ class HomeRouterImpl(
 
     override fun invoke(event: Navigation) {
         when (event) {
-            is Navigation.NavigateToDetail -> navigator.navigate(AppScreen.Details(event.id))
+            is Navigation.NavigateToDetail -> navigator.navigateTo(Configuration.DetailScreen(event.id))
         }
     }
 }

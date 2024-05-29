@@ -10,7 +10,6 @@ fun Project.configureKMPCompose(
     compose: ComposePlugin.Dependencies
 ) = extension.apply {
     sourceSets.apply {
-
         commonMain.dependencies {
             // todo need to add compose dependencies
             implementation(compose.ui)

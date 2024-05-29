@@ -1,12 +1,10 @@
 package com.stslex.atten.core.navigation.navigator
 
+import com.stslex.atten.core.navigation.screen.Configuration
+
 interface AppNavigator {
 
-    fun navigate(screen: NavigationTarget)
+    fun navigateTo(config: Configuration)
 
-    companion object {
-
-        const val TAG = "AppNavigator"
-    }
+    fun popBack()
 }
-

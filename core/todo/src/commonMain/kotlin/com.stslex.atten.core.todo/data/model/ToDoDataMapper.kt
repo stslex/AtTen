@@ -8,3 +8,19 @@ fun ToDoEntity.toData() = ToDoDataModel(
     description = description,
     uniqueKey = id
 )
+
+fun ToDoDataModel.toEntity(
+    number: Int
+) = ToDoEntity(
+    number = number,
+    title = title,
+    description = description
+)
+
+fun CreateTodoDataModel.toEntity(
+    number: Int
+) = ToDoEntity(
+    number = number,
+    title = title,
+    description = description,
+)

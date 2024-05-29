@@ -5,6 +5,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import com.stslex.atten.core.ui.mvi.getStore
 import com.stslex.atten.feature.home.ui.HomeScreen
 import com.stslex.atten.feature.home.ui.store.HomeStore
@@ -16,6 +18,7 @@ import kotlinx.coroutines.flow.collectLatest
 fun HomeInitScreen() {
     val store = getStore<HomeStore>()
     val state by remember { store.state }.collectAsState()
+    val hapticFeedback = LocalHapticFeedback.current
 
     LaunchedEffect(Unit) {
         store.dispatch(Action.Init)
@@ -32,10 +35,19 @@ fun HomeInitScreen() {
     HomeScreen(
         state = state,
         onItemClicked = { id ->
+            hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
             store.dispatch(Action.OnItemClicked(id))
         },
         onLoadNext = {
             store.dispatch(Action.LoadMore)
+        },
+        onCreateItemClick = {
+            hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+            store.dispatch(Action.OnCreateItemClicked)
+        },
+        onDeleteItemClick = { id ->
+            hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+            store.dispatch(Action.OnDeleteItemClicked(id))
         }
     )
 }

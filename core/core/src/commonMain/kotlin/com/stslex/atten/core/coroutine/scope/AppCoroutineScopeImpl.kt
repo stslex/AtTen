@@ -18,7 +18,7 @@ class AppCoroutineScopeImpl(
     private fun exceptionHandler(
         onError: suspend (cause: Throwable) -> Unit = {},
     ) = CoroutineExceptionHandler { _, throwable ->
-        Logger.exception(throwable)
+        Logger.e(throwable)
         scope.launch(appDispatcher.default + coroutineExceptionHandler) {
             onError(throwable)
         }

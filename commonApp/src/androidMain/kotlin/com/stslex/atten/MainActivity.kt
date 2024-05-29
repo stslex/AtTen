@@ -4,12 +4,12 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.view.WindowCompat
+import com.arkivanov.decompose.retainedComponent
 import com.stslex.atten.core.common.isDebug
+import com.stslex.atten.core.navigation.decompose.RootComponent
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
-import org.koin.core.KoinApplication
 import org.koin.core.logger.Level
 
 class MainActivity : ComponentActivity() {
@@ -17,8 +17,15 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
+        val windowController = WindowCompat.getInsetsController(window, window.decorView)
         setContent {
-            AndroidApp {
+            val root = retainedComponent { RootComponent(it) }
+            App(
+                root = root,
+                onThemeChange = { isDarkTheme ->
+                    windowController.isAppearanceLightStatusBars = isDarkTheme.not()
+                }
+            ) {
                 androidLogger(
                     level = if (isDebug) {
                         Level.DEBUG
@@ -30,17 +37,4 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-}
-
-@Composable
-private fun AndroidApp(
-    additionalSetup: KoinApplication.() -> Unit = {},
-) {
-    App(additionalSetup = additionalSetup)
-}
-
-@Preview
-@Composable
-private fun AndroidAppPreview() {
-    AndroidApp()
 }

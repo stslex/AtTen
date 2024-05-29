@@ -2,6 +2,7 @@ package com.stslex.atten.core.ui.mvi
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.stslex.atten.core.Logger
 import com.stslex.atten.core.coroutine.dispatcher.AppDispatcher
 import com.stslex.atten.core.coroutine.scope.AppCoroutineScope
 import com.stslex.atten.core.coroutine.scope.AppCoroutineScopeImpl
@@ -26,6 +27,8 @@ abstract class Store<S : State, E : Event, A : Action, N : Navigation>(
     initialState: S
 ) : ViewModel(), StoreAbstraction<S, E, A> {
 
+    private val screenName = this::class.simpleName
+
     private val _event: MutableSharedFlow<E> = MutableSharedFlow()
     override val event: SharedFlow<E> = _event.asSharedFlow()
 
@@ -45,6 +48,7 @@ abstract class Store<S : State, E : Event, A : Action, N : Navigation>(
         if (lastAction != action && action !is Action.RepeatLastAction) {
             _lastAction = action
         }
+        Logger.d("$screenName dispatchAction: $action", TAG)
         process(action)
     }
 
@@ -65,6 +69,7 @@ abstract class Store<S : State, E : Event, A : Action, N : Navigation>(
      * @see AppDispatcher
      * */
     protected fun sendEvent(event: E) {
+        Logger.d("$screenName sendEvent: $event", TAG)
         scope.launch {
             this@Store._event.emit(event)
         }
@@ -76,6 +81,7 @@ abstract class Store<S : State, E : Event, A : Action, N : Navigation>(
      * @see Router
      * */
     protected fun consumeNavigation(event: N) {
+        Logger.d("$screenName consumeNavigation: $event", TAG)
         router(event)
     }
 
@@ -115,4 +121,8 @@ abstract class Store<S : State, E : Event, A : Action, N : Navigation>(
         onError = onError,
         each = each,
     )
+
+    companion object {
+        private const val TAG = "Store"
+    }
 }

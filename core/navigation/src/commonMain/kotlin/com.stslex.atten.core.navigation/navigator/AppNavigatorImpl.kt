@@ -1,36 +1,19 @@
 package com.stslex.atten.core.navigation.navigator
 
-import androidx.navigation.NavHostController
-import com.stslex.atten.core.Logger
-import com.stslex.atten.core.navigation.navigator.AppNavigator.Companion.TAG
+import com.arkivanov.decompose.router.stack.StackNavigation
+import com.arkivanov.decompose.router.stack.pop
+import com.arkivanov.decompose.router.stack.push
+import com.stslex.atten.core.navigation.screen.Configuration
 
 class AppNavigatorImpl(
-    private val navController: NavHostController
+    private val navigation: StackNavigation<Configuration>
 ) : AppNavigator {
 
-    override fun navigate(screen: NavigationTarget) {
-        when (screen) {
-            is NavigationTarget.PopBack -> navController.popBackStack()
-            is NavigationTarget.Screen -> navigateScreen(screen)
-        }
+    override fun navigateTo(config: Configuration) {
+        navigation.push(config)
     }
 
-    private fun navigateScreen(screen: NavigationTarget.Screen) {
-        val currentRoute = navController.currentDestination?.route ?: return
-        if (currentRoute == screen.screenRoute) return
-
-        try {
-            navController.navigate(screen.route) {
-                if (screen.isSingleTop.not()) return@navigate
-
-                popUpTo(currentRoute) {
-                    inclusive = true
-                    saveState = true
-                }
-                launchSingleTop = true
-            }
-        } catch (exception: Exception) {
-            Logger.exception(exception, TAG, "screen: $screen")
-        }
+    override fun popBack() {
+        navigation.pop()
     }
 }
