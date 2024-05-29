@@ -28,7 +28,7 @@ kermit = "2.0.3"
 lifecycle = "2.8.0"
 immutableCollection = "0.3.5"
 serialization = "1.7.0-RC"
-navigation = "2.7.0-alpha07"
+decompose = "3.0.0"
 
 [libraries]
 android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
@@ -72,8 +72,8 @@ sqlite = { module = "androidx.sqlite:sqlite", version.ref = "sqlite" }
 
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
 
-navigation-compose = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
-
+decompose = { group = "com.arkivanov.decompose", name = "decompose", version.ref = "decompose" }
+decompose-compose = { group = "com.arkivanov.decompose", name = "extensions-compose", version.ref = "decompose" }
 [bundles]
 test = [
     "kotlin-test",

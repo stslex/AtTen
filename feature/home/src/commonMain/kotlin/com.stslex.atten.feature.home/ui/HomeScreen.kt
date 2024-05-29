@@ -1,10 +1,15 @@
 package com.stslex.atten.feature.home.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,10 +27,21 @@ internal fun HomeScreen(
     modifier: Modifier = Modifier,
 ) {
     PagingColumn(
-        modifier = modifier,
+        modifier = modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+            .systemBarsPadding(),
         pagingState = state.paging,
         onLoadNext = onLoadNext
     ) {
+        item {
+            Button(
+                onClick = { onItemClicked(1) },
+                modifier = Modifier.padding(AppDimension.Padding.medium),
+            ) {
+                Text(text = "Nav to 1")
+            }
+        }
         items(
             count = state.paging.items.size,
             key = state.paging.key
