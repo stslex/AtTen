@@ -8,6 +8,7 @@ import com.stslex.atten.core.paging.pager.StorePager
 import com.stslex.atten.core.ui.mvi.Store
 import com.stslex.atten.core.ui.mvi.StoreComponent.Event.Snackbar.Error
 import com.stslex.atten.feature.home.domain.interactor.HomeScreenInteractor
+import com.stslex.atten.feature.home.domain.model.CreateTodoDomainModel
 import com.stslex.atten.feature.home.navigation.HomeRouter
 import com.stslex.atten.feature.home.ui.model.TodoUiModel
 import com.stslex.atten.feature.home.ui.model.toUi
@@ -19,10 +20,10 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
 class HomeStore(
+    private val interactor: HomeScreenInteractor,
     appDispatcher: AppDispatcher,
     router: HomeRouter,
     pagingFactory: PagerFactory,
-    interactor: HomeScreenInteractor,
 ) : Store<State, Event, Action, Navigation>(
     appDispatcher = appDispatcher,
     initialState = State.INIT,
@@ -44,11 +45,13 @@ class HomeStore(
 
     override fun process(action: Action) {
         when (action) {
-            Action.Init -> actionInit()
-            Action.LoadMore -> actionLoadMore()
+            is Action.Init -> actionInit()
+            is Action.LoadMore -> actionLoadMore()
             is Action.OnItemClicked -> actionOnItemClicked(action)
             is Action.Refresh -> actionRefresh()
             is Action.Retry -> actionRetry()
+            is Action.OnCreateItemClicked -> actionOnCreateItemClicked()
+            is Action.OnDeleteItemClicked -> actionOnDeleteItemClicked(action)
         }
     }
 
@@ -88,19 +91,56 @@ class HomeStore(
     }
 
     private fun actionLoadMore() {
-//        TODO("Not yet implemented")
+        pager.load()
+    }
+
+    private fun actionRefresh() {
+        pager.refresh(isForceLoad = true)
+    }
+
+    private fun actionRetry() {
+        pager.retry()
     }
 
     private fun actionOnItemClicked(action: Action.OnItemClicked) {
         consumeNavigation(Navigation.NavigateToDetail(action.id))
     }
 
-    private fun actionRefresh() {
-
+    private fun actionOnCreateItemClicked() {
+        launch(
+            action = {
+                interactor.createItem(
+                    CreateTodoDomainModel(
+                        title = "New item",
+                        description = "New item description"
+                    )
+                )
+            },
+            onSuccess = {
+                pager.refresh(isForceLoad = true)
+            },
+            onError = {
+                showError(it)
+            }
+        )
+        // todo consumeNavigation(Navigation.NavigateToCreate)
     }
 
-    private fun actionRetry() {
-
+    private fun actionOnDeleteItemClicked(action: Action.OnDeleteItemClicked) {
+        launch(
+            action = {
+                interactor.deleteItem(action.id)
+            },
+            onSuccess = {
+                // todo add success orientation
+                state.value.paging.items.firstOrNull { it.id == action.id }?.let {
+                    pager.itemRemoved(it.uniqueKey)
+                }
+            },
+            onError = {
+                showError(it)
+            }
+        )
     }
 
     private fun showError(error: Throwable) {

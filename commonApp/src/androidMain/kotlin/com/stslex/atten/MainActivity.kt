@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.core.view.WindowCompat
 import com.arkivanov.decompose.retainedComponent
 import com.stslex.atten.core.common.isDebug
 import com.stslex.atten.core.navigation.decompose.RootComponent
@@ -16,9 +17,15 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
+        val windowController = WindowCompat.getInsetsController(window, window.decorView)
         setContent {
             val root = retainedComponent { RootComponent(it) }
-            App(root) {
+            App(
+                root = root,
+                onThemeChange = { isDarkTheme ->
+                    windowController.isAppearanceLightStatusBars = isDarkTheme.not()
+                }
+            ) {
                 androidLogger(
                     level = if (isDebug) {
                         Level.DEBUG
@@ -31,4 +38,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-

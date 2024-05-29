@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.convention.kmp.library.compose)
+    alias(libs.plugins.convention.android.library.compose)
 }
 
 kotlin {
@@ -10,4 +11,8 @@ kotlin {
         implementation(project(":core:navigation"))
         implementation(project(":core:paging"))
     }
+}
+
+dependencies {
+    debugImplementation(libs.compose.ui.tooling)
 }

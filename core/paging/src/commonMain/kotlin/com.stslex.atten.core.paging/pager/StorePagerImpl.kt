@@ -1,5 +1,6 @@
 package com.stslex.atten.core.paging.pager
 
+import com.stslex.atten.core.Logger
 import com.stslex.atten.core.paging.model.PagingConfig
 import com.stslex.atten.core.paging.model.PagingCoreData.Companion.DEFAULT_PAGE
 import com.stslex.atten.core.paging.model.PagingItem
@@ -47,15 +48,12 @@ class StorePagerImpl<out T : PagingUiItem, in R : PagingItem>(
         }
     }
 
-    override fun load() {
-        if (
-            state.value.hasMore.not() ||
-            loadState.value !is PagerLoadState.Data
-        ) {
+    override fun load(isForceLoad: Boolean) {
+        if ((state.value.hasMore.not() || loadState.value !is PagerLoadState.Data) && isForceLoad.not()) {
             return
         }
         _loadState.value = PagerLoadState.Loading
-        requestItems(isForceLoad = false)
+        requestItems(isForceLoad = isForceLoad)
     }
 
     override fun refresh(isForceLoad: Boolean) {
@@ -77,6 +75,24 @@ class StorePagerImpl<out T : PagingUiItem, in R : PagingItem>(
         }
         _loadState.value = PagerLoadState.Retry
         requestItems(isForceLoad = false)
+    }
+
+    override fun itemRemoved(uniqueKey: Any) {
+        Logger.d("itemRemoved: $uniqueKey")
+        _state.update { currentState ->
+            val newItems = currentState.result
+                .filter { it.uniqueKey != uniqueKey }
+                .toImmutableList()
+            val currentPage = if (newItems.size < currentState.page * currentState.pageSize) {
+                currentState.page.dec()
+            } else {
+                currentState.page
+            }
+            currentState.copy(
+                result = newItems,
+                page = currentPage
+            )
+        }
     }
 
     private fun requestItems(
@@ -106,10 +122,23 @@ class StorePagerImpl<out T : PagingUiItem, in R : PagingItem>(
                 val newItems = if (state.value.page == DEFAULT_PAGE) {
                     newPagingState.result
                 } else {
-                    (state.value.result + newPagingState.result).toImmutableList()
+                    val oldItems = state.value.result
+                        .filter { item ->
+                            newPagingState.result.none { it.uniqueKey == item.uniqueKey }
+                        }
+                        .take(
+                            newPagingState.pageSize * newPagingState.page
+                        )
+                    (oldItems + newPagingState.result).toImmutableList()
+                }
+                val resultPage = if (newItems.size < result.page * result.pageSize) {
+                    result.page
+                } else {
+                    result.page.inc()
                 }
                 _state.value = newPagingState.copy(
-                    result = newItems
+                    result = newItems,
+                    page = resultPage
                 )
                 _loadState.value = PagerLoadState.Data
             },

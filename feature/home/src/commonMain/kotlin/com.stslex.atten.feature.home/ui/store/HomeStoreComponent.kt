@@ -46,6 +46,12 @@ interface HomeStoreComponent : StoreComponent {
         data class OnItemClicked(val id: Long) : Action
 
         @Stable
+        data class OnDeleteItemClicked(val id: Long) : Action
+
+        @Stable
+        data object OnCreateItemClicked : Action
+
+        @Stable
         data object Refresh : Action
 
         @Stable

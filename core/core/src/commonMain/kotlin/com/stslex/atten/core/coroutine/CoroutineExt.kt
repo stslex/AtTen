@@ -7,7 +7,7 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 
 val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
-    Logger.exception(throwable)
+    Logger.e(throwable)
 }
 
 suspend fun <T, R> List<T>.asyncMap(

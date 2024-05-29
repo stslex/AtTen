@@ -15,9 +15,11 @@ interface StorePager<out Item : PagingUiItem> {
 
     fun initialLoad()
 
-    fun load()
+    fun load(isForceLoad: Boolean = false)
 
     fun refresh(isForceLoad: Boolean)
 
     fun retry()
+
+    fun itemRemoved(uniqueKey: Any)
 }

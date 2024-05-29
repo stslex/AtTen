@@ -1,10 +1,13 @@
 package com.stslex.atten.core.todo.data.repository
 
+import com.stslex.atten.core.Logger
 import com.stslex.atten.core.coroutine.asyncMap
 import com.stslex.atten.core.database.db.ToDoDao
 import com.stslex.atten.core.paging.model.PagingResponse
+import com.stslex.atten.core.todo.data.model.CreateTodoDataModel
 import com.stslex.atten.core.todo.data.model.ToDoDataModel
 import com.stslex.atten.core.todo.data.model.toData
+import com.stslex.atten.core.todo.data.model.toEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.async
@@ -43,5 +46,31 @@ class ToDoRepositoryImpl(
             hasMore = hasMore.await(),
             result = items.await()
         )
+    }
+
+    override suspend fun updateItem(
+        item: ToDoDataModel
+    ): ToDoDataModel? = withContext(Dispatchers.IO) {
+        val entity = dao.getItem(item.id) ?: throw IllegalArgumentException("Item not found")
+        dao.updateItem(item.toEntity(entity.number))
+        dao.getItem(item.id)?.toData()
+    }
+
+    override suspend fun createItem(
+        item: CreateTodoDataModel
+    ): ToDoDataModel? = withContext(Dispatchers.IO) {
+        val newId = dao
+            .insert(item.toEntity(number = dao.getItemsCount()))
+            .takeIf { it != -1L }
+            ?: throw IllegalArgumentException("Item not created")
+        Logger.d("New item id: $newId")
+        dao.getItem(newId)?.toData()
+    }
+
+    override suspend fun deleteItem(id: Long) = withContext(Dispatchers.IO) {
+        val item = dao.getItem(id) ?: throw IllegalArgumentException("Item not found")
+        val itemNumber = item.number
+        dao.deleteItem(id)
+        dao.decreaseNumberFrom(itemNumber)
     }
 }

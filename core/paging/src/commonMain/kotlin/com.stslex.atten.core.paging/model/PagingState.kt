@@ -33,7 +33,7 @@ data class PagingState<out T : PagingUiItem>(
 suspend fun <T : PagingItem, R : PagingUiItem> PagingResponse<T>.pagingMap(
     transform: suspend (T) -> R,
 ): PagingState<R> = PagingState(
-    page = page.inc(),
+    page = page,
     pageSize = pageSize,
     total = total,
     hasMore = hasMore && result.isNotEmpty(),

@@ -14,7 +14,9 @@ data class PagingUiState<out T : PagingUiItem>(
     val pageOffset: Int = (config.pageSize * config.pageOffset).roundToInt()
 
     val key: ((index: Int) -> Any)? = if (items.isEmpty()) null else { index ->
-        items[index].uniqueKey
+        checkNotNull(items.getOrNull(index)) {
+            "Index out of bounds: $index, size: ${items.size}"
+        }.uniqueKey
     }
 
     companion object {

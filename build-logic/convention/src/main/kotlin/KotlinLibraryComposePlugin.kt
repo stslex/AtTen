@@ -11,6 +11,7 @@ class KotlinLibraryComposePlugin : Plugin<Project> {
     override fun apply(target: Project): Unit = with(target) {
         with(pluginManager) {
             apply(libs.findPluginId("androidLibrary"))
+            apply(libs.findPluginId("composeCompiler"))
             apply(libs.findPluginId("ksp"))
         }
         extensions.configure<LibraryExtension>(::configureKotlinAndroidCompose)

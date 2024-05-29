@@ -8,3 +8,8 @@ data class ToDoDataModel(
     val description: String,
     override val uniqueKey: Any
 ) : PagingItem
+
+data class CreateTodoDataModel(
+    val title: String,
+    val description: String
+)

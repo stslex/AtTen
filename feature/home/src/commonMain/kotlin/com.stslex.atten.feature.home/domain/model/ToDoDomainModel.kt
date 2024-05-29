@@ -8,3 +8,8 @@ data class ToDoDomainModel(
     val description: String,
     override val uniqueKey: String
 ) : PagingItem
+
+data class CreateTodoDomainModel(
+    val title: String,
+    val description: String
+)

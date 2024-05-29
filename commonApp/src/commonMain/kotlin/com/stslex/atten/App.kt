@@ -10,10 +10,13 @@ import org.koin.core.KoinApplication
 @Composable
 fun App(
     root: RootComponent,
+    onThemeChange: (isDark: Boolean) -> Unit = {},
     additionalSetup: KoinApplication.() -> Unit = {},
 ) {
     KoinApp(additionalSetup) {
-        AppTheme {
+        AppTheme(
+            onThemeChange = onThemeChange
+        ) {
             InitialApp(root = root)
         }
     }
