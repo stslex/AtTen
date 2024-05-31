@@ -109,15 +109,17 @@ class HomeStore(
     private fun actionOnCreateItemClicked() {
         launch(
             action = {
-                interactor.createItem(
-                    CreateTodoDomainModel(
-                        title = "New item",
-                        description = "New item description"
+                interactor
+                    .createItem(
+                        CreateTodoDomainModel(
+                            title = "New item",
+                            description = "New item description"
+                        )
                     )
-                )
             },
-            onSuccess = {
-                pager.refresh(isForceLoad = true)
+            onSuccess = { item ->
+                // todo add success orientation
+                item?.toUi()?.let(pager::itemInserted)
             },
             onError = {
                 showError(it)

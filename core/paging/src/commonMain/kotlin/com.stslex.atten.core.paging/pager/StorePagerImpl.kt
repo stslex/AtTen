@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-class StorePagerImpl<out T : PagingUiItem, in R : PagingItem>(
+class StorePagerImpl<T : PagingUiItem, in R : PagingItem>(
     private val pagingWorker: PagingWorker,
     private val request: suspend (page: Int, pageSize: Int) -> PagingResponse<R>,
     private val mapper: PagingMapper<R, T>,
@@ -77,6 +77,24 @@ class StorePagerImpl<out T : PagingUiItem, in R : PagingItem>(
         requestItems(isForceLoad = false)
     }
 
+    override fun itemInserted(item: T) {
+        Logger.d("itemInserted: $item")
+        _state.update { currentState ->
+            val items = currentState.result
+            val newItems = items + item
+
+            val currentPage = if (newItems.size >= currentState.page * currentState.pageSize) {
+                currentState.page.inc()
+            } else {
+                currentState.page
+            }
+            currentState.copy(
+                result = newItems.toImmutableList(),
+                page = currentPage,
+            )
+        }
+    }
+
     override fun itemRemoved(uniqueKey: Any) {
         Logger.d("itemRemoved: $uniqueKey")
         _state.update { currentState ->
@@ -90,7 +108,8 @@ class StorePagerImpl<out T : PagingUiItem, in R : PagingItem>(
             }
             currentState.copy(
                 result = newItems,
-                page = currentPage
+                page = currentPage,
+                hasMore = newItems.size < currentState.total
             )
         }
     }

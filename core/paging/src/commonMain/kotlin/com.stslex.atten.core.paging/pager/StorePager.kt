@@ -5,7 +5,7 @@ import com.stslex.atten.core.paging.model.PagingUiItem
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 
-interface StorePager<out Item : PagingUiItem> {
+interface StorePager<Item : PagingUiItem> {
 
     val state: StateFlow<PagingState<Item>>
 
@@ -22,4 +22,6 @@ interface StorePager<out Item : PagingUiItem> {
     fun retry()
 
     fun itemRemoved(uniqueKey: Any)
+
+    fun itemInserted(item: Item)
 }
