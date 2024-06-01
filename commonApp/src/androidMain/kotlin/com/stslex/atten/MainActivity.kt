@@ -10,6 +10,7 @@ import com.stslex.atten.core.common.isDebug
 import com.stslex.atten.core.navigation.decompose.RootComponent
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.stopKoin
 import org.koin.core.logger.Level
 
 class MainActivity : ComponentActivity() {
@@ -36,5 +37,10 @@ class MainActivity : ComponentActivity() {
                 androidContext(this@MainActivity)
             }
         }
+    }
+
+    override fun onDestroy() {
+        stopKoin()
+        super.onDestroy()
     }
 }

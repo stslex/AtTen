@@ -6,6 +6,7 @@ compose-compiler = "1.5.12"
 androidx-activityCompose = "1.9.0"
 compose-material3 = "1.2.1"
 android-compose = "1.6.7"
+material = "1.6.0"
 
 compileSdk = "34"
 minSdk = "28"
@@ -39,6 +40,7 @@ room-gradlePlugin = { group = "androidx.room", name = "room-gradle-plugin", vers
 
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
+android-material = { module = "com.google.android.material:material", version.ref = "material" }
 compose-ui = { module = "androidx.compose.ui:ui", version.ref = "android-compose" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "android-compose" }
 compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "android-compose" }

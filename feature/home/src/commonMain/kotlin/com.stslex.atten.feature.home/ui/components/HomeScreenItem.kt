@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
@@ -18,7 +17,6 @@ import com.stslex.atten.core.ui.components.CardWithAnimatedBorder
 import com.stslex.atten.core.ui.theme.AppDimension
 import com.stslex.atten.core.ui.theme.AppTheme
 import com.stslex.atten.feature.home.ui.model.TodoUiModel
-import kotlin.random.Random
 
 @Composable
 internal fun HomeScreenItem(
@@ -27,9 +25,6 @@ internal fun HomeScreenItem(
     onItemLongClick: (id: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val isSelectedRand = remember(item.isSelected) {
-        Random.nextBoolean()
-    }
     CardWithAnimatedBorder(
         modifier = modifier
             .width(IntrinsicSize.Max)
@@ -41,11 +36,8 @@ internal fun HomeScreenItem(
             onItemClick(item.uuid)
         },
         isAnimated = item.isSelected,
-        isFullBackground = item.isSelected && isSelectedRand,
         borderSize = 2.dp,
         disableBorderColor = Color.Transparent,
-        backgroundColor = MaterialTheme.colorScheme.surfaceContainerHigh,
-        backgroundEnableColor = MaterialTheme.colorScheme.surface,
     ) {
         Column(
             modifier = Modifier
@@ -64,7 +56,7 @@ internal fun HomeScreenItem(
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSurface,
                 maxLines = 3,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
             )
         }
     }
