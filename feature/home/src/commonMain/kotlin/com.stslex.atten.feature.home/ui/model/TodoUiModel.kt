@@ -5,8 +5,8 @@ import com.stslex.atten.core.paging.model.PagingUiItem
 
 @Stable
 data class TodoUiModel(
-    val id: Long,
+    override val uuid: String,
     val title: String,
     val description: String,
-    override val uniqueKey: String
+    val isSelected: Boolean,
 ) : PagingUiItem

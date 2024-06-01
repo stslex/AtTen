@@ -4,8 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.ExperimentalDecomposeApi
 import com.arkivanov.decompose.extensions.compose.stack.Children
-import com.arkivanov.decompose.extensions.compose.stack.animation.predictiveback.predictiveBackAnimation
-import com.arkivanov.decompose.extensions.compose.stack.animation.scale
+import com.arkivanov.decompose.extensions.compose.stack.animation.slide
 import com.arkivanov.decompose.extensions.compose.stack.animation.stackAnimation
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.stslex.atten.core.navigation.decompose.RootComponent
@@ -20,11 +19,12 @@ fun NavigationHost(
     val childStack by root.childStack.subscribeAsState()
     Children(
         stack = childStack,
-        animation = predictiveBackAnimation(
-            backHandler = root.backHandler,
-            fallbackAnimation = stackAnimation(scale()),
-            onBack = root::onBack,
-        )
+        animation = stackAnimation(slide())
+//                predictiveBackAnimation(
+//            backHandler = root.backHandler,
+//            fallbackAnimation = stackAnimation(slide() + scale()),
+//            onBack = root::onBack,
+//        )
     ) { child ->
         screen(child.configuration)
     }

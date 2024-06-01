@@ -4,17 +4,15 @@ import com.stslex.atten.core.todo.data.model.CreateTodoDataModel
 import com.stslex.atten.core.todo.data.model.ToDoDataModel
 
 fun ToDoDataModel.toDomain() = ToDoDomainModel(
-    id = id,
+    uuid = uuid,
     title = title,
     description = description,
-    uniqueKey = uniqueKey.toString()
 )
 
 fun ToDoDomainModel.toData() = ToDoDataModel(
-    id = id,
+    uuid = uuid,
     title = title,
     description = description,
-    uniqueKey = uniqueKey
 )
 
 fun CreateTodoDomainModel.toData() = CreateTodoDataModel(

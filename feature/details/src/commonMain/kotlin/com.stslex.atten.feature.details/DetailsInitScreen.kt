@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun DetailsInitScreen(
-    id: Long,
+    id: String,
 ) {
     Column(
         modifier = Modifier

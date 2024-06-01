@@ -30,7 +30,7 @@ class HomeScreenInteractorImpl(
         .createItem(item.toData())
         ?.toDomain()
 
-    override suspend fun deleteItem(id: Long) {
-        repository.deleteItem(id)
+    override suspend fun deleteItems(ids: Set<String>) {
+        repository.deleteItems(ids)
     }
 }

@@ -11,7 +11,7 @@ interface HomeScreenInteractor {
         pageSize: Int
     ): PagingResponse<ToDoDomainModel>
 
-    suspend fun deleteItem(id: Long)
+    suspend fun deleteItems(ids: Set<String>)
 
     suspend fun createItem(item: CreateTodoDomainModel): ToDoDomainModel?
 }

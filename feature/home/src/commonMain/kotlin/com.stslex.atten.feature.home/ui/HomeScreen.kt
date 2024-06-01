@@ -14,7 +14,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalHapticFeedback
 import com.stslex.atten.core.paging.model.PagingConfig
 import com.stslex.atten.core.paging.model.PagingUiState
 import com.stslex.atten.core.paging.ui.PagingColumn
@@ -24,6 +23,7 @@ import com.stslex.atten.feature.home.ui.components.HomeScreenItem
 import com.stslex.atten.feature.home.ui.model.TodoUiModel
 import com.stslex.atten.feature.home.ui.store.HomeStoreComponent.State
 import com.stslex.atten.feature.home.ui.store.ScreenState
+import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.collections.immutable.toImmutableList
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -31,10 +31,11 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 internal fun HomeScreen(
     state: State,
-    onItemClicked: (id: Long) -> Unit,
+    onItemLongCLick: (id: String) -> Unit,
+    onItemClicked: (id: String) -> Unit,
     onLoadNext: () -> Unit,
     onCreateItemClick: () -> Unit,
-    onDeleteItemClick: (id: Long) -> Unit,
+    onDeleteItemsClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -57,20 +58,33 @@ internal fun HomeScreen(
                         modifier = Modifier.animateItemPlacement(),
                         item = item,
                         onItemClick = onItemClicked,
-                        onDeleteItemClick = onDeleteItemClick,
+                        onItemLongClick = onItemLongCLick
                     )
                 }
                 Spacer(modifier = Modifier.height(AppDimension.Padding.small))
             }
         }
-
+        Text(
+            text = "Home Screen items: ${state.paging.items.size}",
+            modifier = Modifier.align(Alignment.TopStart).padding(AppDimension.Padding.medium),
+            style = MaterialTheme.typography.headlineSmall,
+            color = MaterialTheme.colorScheme.onSurface
+        )
         Button(
-            onClick = { onCreateItemClick() },
+            onClick = {
+                if (state.selectedItems.isNotEmpty()) {
+                    onDeleteItemsClick()
+                } else {
+                    onCreateItemClick()
+                }
+            },
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(AppDimension.Padding.medium),
         ) {
-            Text(text = "create new item")
+            Text(
+                text = if (state.selectedItems.isNotEmpty()) "Delete" else "Create",
+            )
         }
     }
 }
@@ -86,22 +100,24 @@ internal fun HomeScreenPreview() {
                     paging = PagingUiState(
                         items = Array(10) {
                             TodoUiModel(
-                                id = it.toLong(),
+                                uuid = "UniqueKey $it",
                                 title = "Title $it",
                                 description = "Description $it",
-                                uniqueKey = "UniqueKey $it"
+                                isSelected = false
                             )
                         }.toList().toImmutableList(),
                         hasMore = true,
                         total = 100,
                         config = PagingConfig.DEFAULT
                     ),
-                    screen = ScreenState.Content.Data
+                    screen = ScreenState.Content.Data,
+                    selectedItems = persistentSetOf()
                 ),
                 onLoadNext = {},
                 onItemClicked = {},
-                onDeleteItemClick = {},
-                onCreateItemClick = {}
+                onCreateItemClick = {},
+                onItemLongCLick = {},
+                onDeleteItemsClick = {}
             )
         }
     }

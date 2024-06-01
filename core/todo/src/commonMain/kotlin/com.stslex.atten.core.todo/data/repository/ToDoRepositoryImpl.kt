@@ -17,7 +17,7 @@ class ToDoRepositoryImpl(
     private val dao: ToDoDao
 ) : ToDoRepository {
 
-    override suspend fun getToDo(id: Long): ToDoDataModel? = withContext(Dispatchers.IO) {
+    override suspend fun getToDo(id: String): ToDoDataModel? = withContext(Dispatchers.IO) {
         dao.getItem(id)?.toData()
     }
 
@@ -26,24 +26,17 @@ class ToDoRepositoryImpl(
         pageSize: Int
     ): PagingResponse<ToDoDataModel> = withContext(Dispatchers.IO) {
         val items = async {
-            dao.getItems(
-                page = page,
-                pageSize = pageSize
-            ).asyncMap {
-                it.toData()
-            }
+            dao.getItems(page, pageSize)
+                .asyncMap { it.toData() }
         }
         val countTotal = async {
             dao.getItemsCount()
-        }
-        val hasMore = async {
-            items.await().size == pageSize
         }
         PagingResponse(
             page = page,
             pageSize = pageSize,
             total = countTotal.await(),
-            hasMore = hasMore.await(),
+            hasMore = items.await().size == pageSize,
             result = items.await()
         )
     }
@@ -51,26 +44,28 @@ class ToDoRepositoryImpl(
     override suspend fun updateItem(
         item: ToDoDataModel
     ): ToDoDataModel? = withContext(Dispatchers.IO) {
-        val entity = dao.getItem(item.id) ?: throw IllegalArgumentException("Item not found")
+        val entity = dao.getItem(item.uuid) ?: throw IllegalArgumentException("Item not found")
         dao.updateItem(item.toEntity(entity.number))
-        dao.getItem(item.id)?.toData()
+        dao.getItem(item.uuid)?.toData()
     }
 
     override suspend fun createItem(
         item: CreateTodoDataModel
     ): ToDoDataModel? = withContext(Dispatchers.IO) {
-        val newId = dao
-            .insert(item.toEntity(number = dao.getItemsCount()))
-            .takeIf { it != -1L }
-            ?: throw IllegalArgumentException("Item not created")
+        val entity = item.toEntity(number = dao.getItemsCount())
+        val newId = dao.insert(entity)
         Logger.d("New item id: $newId")
-        dao.getItem(newId)?.toData()
+        dao.getItem(entity.uuid)?.toData()
     }
 
-    override suspend fun deleteItem(id: Long) = withContext(Dispatchers.IO) {
-        val item = dao.getItem(id) ?: throw IllegalArgumentException("Item not found")
-        val itemNumber = item.number
-        dao.deleteItem(id)
-        dao.decreaseNumberFrom(itemNumber)
+    override suspend fun deleteItems(ids: Set<String>) = withContext(Dispatchers.IO) {
+        dao.deleteAndReorder(ids.toList())
+    }
+
+    override suspend fun replace(numberFrom: Int, numberTo: Int) {
+        withContext(Dispatchers.IO) {
+//            dao.decreaseNumberFrom(numberFrom)
+//            dao.updateItem(dao.getItem(numberTo.toLong())!!.copy(number = numberFrom))
+        }
     }
 }

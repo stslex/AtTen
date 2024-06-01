@@ -16,6 +16,9 @@ import com.stslex.atten.feature.home.ui.store.HomeStoreComponent.Action
 import com.stslex.atten.feature.home.ui.store.HomeStoreComponent.Event
 import com.stslex.atten.feature.home.ui.store.HomeStoreComponent.Navigation
 import com.stslex.atten.feature.home.ui.store.HomeStoreComponent.State
+import kotlinx.collections.immutable.persistentSetOf
+import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
@@ -30,18 +33,19 @@ class HomeStore(
     router = router
 ) {
 
-    private val pager: StorePager<TodoUiModel> = pagingFactory.create(
-        request = { page, pageSize ->
-            interactor.getToDoList(
-                page = page,
-                pageSize = pageSize
-            )
-        },
-        scope = scope,
-        mapper = { it.toUi() },
-        config = state.value.paging.config
-    )
-
+    private val pager: StorePager<TodoUiModel> by lazy {
+        pagingFactory.create(
+            request = { page, pageSize ->
+                interactor.getToDoList(
+                    page = page,
+                    pageSize = pageSize
+                )
+            },
+            scope = scope,
+            mapper = { it.toUi() },
+            config = state.value.paging.config
+        )
+    }
 
     override fun process(action: Action) {
         when (action) {
@@ -51,15 +55,23 @@ class HomeStore(
             is Action.Refresh -> actionRefresh()
             is Action.Retry -> actionRetry()
             is Action.OnCreateItemClicked -> actionOnCreateItemClicked()
-            is Action.OnDeleteItemClicked -> actionOnDeleteItemClicked(action)
+            is Action.OnDeleteItemsClicked -> actionOnDeleteItemClicked()
+            is Action.OnSelectItemClicked -> actionOnSelectItemClicked(action)
         }
     }
 
     private fun actionInit() {
         pager.state.launch { pagerState ->
             updateState { currentState ->
+                val pagingUiState = pagerState.toUi(currentState.paging.config)
                 currentState.copy(
-                    paging = pagerState.toUi(currentState.paging.config)
+                    paging = pagingUiState.copy(
+                        items = pagingUiState.items
+                            .map { item ->
+                                item.copy(isSelected = currentState.selectedItems.contains(item.uuid))
+                            }
+                            .toImmutableList()
+                    )
                 )
             }
         }
@@ -75,6 +87,23 @@ class HomeStore(
                 Event.Snackbar(Error("error load matches"))
             )
         }
+
+        state
+            .map { it.selectedItems }
+            .distinctUntilChanged()
+            .launch { selectedItems ->
+                updateState { currentState ->
+                    currentState.copy(
+                        paging = currentState.paging.copy(
+                            items = currentState.paging.items
+                                .map { item ->
+                                    item.copy(isSelected = selectedItems.contains(item.uuid))
+                                }
+                                .toImmutableList()
+                        )
+                    )
+                }
+            }
 
         state
             .map { it.query }
@@ -103,7 +132,11 @@ class HomeStore(
     }
 
     private fun actionOnItemClicked(action: Action.OnItemClicked) {
-        consumeNavigation(Navigation.NavigateToDetail(action.id))
+        if (state.value.selectedItems.isNotEmpty()) {
+            actionOnSelectItemClicked(Action.OnSelectItemClicked(action.id))
+        } else {
+            consumeNavigation(Navigation.NavigateToDetail(action.id))
+        }
     }
 
     private fun actionOnCreateItemClicked() {
@@ -128,21 +161,38 @@ class HomeStore(
         // todo consumeNavigation(Navigation.NavigateToCreate)
     }
 
-    private fun actionOnDeleteItemClicked(action: Action.OnDeleteItemClicked) {
+    private fun actionOnDeleteItemClicked() {
         launch(
             action = {
-                interactor.deleteItem(action.id)
+                interactor.deleteItems(state.value.selectedItems)
             },
             onSuccess = {
                 // todo add success orientation
-                state.value.paging.items.firstOrNull { it.id == action.id }?.let {
-                    pager.itemRemoved(it.uniqueKey)
+                pager.itemRemoved(state.value.selectedItems)
+                updateState { currentState ->
+                    currentState.copy(
+                        selectedItems = persistentSetOf()
+                    )
                 }
             },
             onError = {
                 showError(it)
             }
         )
+    }
+
+    private fun actionOnSelectItemClicked(action: Action.OnSelectItemClicked) {
+        updateState { currentState ->
+            val selectedItems = currentState.selectedItems.toMutableSet()
+            if (selectedItems.contains(action.id)) {
+                selectedItems.remove(action.id)
+            } else {
+                selectedItems.add(action.id)
+            }
+            currentState.copy(
+                selectedItems = selectedItems.toImmutableSet(),
+            )
+        }
     }
 
     private fun showError(error: Throwable) {

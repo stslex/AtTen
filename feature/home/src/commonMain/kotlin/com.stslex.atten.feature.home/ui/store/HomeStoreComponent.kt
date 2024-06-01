@@ -5,6 +5,8 @@ import com.stslex.atten.core.paging.model.PagingConfig
 import com.stslex.atten.core.paging.model.PagingUiState
 import com.stslex.atten.core.ui.mvi.StoreComponent
 import com.stslex.atten.feature.home.ui.model.TodoUiModel
+import kotlinx.collections.immutable.ImmutableSet
+import kotlinx.collections.immutable.persistentSetOf
 
 interface HomeStoreComponent : StoreComponent {
 
@@ -13,13 +15,15 @@ interface HomeStoreComponent : StoreComponent {
         val query: String,
         val paging: PagingUiState<TodoUiModel>,
         val screen: ScreenState,
+        val selectedItems: ImmutableSet<String>
     ) : StoreComponent.State {
 
         companion object {
             val INIT = State(
                 query = "",
                 paging = PagingUiState.default(PagingConfig.DEFAULT),
-                screen = ScreenState.Shimmer
+                screen = ScreenState.Shimmer,
+                selectedItems = persistentSetOf()
             )
         }
     }
@@ -43,10 +47,13 @@ interface HomeStoreComponent : StoreComponent {
         data object LoadMore : Action
 
         @Stable
-        data class OnItemClicked(val id: Long) : Action
+        data class OnItemClicked(val id: String) : Action
 
         @Stable
-        data class OnDeleteItemClicked(val id: Long) : Action
+        data object OnDeleteItemsClicked : Action
+
+        @Stable
+        data class OnSelectItemClicked(val id: String) : Action
 
         @Stable
         data object OnCreateItemClicked : Action
@@ -62,6 +69,6 @@ interface HomeStoreComponent : StoreComponent {
     sealed interface Navigation : StoreComponent.Navigation {
 
         @Stable
-        data class NavigateToDetail(val id: Long) : Navigation
+        data class NavigateToDetail(val id: String) : Navigation
     }
 }
