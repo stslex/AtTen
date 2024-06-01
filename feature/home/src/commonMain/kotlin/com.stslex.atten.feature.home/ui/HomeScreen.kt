@@ -1,22 +1,36 @@
 package com.stslex.atten.feature.home.ui
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.material3.Button
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Create
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.stslex.atten.core.paging.model.PagingConfig
 import com.stslex.atten.core.paging.model.PagingUiState
 import com.stslex.atten.core.paging.ui.PagingColumn
+import com.stslex.atten.core.ui.components.CardWithAnimatedBorder
 import com.stslex.atten.core.ui.theme.AppDimension
 import com.stslex.atten.core.ui.theme.AppTheme
 import com.stslex.atten.feature.home.ui.components.HomeScreenItem
@@ -45,7 +59,11 @@ internal fun HomeScreen(
             .systemBarsPadding(),
     ) {
         PagingColumn(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(
+                    horizontal = AppDimension.Padding.medium,
+                ),
             pagingState = state.paging,
             onLoadNext = onLoadNext
         ) {
@@ -61,16 +79,25 @@ internal fun HomeScreen(
                         onItemLongClick = onItemLongCLick
                     )
                 }
-                Spacer(modifier = Modifier.height(AppDimension.Padding.small))
+                Spacer(modifier = Modifier.height(AppDimension.Padding.medium))
             }
         }
-        Text(
-            text = "Home Screen items: ${state.paging.items.size}",
-            modifier = Modifier.align(Alignment.TopStart).padding(AppDimension.Padding.medium),
-            style = MaterialTheme.typography.headlineSmall,
-            color = MaterialTheme.colorScheme.onSurface
+
+        val buttonShapeRadius by animateDpAsState(
+            targetValue = if (state.selectedItems.isNotEmpty()) {
+                AppDimension.Radius.largest
+            } else {
+                AppDimension.Radius.medium
+            }
         )
-        Button(
+
+        CardWithAnimatedBorder(
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(AppDimension.Padding.big)
+                .wrapContentSize()
+                .width(IntrinsicSize.Max)
+                .height(IntrinsicSize.Max),
             onClick = {
                 if (state.selectedItems.isNotEmpty()) {
                     onDeleteItemsClick()
@@ -78,13 +105,29 @@ internal fun HomeScreen(
                     onCreateItemClick()
                 }
             },
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(AppDimension.Padding.medium),
+            isAnimated = state.selectedItems.isNotEmpty(),
+            cornerRadius = buttonShapeRadius,
+            backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
+            disableBorderColor = MaterialTheme.colorScheme.onSecondaryContainer
         ) {
-            Text(
-                text = if (state.selectedItems.isNotEmpty()) "Delete" else "Create",
-            )
+            AnimatedContent(
+                modifier = Modifier.padding(AppDimension.Padding.big),
+                targetState = state.selectedItems.isNotEmpty(),
+                transitionSpec = {
+                    fadeIn().plus(scaleIn()) togetherWith
+                            fadeOut().plus(scaleOut())
+                }
+            ) { isDeleting ->
+                Icon(
+                    imageVector = if (isDeleting) {
+                        Icons.Filled.Delete
+                    } else {
+                        Icons.Filled.Create
+                    },
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSecondaryContainer
+                )
+            }
         }
     }
 }

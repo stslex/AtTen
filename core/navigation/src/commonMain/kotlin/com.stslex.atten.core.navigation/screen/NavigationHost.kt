@@ -2,14 +2,12 @@ package com.stslex.atten.core.navigation.screen
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import com.arkivanov.decompose.ExperimentalDecomposeApi
 import com.arkivanov.decompose.extensions.compose.stack.Children
 import com.arkivanov.decompose.extensions.compose.stack.animation.slide
 import com.arkivanov.decompose.extensions.compose.stack.animation.stackAnimation
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.stslex.atten.core.navigation.decompose.RootComponent
 
-@OptIn(ExperimentalDecomposeApi::class)
 @Composable
 fun NavigationHost(
     root: RootComponent,
@@ -19,8 +17,8 @@ fun NavigationHost(
     val childStack by root.childStack.subscribeAsState()
     Children(
         stack = childStack,
-        animation = stackAnimation(slide())
-//                predictiveBackAnimation(
+        animation = stackAnimation(slide()),
+//      predictiveBackAnimation(
 //            backHandler = root.backHandler,
 //            fallbackAnimation = stackAnimation(slide() + scale()),
 //            onBack = root::onBack,
