@@ -7,7 +7,7 @@ import androidx.compose.ui.Modifier
 import com.stslex.atten.core.navigation.decompose.RootComponent
 import com.stslex.atten.core.navigation.screen.Configuration
 import com.stslex.atten.core.navigation.screen.NavigationHost
-import com.stslex.atten.feature.details.DetailsInitScreen
+import com.stslex.atten.feature.details.navigation.DetailsInitScreen
 import com.stslex.atten.feature.home.navigation.HomeInitScreen
 
 @Composable

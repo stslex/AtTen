@@ -4,17 +4,20 @@ import com.stslex.atten.core.Logger
 import com.stslex.atten.core.coroutine.asyncMap
 import com.stslex.atten.core.database.db.ToDoDao
 import com.stslex.atten.core.paging.model.PagingResponse
+import com.stslex.atten.core.todo.data.global_state.ToDoGlobalState
 import com.stslex.atten.core.todo.data.model.CreateTodoDataModel
 import com.stslex.atten.core.todo.data.model.ToDoDataModel
+import com.stslex.atten.core.todo.data.model.toCreateEntity
 import com.stslex.atten.core.todo.data.model.toData
-import com.stslex.atten.core.todo.data.model.toEntity
+import com.stslex.atten.core.todo.data.model.toUpdatedEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 
 class ToDoRepositoryImpl(
-    private val dao: ToDoDao
+    private val dao: ToDoDao,
+    private val globalState: ToDoGlobalState
 ) : ToDoRepository {
 
     override suspend fun getToDo(id: String): ToDoDataModel? = withContext(Dispatchers.IO) {
@@ -43,16 +46,18 @@ class ToDoRepositoryImpl(
 
     override suspend fun updateItem(
         item: ToDoDataModel
-    ): ToDoDataModel? = withContext(Dispatchers.IO) {
+    ): ToDoDataModel = withContext(Dispatchers.IO) {
         val entity = dao.getItem(item.uuid) ?: throw IllegalArgumentException("Item not found")
-        dao.updateItem(item.toEntity(entity.number))
+        dao.insert(item.toUpdatedEntity(entity.number))
         dao.getItem(item.uuid)?.toData()
+            ?.also { globalState.onNoteUpdated(it) }
+            ?: throw IllegalArgumentException("Item not found")
     }
 
     override suspend fun createItem(
         item: CreateTodoDataModel
     ): ToDoDataModel? = withContext(Dispatchers.IO) {
-        val entity = item.toEntity(number = dao.getItemsCount())
+        val entity = item.toCreateEntity(number = dao.getItemsCount())
         val newId = dao.insert(entity)
         Logger.d("New item id: $newId")
         dao.getItem(entity.uuid)?.toData()

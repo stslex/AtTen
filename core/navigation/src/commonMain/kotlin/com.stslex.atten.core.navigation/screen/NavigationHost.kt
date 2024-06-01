@@ -20,11 +20,12 @@ fun NavigationHost(
     val childStack by root.childStack.subscribeAsState()
     Children(
         stack = childStack,
-        animation = predictiveBackAnimation(
-            backHandler = root.backHandler,
-            fallbackAnimation = stackAnimation(fade() + scale()),
-            onBack = root::onBack,
-        )
+        animation = stackAnimation(fade() + scale())
+//                predictiveBackAnimation(
+//            backHandler = root.backHandler,
+//            fallbackAnimation = stackAnimation(fade() + scale()),
+//            onBack = root::onBack,
+//        )
     ) { child ->
         screen(child.configuration)
     }

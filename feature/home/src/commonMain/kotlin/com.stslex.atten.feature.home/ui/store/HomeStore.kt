@@ -21,10 +21,11 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 
 class HomeStore(
     private val interactor: HomeScreenInteractor,
-    appDispatcher: AppDispatcher,
+    private val appDispatcher: AppDispatcher,
     router: HomeRouter,
     pagingFactory: PagerFactory,
 ) : Store<State, Event, Action, Navigation>(
@@ -117,6 +118,13 @@ class HomeStore(
                     pager.refresh(isForceLoad = false)
                 }
             }
+
+        interactor.lastUpdatedNote
+            .map { it.toUi() }
+            .distinctUntilChanged()
+            .launch { item ->
+                pager.itemUpdate(item)
+            }
     }
 
     private fun actionLoadMore() {
@@ -145,20 +153,22 @@ class HomeStore(
                 interactor
                     .createItem(
                         CreateTodoDomainModel(
-                            title = "New item",
-                            description = "New item description"
+                            title = "",
+                            description = ""
                         )
                     )
             },
             onSuccess = { item ->
-                // todo add success orientation
-                item?.toUi()?.let(pager::itemInserted)
+                item?.let {
+                    withContext(appDispatcher.main.immediate) {
+                        consumeNavigation(Navigation.NavigateToDetail(it.uuid))
+                    }
+                }
             },
             onError = {
                 showError(it)
             }
         )
-        // todo consumeNavigation(Navigation.NavigateToCreate)
     }
 
     private fun actionOnDeleteItemClicked() {

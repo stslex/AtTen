@@ -5,7 +5,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
-import androidx.room.Update
 import com.stslex.atten.core.database.model.ToDoEntity
 
 @Dao
@@ -28,9 +27,6 @@ interface ToDoDao {
 
     @Query("UPDATE ToDoEntity SET number = number - :number WHERE number > :number")
     suspend fun decrementSequenceNumbers(number: Int)
-
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun updateItem(item: ToDoEntity)
 
     @Query("SELECT * FROM ToDoEntity ORDER BY number DESC LIMIT 1")
     suspend fun getLastItem(): ToDoEntity?

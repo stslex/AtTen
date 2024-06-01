@@ -8,15 +8,16 @@ fun ToDoEntity.toData() = ToDoDataModel(
     description = description,
 )
 
-fun ToDoDataModel.toEntity(
+fun ToDoDataModel.toUpdatedEntity(
     number: Int
 ) = ToDoEntity(
+    uuid = uuid,
     number = number,
     title = title,
     description = description
 )
 
-fun CreateTodoDataModel.toEntity(
+fun CreateTodoDataModel.toCreateEntity(
     number: Int
 ) = ToDoEntity(
     number = number,
