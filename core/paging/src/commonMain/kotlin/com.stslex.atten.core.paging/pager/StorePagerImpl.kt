@@ -95,11 +95,11 @@ class StorePagerImpl<T : PagingUiItem, in R : PagingItem>(
         }
     }
 
-    override fun itemRemoved(uniqueKey: Any) {
-        Logger.d("itemRemoved: $uniqueKey")
+    override fun itemRemoved(uuid: Set<String>) {
+        Logger.d("itemsRemoved: $uuid")
         _state.update { currentState ->
             val newItems = currentState.result
-                .filter { it.uniqueKey != uniqueKey }
+                .filter { uuid.contains(it.uuid).not() }
                 .toImmutableList()
             val currentPage = if (newItems.size < currentState.page * currentState.pageSize) {
                 currentState.page.dec()
@@ -109,7 +109,18 @@ class StorePagerImpl<T : PagingUiItem, in R : PagingItem>(
             currentState.copy(
                 result = newItems,
                 page = currentPage,
-                hasMore = newItems.size < currentState.total
+            )
+        }
+    }
+
+    override fun itemUpdate(item: T) {
+        Logger.d("itemUpdate: $item")
+        _state.update { currentState ->
+            val newItems = currentState.result
+                .map { if (it.uuid == item.uuid) item else it }
+                .toImmutableList()
+            currentState.copy(
+                result = newItems
             )
         }
     }
@@ -138,23 +149,26 @@ class StorePagerImpl<T : PagingUiItem, in R : PagingItem>(
                     _loadState.value = PagerLoadState.Empty
                     return@launch
                 }
+
                 val newItems = if (state.value.page == DEFAULT_PAGE) {
                     newPagingState.result
                 } else {
                     val oldItems = state.value.result
                         .filter { item ->
-                            newPagingState.result.none { it.uniqueKey == item.uniqueKey }
+                            newPagingState.result.none { it.uuid == item.uuid }
                         }
                         .take(
                             newPagingState.pageSize * newPagingState.page
                         )
                     (oldItems + newPagingState.result).toImmutableList()
                 }
+
                 val resultPage = if (newItems.size < result.page * result.pageSize) {
                     result.page
                 } else {
                     result.page.inc()
                 }
+
                 _state.value = newPagingState.copy(
                     result = newItems,
                     page = resultPage

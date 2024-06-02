@@ -11,6 +11,6 @@ sealed interface Configuration {
 
     @Serializable
     data class DetailScreen(
-        @SerialName("id") val id: Long
+        @SerialName("id") val id: String
     ) : Configuration
 }

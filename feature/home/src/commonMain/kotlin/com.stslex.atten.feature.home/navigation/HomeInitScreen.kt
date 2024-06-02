@@ -35,19 +35,23 @@ fun HomeInitScreen() {
     HomeScreen(
         state = state,
         onItemClicked = { id ->
-            hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+            hapticFeedback.performHapticFeedback(HapticFeedbackType.TextHandleMove)
             store.dispatch(Action.OnItemClicked(id))
         },
         onLoadNext = {
             store.dispatch(Action.LoadMore)
         },
         onCreateItemClick = {
-            hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+            hapticFeedback.performHapticFeedback(HapticFeedbackType.TextHandleMove)
             store.dispatch(Action.OnCreateItemClicked)
         },
-        onDeleteItemClick = { id ->
+        onDeleteItemsClick = {
+            hapticFeedback.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+            store.dispatch(Action.OnDeleteItemsClicked)
+        },
+        onItemLongCLick = { id ->
             hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
-            store.dispatch(Action.OnDeleteItemClicked(id))
+            store.dispatch(Action.OnSelectItemClicked(id))
         }
     )
 }

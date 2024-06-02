@@ -4,5 +4,5 @@ import androidx.compose.runtime.Stable
 
 @Stable
 interface PagingUiItem : PagingItem {
-    override val uniqueKey: String
+    override val uuid: String
 }

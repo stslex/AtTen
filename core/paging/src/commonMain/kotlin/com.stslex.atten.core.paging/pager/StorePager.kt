@@ -21,7 +21,9 @@ interface StorePager<Item : PagingUiItem> {
 
     fun retry()
 
-    fun itemRemoved(uniqueKey: Any)
+    fun itemRemoved(uniqueKey: Set<String>)
 
     fun itemInserted(item: Item)
+
+    fun itemUpdate(item: Item)
 }

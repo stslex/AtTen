@@ -11,7 +11,7 @@ internal sealed class AppComponents(
     ) : AppComponents(context)
 
     data class DetailComponent(
-        val id: Long,
+        val id: String,
         private val context: ComponentContext,
     ) : AppComponents(context)
 }

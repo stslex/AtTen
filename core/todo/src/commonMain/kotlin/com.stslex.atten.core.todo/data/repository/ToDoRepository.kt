@@ -6,7 +6,7 @@ import com.stslex.atten.core.todo.data.model.ToDoDataModel
 
 interface ToDoRepository {
 
-    suspend fun getToDo(id: Long): ToDoDataModel?
+    suspend fun getToDo(id: String): ToDoDataModel?
 
     suspend fun getToDoList(
         page: Int,
@@ -15,7 +15,9 @@ interface ToDoRepository {
 
     suspend fun updateItem(item: ToDoDataModel): ToDoDataModel?
 
-    suspend fun deleteItem(id: Long)
+    suspend fun deleteItems(ids: Set<String>)
 
     suspend fun createItem(item: CreateTodoDataModel): ToDoDataModel?
+
+    suspend fun replace(numberFrom: Int, numberTo: Int)
 }
