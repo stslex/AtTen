@@ -63,6 +63,9 @@ interface HomeStoreComponent : StoreComponent {
 
         @Stable
         data object Retry : Action
+
+        @Stable
+        data object OnBackPressed : Action
     }
 
     @Stable
@@ -70,5 +73,8 @@ interface HomeStoreComponent : StoreComponent {
 
         @Stable
         data class NavigateToDetail(val id: String) : Navigation
+
+        @Stable
+        data object Back : Navigation
     }
 }

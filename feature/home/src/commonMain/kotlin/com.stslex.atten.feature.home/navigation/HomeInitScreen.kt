@@ -7,6 +7,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
+import com.stslex.atten.core.navigation.AppBackHandler
+import com.stslex.atten.core.navigation.decompose.AppComponents
 import com.stslex.atten.core.ui.mvi.getStore
 import com.stslex.atten.feature.home.ui.HomeScreen
 import com.stslex.atten.feature.home.ui.store.HomeStore
@@ -15,7 +17,9 @@ import com.stslex.atten.feature.home.ui.store.HomeStoreComponent.Event
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
-fun HomeInitScreen() {
+fun HomeInitScreen(
+    component: AppComponents.HomeComponent
+) {
     val store = getStore<HomeStore>()
     val state by remember { store.state }.collectAsState()
     val hapticFeedback = LocalHapticFeedback.current
@@ -31,6 +35,13 @@ fun HomeInitScreen() {
             }
         }
     }
+
+    component.AppBackHandler(
+        enabled = state.selectedItems.isNotEmpty(),
+        onBack = {
+            store.dispatch(Action.OnBackPressed)
+        }
+    )
 
     HomeScreen(
         state = state,

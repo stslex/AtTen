@@ -58,6 +58,19 @@ class HomeStore(
             is Action.OnCreateItemClicked -> actionOnCreateItemClicked()
             is Action.OnDeleteItemsClicked -> actionOnDeleteItemClicked()
             is Action.OnSelectItemClicked -> actionOnSelectItemClicked(action)
+            is Action.OnBackPressed -> actionOnBackPressed()
+        }
+    }
+
+    private fun actionOnBackPressed() {
+        if (state.value.selectedItems.isNotEmpty()) {
+            updateState { currentState ->
+                currentState.copy(
+                    selectedItems = persistentSetOf()
+                )
+            }
+        } else {
+            consumeNavigation(Navigation.Back)
         }
     }
 

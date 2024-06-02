@@ -4,19 +4,23 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.stslex.atten.core.ui.theme.AppDimension
+import com.stslex.atten.core.ui.theme.AppTheme
+import com.stslex.atten.feature.details.ui.components.DescriptionTextField
+import com.stslex.atten.feature.details.ui.components.TitleTextField
+import com.stslex.atten.feature.details.ui.model.ToDoDetailsUIModel
 import com.stslex.atten.feature.details.ui.store.DetailsStoreComponent.State
+import com.stslex.atten.feature.details.ui.store.ScreenState
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 internal fun DetailsScreen(
@@ -33,25 +37,41 @@ internal fun DetailsScreen(
             .systemBarsPadding()
             .padding(AppDimension.Padding.medium)
     ) {
-        TextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = state.item.title,
-            onValueChange = onTitleChange,
-            label = { Text("title") }
+        TitleTextField(
+            title = state.item.title,
+            onTitleChange = onTitleChange
         )
         Spacer(modifier = Modifier.height(AppDimension.Padding.medium))
-        TextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = state.item.description,
-            onValueChange = onDescriptionChange,
-            label = { Text("description") }
+        DescriptionTextField(
+            modifier = Modifier.weight(1f),
+            description = state.item.description,
+            onDescriptionChange = onDescriptionChange
         )
-
         Button(
             onClick = onSaveClicked,
             modifier = Modifier.align(Alignment.CenterHorizontally)
         ) {
             Text("Save")
         }
+    }
+}
+
+@Composable
+@Preview
+internal fun DetailsScreenPreview() {
+    AppTheme {
+        DetailsScreen(
+            state = State(
+                item = ToDoDetailsUIModel(
+                    uuid = "uuid",
+                    title = "Title",
+                    description = "Description"
+                ),
+                screen = ScreenState.Content
+            ),
+            onTitleChange = {},
+            onDescriptionChange = {},
+            onSaveClicked = {}
+        )
     }
 }

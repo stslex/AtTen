@@ -1,12 +1,14 @@
 package com.stslex.atten.core.navigation.decompose
 
-internal sealed interface Child {
+internal sealed class Child<T : AppComponents>(
+    open val component: T
+) {
 
     data class HomeScreen(
-        val component: AppComponents.HomeComponent
-    ) : Child
+        override val component: AppComponents.HomeComponent
+    ) : Child<AppComponents.HomeComponent>(component)
 
     data class DetailScreen(
-        val component: AppComponents.DetailComponent
-    ) : Child
+        override val component: AppComponents.DetailComponent
+    ) : Child<AppComponents.DetailComponent>(component)
 }

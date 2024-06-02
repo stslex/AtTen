@@ -127,7 +127,7 @@ class DetailsStore(
         updateState { currentState ->
             currentState.copy(
                 item = currentState.item.copy(
-                    title = action.title
+                    title = action.title.take(MAX_TITLE_LENGTH)
                 )
             )
         }
@@ -147,5 +147,9 @@ class DetailsStore(
                 )
             }
         }
+    }
+
+    companion object {
+        private const val MAX_TITLE_LENGTH = 50
     }
 }

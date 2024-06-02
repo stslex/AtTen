@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.convention.kmp.library.compose)
+    alias(libs.plugins.convention.android.library.compose)
 }
 
 kotlin {

@@ -3,6 +3,7 @@ package com.stslex.atten.core.navigation.decompose
 import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
+import com.arkivanov.decompose.router.stack.backStack
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.pop
 import com.stslex.atten.core.navigation.di.ModuleCoreNavigation
@@ -27,10 +28,10 @@ class RootComponent(
         navigation.pop()
     }
 
-    private fun createChild(
+    private fun  createChild(
         config: Configuration,
         context: ComponentContext,
-    ): Child = when (config) {
+    ): Child<*> = when (config) {
         Configuration.HomeScreen -> Child.HomeScreen(AppComponents.HomeComponent(context))
         is Configuration.DetailScreen -> Child.DetailScreen(
             AppComponents.DetailComponent(

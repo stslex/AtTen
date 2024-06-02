@@ -86,6 +86,10 @@ test = [
     "mockito",
     "junit"
 ]
+decompose = [
+    "decompose",
+    "decompose-compose"
+]
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
