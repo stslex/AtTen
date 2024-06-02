@@ -11,6 +11,7 @@ class HomeRouterImpl(
     override fun invoke(event: Navigation) {
         when (event) {
             is Navigation.NavigateToDetail -> navigator.navigateTo(Configuration.DetailScreen(event.id))
+            is Navigation.Back -> navigator.popBack()
         }
     }
 }

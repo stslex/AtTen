@@ -6,7 +6,6 @@ kotlin {
     sourceSets.commonMain.dependencies {
         implementation(project(":core:core"))
 
-        implementation(libs.decompose)
-        implementation(libs.decompose.compose)
+        implementation(libs.bundles.decompose)
     }
 }
