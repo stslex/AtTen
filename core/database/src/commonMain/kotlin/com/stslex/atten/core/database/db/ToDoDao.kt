@@ -16,7 +16,7 @@ interface ToDoDao {
     @Query("SELECT * FROM ToDoEntity WHERE uuid = :id")
     suspend fun getItem(id: String): ToDoEntity?
 
-    @Query("SELECT * FROM ToDoEntity ORDER BY number LIMIT :pageSize OFFSET :page")
+    @Query("SELECT * FROM ToDoEntity ORDER BY number LIMIT :pageSize OFFSET ((:page - 1)  * :pageSize)")
     suspend fun getItems(
         page: Int,
         pageSize: Int

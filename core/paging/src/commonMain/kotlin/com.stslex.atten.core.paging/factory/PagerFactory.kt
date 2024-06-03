@@ -1,19 +1,19 @@
 package com.stslex.atten.core.paging.factory
 
 import com.stslex.atten.core.coroutine.scope.AppCoroutineScope
-import com.stslex.atten.core.paging.model.PagingConfig
 import com.stslex.atten.core.paging.model.PagingItem
 import com.stslex.atten.core.paging.model.PagingResponse
-import com.stslex.atten.core.paging.model.PagingUiItem
-import com.stslex.atten.core.paging.pager.StorePager
-import com.stslex.atten.core.paging.ui.PagingMapper
+import com.stslex.atten.core.paging.holder.ItemHolder
+import com.stslex.atten.core.paging.model.PagingConfig
+import com.stslex.atten.core.paging.pager.Pager
 
 interface PagerFactory {
 
-    fun <T : PagingUiItem, R : PagingItem> create(
+    fun <T : PagingItem> create(
+        pagingConfig: PagingConfig = PagingConfig.DEFAULT,
         scope: AppCoroutineScope,
-        request: suspend (page: Int, pageSize: Int) -> PagingResponse<R>,
-        mapper: PagingMapper<R, T>,
-        config: PagingConfig
-    ): StorePager<T>
+        holder: ItemHolder<T>,
+        request: suspend (page: Int, pageSize: Int) -> PagingResponse<T>,
+    ): Pager<T>
 }
+

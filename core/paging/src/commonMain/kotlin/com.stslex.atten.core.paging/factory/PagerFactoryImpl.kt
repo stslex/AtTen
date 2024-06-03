@@ -1,31 +1,31 @@
 package com.stslex.atten.core.paging.factory
 
 import com.stslex.atten.core.coroutine.scope.AppCoroutineScope
-import com.stslex.atten.core.paging.model.PagingConfig
 import com.stslex.atten.core.paging.model.PagingItem
 import com.stslex.atten.core.paging.model.PagingResponse
-import com.stslex.atten.core.paging.model.PagingUiItem
-import com.stslex.atten.core.paging.pager.StorePager
-import com.stslex.atten.core.paging.pager.StorePagerImpl
-import com.stslex.atten.core.paging.ui.PagingMapper
+import com.stslex.atten.core.paging.holder.ItemHolder
+import com.stslex.atten.core.paging.model.PagingConfig
+import com.stslex.atten.core.paging.pager.Pager
+import com.stslex.atten.core.paging.pager.PagerImpl
 import com.stslex.atten.core.paging.worker.PagingWorkerImpl
 
 class PagerFactoryImpl : PagerFactory {
 
-    override fun <T : PagingUiItem, R : PagingItem> create(
+    override fun <T : PagingItem> create(
+        pagingConfig: PagingConfig,
         scope: AppCoroutineScope,
-        request: suspend (page: Int, pageSize: Int) -> PagingResponse<R>,
-        mapper: PagingMapper<R, T>,
-        config: PagingConfig
-    ): StorePager<T> = StorePagerImpl(
+        holder: ItemHolder<T>,
+        request: suspend (page: Int, pageSize: Int) -> PagingResponse<T>,
+    ): Pager<T> = PagerImpl(
+        pagingConfig = pagingConfig,
         pagingWorker = PagingWorkerImpl(
             scope = scope,
-            delay = config.delay,
-            defaultLoadSize = config.defaultLoadSize,
-            queryLoadSize = config.queryLoadSize
+            delay = pagingConfig.delay,
+            defaultLoadSize = pagingConfig.defaultLoadSize,
+            queryLoadSize = pagingConfig.queryLoadSize,
         ),
         request = request,
-        mapper = mapper,
-        pagingConfig = config
+        scope = scope,
+        holder = holder,
     )
 }

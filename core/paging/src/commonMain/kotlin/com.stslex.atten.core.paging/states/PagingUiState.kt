@@ -1,7 +1,10 @@
-package com.stslex.atten.core.paging.model
+package com.stslex.atten.core.paging.states
 
+import com.stslex.atten.core.paging.model.PagingUiItem
+import com.stslex.atten.core.paging.model.PagingConfig
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlin.math.roundToInt
 
 data class PagingUiState<out T : PagingUiItem>(
@@ -33,7 +36,7 @@ data class PagingUiState<out T : PagingUiItem>(
 fun <T : PagingUiItem> PagingState<T>.toUi(
     pagingConfig: PagingConfig
 ): PagingUiState<T> = PagingUiState(
-    items = result,
+    items = result.toImmutableList(),
     hasMore = hasMore,
     total = total,
     config = pagingConfig
