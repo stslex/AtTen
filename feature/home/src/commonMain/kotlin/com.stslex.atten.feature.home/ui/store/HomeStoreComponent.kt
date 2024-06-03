@@ -1,8 +1,8 @@
 package com.stslex.atten.feature.home.ui.store
 
 import androidx.compose.runtime.Stable
+import com.stslex.atten.core.paging.states.PagingUiState
 import com.stslex.atten.core.paging.model.PagingConfig
-import com.stslex.atten.core.paging.model.PagingUiState
 import com.stslex.atten.core.ui.mvi.StoreComponent
 import com.stslex.atten.feature.home.ui.model.TodoUiModel
 import kotlinx.collections.immutable.ImmutableSet

@@ -1,8 +1,5 @@
 package com.stslex.atten.core.paging.model
 
-import androidx.compose.runtime.Stable
-
-@Stable
 data class PagingConfig(
     val pageSize: Int,
     val pageOffset: Float = PagingCoreData.DEFAULT_PAGE_OFFSET,
