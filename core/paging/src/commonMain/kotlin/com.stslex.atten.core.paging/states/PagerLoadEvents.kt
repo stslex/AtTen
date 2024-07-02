@@ -5,4 +5,6 @@ sealed interface PagerLoadEvents {
     data class Error(
         val error: Throwable
     ) : PagerLoadEvents
+
+    data object TopInserted : PagerLoadEvents
 }

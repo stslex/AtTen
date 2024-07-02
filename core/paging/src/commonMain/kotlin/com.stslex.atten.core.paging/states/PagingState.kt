@@ -1,11 +1,11 @@
 package com.stslex.atten.core.paging.states
 
 import com.stslex.atten.core.coroutine.asyncMap
+import com.stslex.atten.core.paging.model.PagingConfig
 import com.stslex.atten.core.paging.model.PagingItem
 import com.stslex.atten.core.paging.model.PagingResponse
-import com.stslex.atten.core.paging.model.PagingConfig
 
-data class PagingState<T : PagingItem>(
+data class PagingState<out T : PagingItem>(
     val page: Int,
     val pageSize: Int,
     val total: Int,

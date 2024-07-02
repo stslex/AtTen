@@ -3,6 +3,7 @@ package com.stslex.atten.core.paging.pager
 import com.stslex.atten.core.Logger
 import com.stslex.atten.core.coroutine.scope.AppCoroutineScope
 import com.stslex.atten.core.paging.holder.ItemHolder
+import com.stslex.atten.core.paging.holder.ItemLoaderEvent
 import com.stslex.atten.core.paging.model.PagingConfig
 import com.stslex.atten.core.paging.model.PagingCoreData
 import com.stslex.atten.core.paging.model.PagingItem
@@ -11,10 +12,8 @@ import com.stslex.atten.core.paging.states.PagerAction
 import com.stslex.atten.core.paging.states.PagerLoadEvents
 import com.stslex.atten.core.paging.states.PagerLoadState
 import com.stslex.atten.core.paging.states.PagingState
-import com.stslex.atten.core.paging.states.pagingMap
 import com.stslex.atten.core.paging.worker.PagingRequestType
 import com.stslex.atten.core.paging.worker.PagingWorker
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,10 +24,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 class PagerImpl<T : PagingItem>(
-    private val pagingConfig: PagingConfig,
     private val pagingWorker: PagingWorker,
     private val request: suspend (page: Int, pageSize: Int) -> PagingResponse<T>,
     scope: AppCoroutineScope,
+    pagingConfig: PagingConfig,
     private val holder: ItemHolder<T>,
 ) : Pager<T> {
 
@@ -44,20 +43,14 @@ class PagerImpl<T : PagingItem>(
     private var loadJob: Job? = null
 
     init {
-        scope.launch(holder.items) { items ->
-            _state.update { currentState ->
-                val expectedSize = currentState.page * currentState.pageSize
-                val actualSize = items.size
-                val currentPage = when {
-                    expectedSize > actualSize -> currentState.page.dec()
-                    expectedSize < actualSize -> currentState.page.inc()
-                    else -> currentState.page
-                }
-                // todo need research for corner cases
-                currentState.copy(
-                    result = items.toImmutableList(),
-//                    page = currentPage,
-                )
+        scope.launch(holder.event) { event ->
+            Logger.d("holder event: $event", TAG)
+            when (event) {
+                is ItemLoaderEvent.Create -> onItemCreated(event)
+                is ItemLoaderEvent.Insert -> onItemInserted(event)
+                is ItemLoaderEvent.Remove -> onItemRemoved(event)
+                is ItemLoaderEvent.Update -> onItemUpdated(event)
+                is ItemLoaderEvent.Replace -> onItemsReplaced(event)
             }
         }
     }
@@ -131,35 +124,22 @@ class PagerImpl<T : PagingItem>(
                 )
             },
             onSuccess = { result ->
-                val newPagingState = result.pagingMap()
-                if (
-                    newPagingState.result.isEmpty() &&
-                    (state.value.page == PagingCoreData.DEFAULT_PAGE || state.value.result.isEmpty())
-                ) {
-                    holder.set(newPagingState.result)
-                    _state.value = newPagingState
-                    _loadState.value = PagerLoadState.Empty
-                    return@launch
+                _state.update { currentState ->
+                    currentState.copy(
+                        hasMore = result.hasMore,
+                        total = result.total,
+                        page = result.page,
+                        pageSize = result.pageSize,
+                    )
                 }
 
-                val newItems = if (state.value.page == PagingCoreData.DEFAULT_PAGE) {
-                    newPagingState.result
+                if (state.value.page == PagingCoreData.DEFAULT_PAGE) {
+                    holder.replace(result.result)
+                    _loadState.value = PagerLoadState.Data
                 } else {
-                    val oldItems = state.value.result
-                    (oldItems + newPagingState.result).toImmutableList()
+                    holder.insert(result.result)
                 }
 
-                val resultPage = if (newItems.size < result.page * result.pageSize) {
-                    result.page
-                } else {
-                    result.page.inc()
-                }
-
-                holder.set(newItems)
-
-                _state.value = newPagingState.copy(
-                    page = resultPage
-                )
                 _loadState.value = PagerLoadState.Data
             },
             onError = { error ->
@@ -174,6 +154,86 @@ class PagerImpl<T : PagingItem>(
                 }
             }
         )
+    }
+
+    private fun onItemInserted(event: ItemLoaderEvent.Insert<T>) {
+        _state.update { currentState ->
+            val resultPage = if (
+                holder.items.value.size < currentState.page * currentState.pageSize
+            ) {
+                currentState.page
+            } else {
+                currentState.page.inc()
+            }
+            currentState.copy(
+                result = currentState.result + event.items,
+                page = resultPage,
+                hasMore = currentState.hasMore && event.items.isNotEmpty(),
+            )
+        }
+    }
+
+    private fun onItemRemoved(event: ItemLoaderEvent.Remove<T>) {
+        _state.update { currentState ->
+            val resultPage = if (
+                holder.items.value.size < currentState.page * currentState.pageSize
+            ) {
+                currentState.page
+            } else {
+                currentState.page.inc()
+            }
+            currentState.copy(
+                page = resultPage,
+                result = currentState.result.filterNot { item ->
+                    event.uuid.contains(item.uuid)
+                },
+            )
+        }
+    }
+
+    private fun onItemUpdated(event: ItemLoaderEvent.Update<T>) {
+        _state.update {
+            it.copy(
+                result = it.result.map { item ->
+                    if (item.uuid == event.item.uuid) event.item else item
+                }
+            )
+        }
+    }
+
+    private fun onItemsReplaced(event: ItemLoaderEvent.Replace<T>) {
+        _state.update { currentState ->
+            val resultPage = if (
+                holder.items.value.size < currentState.page * currentState.pageSize
+            ) {
+                currentState.page
+            } else {
+                currentState.page.inc()
+            }
+            currentState.copy(
+                result = event.items,
+                page = resultPage,
+                hasMore = currentState.hasMore,
+            )
+        }
+    }
+
+    private fun onItemCreated(event: ItemLoaderEvent.Create<T>) {
+        _state.update { currentState ->
+            val resultPage = if (
+                holder.items.value.size < currentState.page * currentState.pageSize
+            ) {
+                currentState.page
+            } else {
+                currentState.page.inc()
+            }
+            currentState.copy(
+                result = listOf(event.item) + currentState.result,
+                page = resultPage,
+                hasMore = currentState.hasMore,
+            )
+        }
+        _loadEvents.tryEmit(PagerLoadEvents.TopInserted) // todo replace with optional for top insert
     }
 
     companion object {

@@ -45,4 +45,15 @@ interface ToDoDao {
             decrementSequenceNumbers(entity.number)
         }
     }
+
+    @Query("SELECT * FROM ToDoEntity ORDER BY number")
+    suspend fun getAll(): List<ToDoEntity>
+
+    @Transaction
+    suspend fun insertAndReorder(item: ToDoEntity) {
+        getAll().forEach {
+            insert(it.copy(number = it.number + 1))
+        }
+        insert(item.copy(number = 0))
+    }
 }

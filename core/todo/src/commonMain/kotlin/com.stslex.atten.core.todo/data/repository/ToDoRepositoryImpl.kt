@@ -5,12 +5,12 @@ import com.stslex.atten.core.coroutine.coroutineExceptionHandler
 import com.stslex.atten.core.coroutine.dispatcher.AppDispatcher
 import com.stslex.atten.core.coroutine.scope.AppCoroutineScopeImpl
 import com.stslex.atten.core.database.db.ToDoDao
-import com.stslex.atten.core.paging.model.PagingResponse
-import com.stslex.atten.core.paging.states.PagerLoadEvents
-import com.stslex.atten.core.paging.states.PagerLoadState
 import com.stslex.atten.core.paging.factory.PagerFactory
 import com.stslex.atten.core.paging.holder.ItemHolder
+import com.stslex.atten.core.paging.model.PagingResponse
 import com.stslex.atten.core.paging.states.PagerAction
+import com.stslex.atten.core.paging.states.PagerLoadEvents
+import com.stslex.atten.core.paging.states.PagerLoadState
 import com.stslex.atten.core.paging.states.PagingState
 import com.stslex.atten.core.todo.data.model.CreateTodoDataModel
 import com.stslex.atten.core.todo.data.model.ToDoDataModel
@@ -97,10 +97,10 @@ class ToDoRepositoryImpl(
         item: CreateTodoDataModel
     ): ToDoDataModel? = withContext(Dispatchers.IO) {
         val entity = item.toCreateEntity(number = dao.getItemsCount())
-        dao.insert(entity)
+        dao.insertAndReorder(entity)
         dao.getItem(entity.uuid)
             ?.toData()
-            ?.also { itemsHolder.insert(it) }
+            ?.also { itemsHolder.create(it) }
     }
 
     override suspend fun deleteItems(ids: Set<String>) = withContext(Dispatchers.IO) {
