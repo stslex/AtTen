@@ -8,8 +8,12 @@ fun ToDoDataModel.toDomain() = ToDoDetailsDomainModel(
     description = description,
 )
 
-fun ToDoDetailsDomainModel.toDataModel() = ToDoDataModel(
+fun ToDoDetailsDomainModel.toDataModel(
+    dataModel: ToDoDataModel
+) = ToDoDataModel(
     uuid = uuid,
     title = title,
     description = description,
+    createdAt = dataModel.createdAt,
+    updatedAt = dataModel.updatedAt,
 )

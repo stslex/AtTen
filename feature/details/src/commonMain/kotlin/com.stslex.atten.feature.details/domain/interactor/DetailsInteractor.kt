@@ -6,7 +6,7 @@ interface DetailsInteractor {
 
     suspend fun getItem(id: String): ToDoDetailsDomainModel?
 
-    suspend fun updateItem(item: ToDoDetailsDomainModel)
+    suspend fun updateItem(item: ToDoDetailsDomainModel): ToDoDetailsDomainModel?
 
     suspend fun removeItem(id: String)
 }

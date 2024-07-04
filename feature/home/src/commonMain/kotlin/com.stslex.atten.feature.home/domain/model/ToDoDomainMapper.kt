@@ -9,12 +9,6 @@ fun ToDoDataModel.toDomain() = ToDoDomainModel(
     description = description,
 )
 
-fun ToDoDomainModel.toData() = ToDoDataModel(
-    uuid = uuid,
-    title = title,
-    description = description,
-)
-
 fun CreateTodoDomainModel.toData() = CreateTodoDataModel(
     title = title,
     description = description,

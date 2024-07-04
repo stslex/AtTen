@@ -7,6 +7,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
+import app.cash.paging.compose.collectAsLazyPagingItems
 import com.stslex.atten.core.navigation.AppBackHandler
 import com.stslex.atten.core.navigation.decompose.AppComponents
 import com.stslex.atten.core.ui.mvi.getStore
@@ -43,14 +44,16 @@ fun HomeInitScreen(
         }
     )
 
+    val pagingItems = remember {
+        state.paging()
+    }.collectAsLazyPagingItems()
+
     HomeScreen(
         state = state,
+        pagingItems = pagingItems,
         onItemClicked = { id ->
             hapticFeedback.performHapticFeedback(HapticFeedbackType.TextHandleMove)
             store.dispatch(Action.OnItemClicked(id))
-        },
-        onLoadNext = {
-            store.dispatch(Action.LoadMore)
         },
         onCreateItemClick = {
             hapticFeedback.performHapticFeedback(HapticFeedbackType.TextHandleMove)
@@ -59,6 +62,7 @@ fun HomeInitScreen(
         onDeleteItemsClick = {
             hapticFeedback.performHapticFeedback(HapticFeedbackType.TextHandleMove)
             store.dispatch(Action.OnDeleteItemsClicked)
+            store.dispatch(Action.Refresh)
         },
         onItemLongCLick = { id ->
             hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)

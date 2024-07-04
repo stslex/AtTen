@@ -1,27 +1,29 @@
 package com.stslex.atten.feature.home.ui.store
 
 import androidx.compose.runtime.Stable
-import com.stslex.atten.core.paging.states.PagingUiState
-import com.stslex.atten.core.paging.model.PagingConfig
+import app.cash.paging.PagingData
 import com.stslex.atten.core.ui.mvi.StoreComponent
 import com.stslex.atten.feature.home.ui.model.TodoUiModel
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentSetOf
+import kotlinx.coroutines.flow.Flow
 
 interface HomeStoreComponent : StoreComponent {
 
     @Stable
     data class State(
-        val query: String,
-        val paging: PagingUiState<TodoUiModel>,
-        val screen: ScreenState,
-        val selectedItems: ImmutableSet<String>
+        val query: String = "",
+        val paging: () -> Flow<PagingData<TodoUiModel>>,
+        val screen: ScreenState = ScreenState.Shimmer,
+        val selectedItems: ImmutableSet<String> = persistentSetOf()
     ) : StoreComponent.State {
 
         companion object {
-            val INIT = State(
+            fun default(
+                paging: () -> Flow<PagingData<TodoUiModel>>
+            ) = State(
                 query = "",
-                paging = PagingUiState.default(PagingConfig.DEFAULT),
+                paging = paging,
                 screen = ScreenState.Shimmer,
                 selectedItems = persistentSetOf()
             )
@@ -42,9 +44,6 @@ interface HomeStoreComponent : StoreComponent {
 
         @Stable
         data object Init : Action
-
-        @Stable
-        data object LoadMore : Action
 
         @Stable
         data class OnItemClicked(val id: String) : Action

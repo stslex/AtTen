@@ -8,6 +8,7 @@ import androidx.sqlite.execSQL
 import com.stslex.atten.core.database.model.ToDoEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
+import kotlinx.datetime.Clock
 
 @Database(
     entities = [ToDoEntity::class],
@@ -33,17 +34,22 @@ fun getRoomDatabase(
         .addCallback(object : RoomDatabase.Callback() {
             override fun onCreate(connection: SQLiteConnection) {
                 // todo for tests
-                for (i in 1..100) {
-                    val entity = ToDoEntity(
-                        number = i,
-                        title = "Title $i",
-                        description = "Description $i",
+
+                val values = Array(100) { index ->
+                    val currentTime = Clock.System.now().toEpochMilliseconds()
+                    ToDoEntity(
+                        title = "Title $index",
+                        description = "Description $index",
+                        createdAt = currentTime + index,
+                        updatedAt = currentTime + index,
                     )
-                    connection.execSQL(
-                        "INSERT INTO ToDoEntity (uuid, number, title, description) " +
-                                "VALUES ('${entity.uuid}', ${entity.number}, '${entity.title}', '${entity.description}')"
-                    )
+                }.joinToString(", ") { entity ->
+                    "('${entity.uuid}', '${entity.title}', '${entity.description}', ${entity.createdAt}, ${entity.updatedAt})"
                 }
+                connection.execSQL(
+                    "INSERT INTO ToDoEntity (uuid, title, description, created_at, updated_at) " +
+                            "VALUES $values"
+                )
                 super.onCreate(connection)
             }
         })

@@ -1,9 +1,9 @@
 package com.stslex.atten.feature.home.domain.model
 
-import com.stslex.atten.core.paging.model.PagingItem
+import com.stslex.atten.core.paging.PagingItem
 
 data class ToDoDomainModel(
-    override val uuid: String,
+    val uuid: String,
     val title: String,
     val description: String,
 ) : PagingItem

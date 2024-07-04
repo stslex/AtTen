@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Transaction
 import com.stslex.atten.core.database.model.ToDoEntity
 
 @Dao
@@ -16,44 +15,12 @@ interface ToDoDao {
     @Query("SELECT * FROM ToDoEntity WHERE uuid = :id")
     suspend fun getItem(id: String): ToDoEntity?
 
-    @Query("SELECT * FROM ToDoEntity ORDER BY number LIMIT :pageSize OFFSET ((:page - 1)  * :pageSize)")
+    @Query("SELECT * FROM ToDoEntity ORDER BY updated_at DESC LIMIT :pageSize OFFSET ((:page - 1) * :pageSize)")
     suspend fun getItems(
         page: Int,
         pageSize: Int
     ): List<ToDoEntity>
 
-    @Query("SELECT COUNT(*) FROM ToDoEntity")
-    suspend fun getItemsCount(): Int
-
-    @Query("UPDATE ToDoEntity SET number = number - :number WHERE number > :number")
-    suspend fun decrementSequenceNumbers(number: Int)
-
-    @Query("SELECT * FROM ToDoEntity ORDER BY number DESC LIMIT 1")
-    suspend fun getLastItem(): ToDoEntity?
-
-    @Query("SELECT * FROM ToDoEntity WHERE uuid IN (:ids)")
-    suspend fun getEntitiesByIds(ids: List<String>): List<ToDoEntity>
-
     @Query("DELETE FROM ToDoEntity WHERE uuid IN (:ids)")
-    suspend fun deleteByIds(ids: List<String>)
-
-    @Transaction
-    suspend fun deleteAndReorder(ids: List<String>) {
-        val entitiesToDelete = getEntitiesByIds(ids)
-        deleteByIds(ids)
-        entitiesToDelete.forEach { entity ->
-            decrementSequenceNumbers(entity.number)
-        }
-    }
-
-    @Query("SELECT * FROM ToDoEntity ORDER BY number")
-    suspend fun getAll(): List<ToDoEntity>
-
-    @Transaction
-    suspend fun insertAndReorder(item: ToDoEntity) {
-        getAll().forEach {
-            insert(it.copy(number = it.number + 1))
-        }
-        insert(item.copy(number = 0))
-    }
+    suspend fun removeItems(ids: List<String>)
 }

@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Delete
@@ -25,11 +26,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.stslex.atten.core.paging.states.PagingUiState
-import com.stslex.atten.core.paging.model.PagingConfig
-import com.stslex.atten.core.paging.ui.PagingColumn
+import androidx.paging.PagingData
+import app.cash.paging.compose.LazyPagingItems
+import app.cash.paging.compose.collectAsLazyPagingItems
 import com.stslex.atten.core.ui.components.CardWithAnimatedBorder
 import com.stslex.atten.core.ui.theme.AppDimension
 import com.stslex.atten.core.ui.theme.AppTheme
@@ -38,16 +40,16 @@ import com.stslex.atten.feature.home.ui.model.TodoUiModel
 import com.stslex.atten.feature.home.ui.store.HomeStoreComponent.State
 import com.stslex.atten.feature.home.ui.store.ScreenState
 import kotlinx.collections.immutable.persistentSetOf
-import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.flow.MutableStateFlow
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun HomeScreen(
     state: State,
+    pagingItems: LazyPagingItems<TodoUiModel>,
     onItemLongCLick: (id: String) -> Unit,
     onItemClicked: (id: String) -> Unit,
-    onLoadNext: () -> Unit,
     onCreateItemClick: () -> Unit,
     onDeleteItemsClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -58,29 +60,31 @@ internal fun HomeScreen(
             .background(MaterialTheme.colorScheme.background)
             .systemBarsPadding(),
     ) {
-        PagingColumn(
-            modifier = Modifier
+        LazyColumn(
+            Modifier
                 .fillMaxSize()
                 .padding(
                     horizontal = AppDimension.Padding.medium,
-                ),
-            pagingState = state.paging,
-            onLoadNext = onLoadNext
+                )
         ) {
+
             items(
-                count = state.paging.items.size,
-                key = state.paging.key
-            ) { index ->
-                state.paging.items.getOrNull(index)?.let { item ->
-                    HomeScreenItem(
-                        modifier = Modifier.animateItemPlacement(),
-                        item = item,
-                        onItemClick = onItemClicked,
-                        onItemLongClick = onItemLongCLick
-                    )
+                count = pagingItems.itemCount,
+                itemContent = {
+                    pagingItems[it]?.let { item ->
+                        HomeScreenItem(
+                            modifier = Modifier.animateItemPlacement(),
+                            item = item.copy(
+                                isSelected = state.selectedItems.contains(item.uuid)
+                            ),
+                            onItemClick = onItemClicked,
+                            onItemLongClick = onItemLongCLick
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(AppDimension.Padding.medium))
                 }
-                Spacer(modifier = Modifier.height(AppDimension.Padding.medium))
-            }
+            )
+
         }
 
         val buttonShapeRadius by animateDpAsState(
@@ -137,26 +141,29 @@ internal fun HomeScreen(
 internal fun HomeScreenPreview() {
     AppTheme {
         AppTheme {
+            val pagingItems =
+                remember { MutableStateFlow(PagingData.empty<TodoUiModel>()) }.collectAsLazyPagingItems()
             HomeScreen(
                 state = State(
                     query = "",
-                    paging = PagingUiState(
-                        items = Array(10) {
-                            TodoUiModel(
-                                uuid = "UniqueKey $it",
-                                title = "Title $it",
-                                description = "Description $it",
-                                isSelected = false
+                    paging = {
+                        MutableStateFlow(
+                            PagingData.from(
+                                Array(10) {
+                                    TodoUiModel(
+                                        uuid = "uuid $it",
+                                        title = "Title $it",
+                                        description = "Description $it",
+                                        isSelected = false
+                                    )
+                                }.toList()
                             )
-                        }.toList().toImmutableList(),
-                        hasMore = true,
-                        total = 100,
-                        config = PagingConfig.DEFAULT
-                    ),
+                        )
+                    },
                     screen = ScreenState.Content.Data,
                     selectedItems = persistentSetOf()
                 ),
-                onLoadNext = {},
+                pagingItems = pagingItems,
                 onItemClicked = {},
                 onCreateItemClick = {},
                 onItemLongCLick = {},

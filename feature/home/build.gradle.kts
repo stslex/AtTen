@@ -12,6 +12,9 @@ kotlin {
         implementation(project(":core:paging"))
 
         implementation(libs.bundles.decompose)
+        implementation(libs.kotlinx.datetime)
+        implementation(libs.paging.common)
+        implementation(libs.paging.compose)
     }
 }
 

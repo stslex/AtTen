@@ -7,5 +7,8 @@ kotlin {
         implementation(project(":core:core"))
         implementation(project(":core:database"))
         implementation(project(":core:paging"))
+
+        implementation(libs.kotlinx.datetime)
+        implementation(libs.paging.common)
     }
 }

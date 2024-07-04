@@ -67,7 +67,7 @@ internal fun HomeScreenItemPreview() {
     AppTheme {
         HomeScreenItem(
             item = TodoUiModel(
-                uuid = "uniqueKey1",
+                uuid = "uuid",
                 title = "Title",
                 description = "Description",
                 isSelected = false

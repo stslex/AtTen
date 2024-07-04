@@ -10,13 +10,19 @@ class DetailsInteractorImpl(
 ) : DetailsInteractor {
 
     override suspend fun getItem(id: String): ToDoDetailsDomainModel? =
-        repository.getToDo(id)?.toDomain()
+        repository.getItem(id)?.toDomain()
 
-    override suspend fun updateItem(item: ToDoDetailsDomainModel) {
-        repository.updateItem(item.toDataModel())
-    }
+    override suspend fun updateItem(item: ToDoDetailsDomainModel): ToDoDetailsDomainModel =
+        repository
+            .getItem(item.uuid)
+            ?.let(item::toDataModel)
+            ?.let {
+                repository.updateItem(it)
+            }
+            ?.toDomain()
+            ?: throw IllegalStateException("Item not found")
 
     override suspend fun removeItem(id: String) {
-        repository.deleteItems(setOf(id))
+        repository.removeItems(setOf(id))
     }
 }
