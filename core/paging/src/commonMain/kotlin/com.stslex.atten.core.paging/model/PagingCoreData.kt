@@ -10,7 +10,7 @@ interface PagingCoreData<out T : PagingItem> {
     companion object {
 
         const val DEFAULT_PAGE_SIZE = 15
-        const val DEFAULT_PAGE = 0
+        const val DEFAULT_PAGE = 1
         const val DEFAULT_PAGE_OFFSET = 0.5f
         const val DEFAULT_PAGING_TYPE = "ItemPaging"
         const val DEFAULT_APPEND_TYPE = "AppendPaging"

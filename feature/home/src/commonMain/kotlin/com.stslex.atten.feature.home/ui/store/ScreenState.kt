@@ -1,7 +1,7 @@
 package com.stslex.atten.feature.home.ui.store
 
 import androidx.compose.runtime.Stable
-import com.stslex.atten.core.paging.pager.PagerLoadState
+import com.stslex.atten.core.paging.states.PagerLoadState
 
 sealed interface ScreenState {
 

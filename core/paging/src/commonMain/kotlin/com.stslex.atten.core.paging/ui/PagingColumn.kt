@@ -15,7 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.stslex.atten.core.paging.model.PagingUiItem
-import com.stslex.atten.core.paging.model.PagingUiState
+import com.stslex.atten.core.paging.states.PagingUiState
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterNotNull

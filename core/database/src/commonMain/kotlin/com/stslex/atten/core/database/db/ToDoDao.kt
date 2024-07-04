@@ -16,7 +16,7 @@ interface ToDoDao {
     @Query("SELECT * FROM ToDoEntity WHERE uuid = :id")
     suspend fun getItem(id: String): ToDoEntity?
 
-    @Query("SELECT * FROM ToDoEntity ORDER BY number LIMIT :pageSize OFFSET :page")
+    @Query("SELECT * FROM ToDoEntity ORDER BY number LIMIT :pageSize OFFSET ((:page - 1)  * :pageSize)")
     suspend fun getItems(
         page: Int,
         pageSize: Int
@@ -44,5 +44,16 @@ interface ToDoDao {
         entitiesToDelete.forEach { entity ->
             decrementSequenceNumbers(entity.number)
         }
+    }
+
+    @Query("SELECT * FROM ToDoEntity ORDER BY number")
+    suspend fun getAll(): List<ToDoEntity>
+
+    @Transaction
+    suspend fun insertAndReorder(item: ToDoEntity) {
+        getAll().forEach {
+            insert(it.copy(number = it.number + 1))
+        }
+        insert(item.copy(number = 0))
     }
 }

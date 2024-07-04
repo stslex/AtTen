@@ -11,7 +11,7 @@ data class ToDoEntity(
     @SerialName("uuid")
     val uuid: String = randomUuid,
     @SerialName("number")
-    val number: Int,
+    var number: Int,
     @SerialName("title")
     val title: String,
     @SerialName("description")
