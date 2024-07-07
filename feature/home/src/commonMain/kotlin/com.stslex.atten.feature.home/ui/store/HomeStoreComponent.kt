@@ -1,8 +1,8 @@
 package com.stslex.atten.feature.home.ui.store
 
 import androidx.compose.runtime.Stable
-import com.stslex.atten.core.paging.states.PagingUiState
 import com.stslex.atten.core.paging.model.PagingConfig
+import com.stslex.atten.core.paging.states.PagingUiState
 import com.stslex.atten.core.ui.mvi.StoreComponent
 import com.stslex.atten.feature.home.ui.model.TodoUiModel
 import kotlinx.collections.immutable.ImmutableSet
@@ -21,7 +21,12 @@ interface HomeStoreComponent : StoreComponent {
         companion object {
             val INIT = State(
                 query = "",
-                paging = PagingUiState.default(PagingConfig.DEFAULT),
+                paging = PagingUiState.default(
+                    PagingConfig(
+                        pageSize = 30,
+                        pageOffset = 1f
+                    )
+                ),
                 screen = ScreenState.Shimmer,
                 selectedItems = persistentSetOf()
             )

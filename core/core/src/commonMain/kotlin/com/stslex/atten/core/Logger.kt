@@ -13,6 +13,7 @@ object Logger {
         message: String? = null
     ) {
         if (isDebug.not()) return
+        // todo firebase crashlytics
         Log.e(
             tag = tag ?: DEFAULT_TAG,
             throwable = throwable,
@@ -25,6 +26,7 @@ object Logger {
         tag: String? = null,
     ) {
         if (isDebug.not()) return
+        // todo firebase analytics
         Log.d(
             tag = tag ?: DEFAULT_TAG,
             messageString = message

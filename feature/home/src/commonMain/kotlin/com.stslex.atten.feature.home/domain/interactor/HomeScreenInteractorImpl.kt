@@ -1,8 +1,8 @@
 package com.stslex.atten.feature.home.domain.interactor
 
+import com.stslex.atten.core.paging.states.PagerAction
 import com.stslex.atten.core.paging.states.PagerLoadEvents
 import com.stslex.atten.core.paging.states.PagerLoadState
-import com.stslex.atten.core.paging.states.PagerAction
 import com.stslex.atten.core.paging.states.PagingState
 import com.stslex.atten.core.paging.states.pagingMap
 import com.stslex.atten.core.todo.data.repository.ToDoRepository

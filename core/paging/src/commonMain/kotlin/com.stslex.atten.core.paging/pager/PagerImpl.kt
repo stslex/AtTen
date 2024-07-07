@@ -192,12 +192,10 @@ class PagerImpl<T : PagingItem>(
     }
 
     private fun onItemUpdated(event: ItemLoaderEvent.Update<T>) {
-        _state.update {
-            it.copy(
-                result = it.result.map { item ->
-                    if (item.uuid == event.item.uuid) event.item else item
-                }
-            )
+        _state.update { currentState ->
+            val newItems = listOf(event.item) +
+                    currentState.result.filterNot { it.uuid == event.item.uuid }
+            currentState.copy(result = newItems)
         }
     }
 

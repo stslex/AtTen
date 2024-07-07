@@ -1,19 +1,21 @@
 package com.stslex.atten.core.database.model
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.stslex.atten.core.common.randomUuid
-import kotlinx.serialization.SerialName
 
 @Entity
 data class ToDoEntity(
     @PrimaryKey(autoGenerate = false)
-    @SerialName("uuid")
+    @ColumnInfo("uuid")
     val uuid: String = randomUuid,
-    @SerialName("number")
-    var number: Int,
-    @SerialName("title")
+    @ColumnInfo("title")
     val title: String,
-    @SerialName("description")
+    @ColumnInfo("description")
     val description: String,
+    @ColumnInfo("created_at")
+    val createdAt: Long,
+    @ColumnInfo("updated_at")
+    val updatedAt: Long
 )

@@ -38,7 +38,11 @@ class DetailsStore(
     private fun actionOnSaveClicked() {
         launch(
             action = {
-                interactor.updateItem(state.value.item.toDomain())
+                state.value.let { currentState ->
+                    val item = currentState.item.toDomain(currentState.createdAt)
+                        ?: throw IllegalStateException("current created at is invalid")
+                    interactor.updateItem(item)
+                }
             },
             onSuccess = {
                 withContext(appDispatcher.main.immediate) {
@@ -59,7 +63,8 @@ class DetailsStore(
             onSuccess = { item ->
                 updateState { currentState ->
                     currentState.copy(
-                        item = item.toUi()
+                        item = item.toUi(),
+                        createdAt = item.createdAt
                     )
                 }
             },
@@ -72,13 +77,17 @@ class DetailsStore(
     private fun actionOnScreenLeft() {
         launch(
             action = {
-                if (
-                    state.value.item.title.isEmpty() &&
-                    state.value.item.description.isEmpty()
-                ) {
-                    interactor.removeItem(state.value.item.uuid)
-                } else {
-                    interactor.updateItem(state.value.item.toDomain())
+                state.value.let { currentState ->
+                    if (
+                        state.value.item.title.isEmpty() &&
+                        state.value.item.description.isEmpty()
+                    ) {
+                        interactor.removeItem(state.value.item.uuid)
+                    } else {
+                        val item = currentState.item.toDomain(currentState.createdAt)
+                            ?: throw IllegalStateException("current created at is invalid")
+                        interactor.updateItem(item)
+                    }
                 }
             },
             onSuccess = {

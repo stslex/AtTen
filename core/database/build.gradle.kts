@@ -7,6 +7,7 @@ kotlin {
     sourceSets.apply {
         commonMain.dependencies {
             implementation(project(":core:core"))
+            implementation(libs.kotlinx.datetime)
         }
     }
 }
