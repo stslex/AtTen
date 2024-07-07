@@ -1,7 +1,7 @@
 package com.stslex.atten.core.paging.model
 
 data class PagingConfig(
-    val pageSize: Int,
+    val pageSize: Int = PagingCoreData.DEFAULT_PAGE_SIZE,
     val pageOffset: Float = PagingCoreData.DEFAULT_PAGE_OFFSET,
     val delay: Long = PagingCoreData.DEFAULT_PAGING_DELAY,
     val defaultLoadSize: Int = PagingCoreData.DEFAULT_PAGING_LOAD_SIZE,

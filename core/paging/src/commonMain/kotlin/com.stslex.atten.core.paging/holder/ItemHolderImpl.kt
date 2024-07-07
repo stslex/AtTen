@@ -36,9 +36,10 @@ class ItemHolderImpl<T : PagingItem> : ItemHolder<T> {
         }
     }
 
-    override suspend fun update(item: T) {
+    override suspend fun updateAndReplace(item: T) {
+        val newItems = items.value.filterNot { it.uuid == item.uuid }
+        _items.value = listOf(item) + newItems
         _event.emit(ItemLoaderEvent.Update(item))
-        _items.value = _items.value.map { if (it.uuid == item.uuid) item else it }
     }
 
     override suspend fun replace(items: List<T>) {

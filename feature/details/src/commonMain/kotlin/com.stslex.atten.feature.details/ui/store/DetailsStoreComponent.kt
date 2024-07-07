@@ -3,13 +3,15 @@ package com.stslex.atten.feature.details.ui.store
 import androidx.compose.runtime.Stable
 import com.stslex.atten.core.ui.mvi.StoreComponent
 import com.stslex.atten.feature.details.ui.model.ToDoDetailsUIModel
+import kotlinx.datetime.LocalDateTime
 
 interface DetailsStoreComponent : StoreComponent {
 
     @Stable
     data class State(
         val item: ToDoDetailsUIModel,
-        val screen: ScreenState
+        val screen: ScreenState,
+        val createdAt: LocalDateTime?
     ) : StoreComponent.State {
 
         companion object {
@@ -19,7 +21,8 @@ interface DetailsStoreComponent : StoreComponent {
                     title = "",
                     description = "",
                 ),
-                screen = ScreenState.Shimmer
+                screen = ScreenState.Shimmer,
+                createdAt = null
             )
         }
     }

@@ -16,7 +16,7 @@ interface ItemHolder<T : PagingItem> {
 
     suspend fun remove(uuid: Set<Any>)
 
-    suspend fun update(item: T)
+    suspend fun updateAndReplace(item: T)
 
     suspend fun replace(items: List<T>)
 }

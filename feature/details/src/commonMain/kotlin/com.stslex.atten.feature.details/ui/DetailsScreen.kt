@@ -67,7 +67,8 @@ internal fun DetailsScreenPreview() {
                     title = "Title",
                     description = "Description"
                 ),
-                screen = ScreenState.Content
+                screen = ScreenState.Content,
+                createdAt = null
             ),
             onTitleChange = {},
             onDescriptionChange = {},

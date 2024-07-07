@@ -7,12 +7,16 @@ fun ToDoDataModel.toDomain() = ToDoDomainModel(
     uuid = uuid,
     title = title,
     description = description,
+    createdAt = createdAt,
+    updatedAt = updatedAt
 )
 
 fun ToDoDomainModel.toData() = ToDoDataModel(
     uuid = uuid,
     title = title,
     description = description,
+    createdAt = createdAt,
+    updatedAt = updatedAt
 )
 
 fun CreateTodoDomainModel.toData() = CreateTodoDataModel(

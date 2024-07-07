@@ -14,6 +14,7 @@ import com.stslex.atten.core.paging.states.PagerLoadState
 import com.stslex.atten.core.paging.states.PagingState
 import com.stslex.atten.core.todo.data.model.CreateTodoDataModel
 import com.stslex.atten.core.todo.data.model.ToDoDataModel
+import com.stslex.atten.core.todo.data.model.UpdateTodoDataModel
 import com.stslex.atten.core.todo.data.model.toCreateEntity
 import com.stslex.atten.core.todo.data.model.toData
 import com.stslex.atten.core.todo.data.model.toUpdatedEntity
@@ -40,9 +41,7 @@ class ToDoRepositoryImpl(
                 appDispatcher = appDispatcher
             ),
             holder = itemsHolder,
-            request = { page, pageSize ->
-                getToDoList(page, pageSize)
-            }
+            request = { page, pageSize -> getToDoList(page, pageSize) }
         )
     }
 
@@ -82,29 +81,27 @@ class ToDoRepositoryImpl(
     }
 
     override suspend fun updateItem(
-        item: ToDoDataModel
+        item: UpdateTodoDataModel
     ): ToDoDataModel = withContext(Dispatchers.IO) {
-        val entity = dao.getItem(item.uuid) ?: throw IllegalArgumentException("Item not found")
-        dao.insert(item.toUpdatedEntity(entity.number))
-        dao.getItem(item.uuid)?.toData()
-            ?.also {
-                itemsHolder.update(it)
-            }
+        dao.insert(item.toUpdatedEntity())
+        dao.getItem(item.uuid)
+            ?.toData()
+            ?.also { itemsHolder.updateAndReplace(it) }
             ?: throw IllegalArgumentException("Item not found")
     }
 
     override suspend fun createItem(
         item: CreateTodoDataModel
     ): ToDoDataModel? = withContext(Dispatchers.IO) {
-        val entity = item.toCreateEntity(number = dao.getItemsCount())
-        dao.insertAndReorder(entity)
+        val entity = item.toCreateEntity()
+        dao.insert(entity)
         dao.getItem(entity.uuid)
             ?.toData()
             ?.also { itemsHolder.create(it) }
     }
 
     override suspend fun deleteItems(ids: Set<String>) = withContext(Dispatchers.IO) {
-        dao.deleteAndReorder(ids.toList())
+        dao.deleteByIds(ids.toList())
         itemsHolder.remove(ids)
     }
 }
