@@ -1,16 +1,16 @@
-package com.stslex.atten.core.navigation.screen
+package com.stslex.atten.core.navigation
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-sealed interface Configuration {
+sealed interface Screen {
 
     @Serializable
-    data object HomeScreen : Configuration
+    data object Home : Screen
 
     @Serializable
     data class DetailScreen(
         @SerialName("id") val id: String
-    ) : Configuration
+    ) : Screen
 }

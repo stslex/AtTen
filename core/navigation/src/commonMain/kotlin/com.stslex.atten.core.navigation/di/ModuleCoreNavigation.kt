@@ -1,16 +1,17 @@
 package com.stslex.atten.core.navigation.di
 
-import com.arkivanov.decompose.router.stack.StackNavigation
-import com.stslex.atten.core.navigation.screen.Configuration
-import com.stslex.atten.core.navigation.navigator.AppNavigator
-import com.stslex.atten.core.navigation.navigator.AppNavigatorImpl
+import androidx.navigation.NavHostController
+import com.stslex.atten.core.di.AppModule
+import com.stslex.atten.core.navigation.navigator.Navigator
+import com.stslex.atten.core.navigation.navigator.NavigatorImpl
 import org.koin.core.annotation.Module
 import org.koin.dsl.module
+import org.koin.core.module.Module as KoinModule
 
 @Module
-class ModuleCoreNavigation {
+class ModuleCoreNavigation(navController: NavHostController) : AppModule {
 
-    fun create(navigation: StackNavigation<Configuration>) = module {
-        single<AppNavigator> { AppNavigatorImpl(navigation) }
+    override val module: KoinModule = module {
+        single<Navigator> { NavigatorImpl(navController) }
     }
 }

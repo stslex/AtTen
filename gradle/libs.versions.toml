@@ -26,11 +26,12 @@ junit = "4.13.2"
 mockito = "2.19.0"
 
 kermit = "2.0.3"
-lifecycle = "2.8.0"
+lifecycle = "2.8.2"
 immutableCollection = "0.3.5"
 serialization = "1.7.1"
-decompose = "3.0.0"
+navigation = "2.8.0-alpha10"
 datetime = "0.6.0"
+
 [libraries]
 android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -46,6 +47,7 @@ compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = 
 compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "android-compose" }
 compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "android-compose" }
 compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "compose-material3" }
+compose-navigation = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigation" }
 
 coroutine-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutine" }
 coroutine-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutine" }
@@ -75,9 +77,6 @@ sqlite = { module = "androidx.sqlite:sqlite", version.ref = "sqlite" }
 
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
 
-decompose = { group = "com.arkivanov.decompose", name = "decompose", version.ref = "decompose" }
-decompose-compose = { group = "com.arkivanov.decompose", name = "extensions-compose", version.ref = "decompose" }
-
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "datetime" }
 [bundles]
 test = [
@@ -88,10 +87,7 @@ test = [
     "mockito",
     "junit"
 ]
-decompose = [
-    "decompose",
-    "decompose-compose"
-]
+
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
