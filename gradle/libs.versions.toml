@@ -1,6 +1,6 @@
 [versions]
-agp = "8.3.2"
-kotlin = "2.0.10"
+agp = "8.5.0"
+kotlin = "2.0.20"
 compose-plugin = "1.6.10"
 compose-compiler = "1.5.12"
 androidx-activityCompose = "1.9.2"
@@ -15,7 +15,7 @@ versionName = "1.0"
 versionCode = "1"
 
 coroutine = "1.8.1"
-ksp = "2.0.10-1.0.24" # https://github.com/google/ksp/releases
+ksp = "2.0.20-1.0.25" # https://github.com/google/ksp/releases
 room = "2.7.0-alpha07"
 sqlite = "2.5.0-alpha07"
 koin = "3.5.6"

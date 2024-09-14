@@ -6,5 +6,5 @@ import com.stslex.atten.core.database.db.getRoomDatabase
 import org.koin.core.scope.Scope
 
 internal actual fun Scope.getDatabase(): AppDatabase = getRoomDatabase(
-    builder = getDatabaseBuilder()
+    getDatabaseBuilder()
 )
