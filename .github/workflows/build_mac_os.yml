@@ -9,7 +9,8 @@ on:
 jobs:
   build:
 
-    runs-on: macos-14-arm64
+    runs-on: macos-latest
+    timeout-minutes: 180
 
     steps:
 
