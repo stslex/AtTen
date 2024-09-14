@@ -19,5 +19,6 @@ internal fun Project.configureKotlinCocoapods(
     framework {
         baseName = moduleName
         isStatic = true //static or dynamic according to your project
+        binaryOptions["bundleId"] = moduleName
     }
 }

@@ -13,11 +13,11 @@ play_config.*
 keystore.*
 Gemfile.lock
 
-**/*.xcodeproj/*
-**/*.xcworkspace/*
-!**/*.xcodeproj/project.pbxproj
-!**/*.xcworkspace/contents.xcworkspacedata
 **/*.podspec
 
-/iosApp/Podfile.lock
-/iosApp/Pods
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+!*.xcodeproj/project.xcworkspace/
+!*.xcworkspace/contents.xcworkspacedata
+**/xcshareddata/WorkspaceSettings.xcsettings
