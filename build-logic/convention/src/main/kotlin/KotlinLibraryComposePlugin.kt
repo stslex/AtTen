@@ -1,6 +1,7 @@
 import AppExt.findPluginId
 import AppExt.libs
 import com.android.build.api.dsl.LibraryExtension
+import com.stslex.atten.convention.configureKotlin
 import com.stslex.atten.convention.configureKotlinAndroidCompose
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -14,6 +15,9 @@ class KotlinLibraryComposePlugin : Plugin<Project> {
             apply(libs.findPluginId("composeCompiler"))
             apply(libs.findPluginId("ksp"))
         }
-        extensions.configure<LibraryExtension>(::configureKotlinAndroidCompose)
+        extensions.configure<LibraryExtension> {
+            configureKotlin()
+            configureKotlinAndroidCompose(this)
+        }
     }
 }

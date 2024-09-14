@@ -4,8 +4,10 @@ import AppExt.findVersionInt
 import AppExt.findVersionString
 import AppExt.libs
 import com.android.build.api.dsl.ApplicationExtension
+import com.android.build.api.dsl.CommonExtension
 import com.google.devtools.ksp.gradle.KspExtension
 import com.stslex.atten.convention.configureKMPCompose
+import com.stslex.atten.convention.configureKotlin
 import com.stslex.atten.convention.configureKotlinAndroid
 import com.stslex.atten.convention.configureKotlinAndroidCompose
 import com.stslex.atten.convention.configureKotlinMultiplatform
@@ -37,7 +39,9 @@ class KMPApplicationConventionPlugin : Plugin<Project> {
                 compose = extensions.getByType<ComposeExtension>().dependencies
             )
         }
+
         extensions.configure<ApplicationExtension> {
+            configureKotlin()
             configureKotlinAndroid(
                 extension = this,
                 isApp = true
