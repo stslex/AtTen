@@ -11,7 +11,6 @@ kotlin {
         implementation(project(":core:navigation"))
         implementation(project(":core:paging"))
 
-        implementation(libs.bundles.decompose)
         implementation(libs.kotlinx.datetime)
     }
 }

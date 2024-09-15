@@ -15,9 +15,6 @@ kotlin {
 
                 implementation(project(":feature:home"))
                 implementation(project(":feature:details"))
-
-                implementation(libs.decompose.compose)
-                implementation(libs.decompose)
             }
         }
     }

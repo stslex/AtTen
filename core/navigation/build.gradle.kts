@@ -6,6 +6,6 @@ kotlin {
     sourceSets.commonMain.dependencies {
         implementation(project(":core:core"))
 
-        implementation(libs.bundles.decompose)
+        api(libs.compose.navigation)
     }
 }

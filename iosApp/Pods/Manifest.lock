@@ -1,0 +1,16 @@
+PODS:
+  - commonApp (1.0)
+
+DEPENDENCIES:
+  - commonApp (from `../commonApp`)
+
+EXTERNAL SOURCES:
+  commonApp:
+    :path: "../commonApp"
+
+SPEC CHECKSUMS:
+  commonApp: afad773cab43251ce14a9e6d5a8c093d660ff158
+
+PODFILE CHECKSUM: 5e5644ffb905eafaba6959582c3434bd5c2d1f31
+
+COCOAPODS: 1.15.2

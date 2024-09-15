@@ -2,6 +2,7 @@ import AppExt.findPluginId
 import AppExt.libs
 import com.android.build.api.dsl.LibraryExtension
 import com.stslex.atten.convention.configureKMPCompose
+import com.stslex.atten.convention.configureKotlin
 import com.stslex.atten.convention.configureKotlinAndroid
 import com.stslex.atten.convention.configureKotlinMultiplatform
 import org.gradle.api.Plugin
@@ -34,10 +35,10 @@ class KMPLibraryComposeConventionPlugin : Plugin<Project> {
                 kspExtension = extensions.getByType()
             )
         }
+
         extensions.configure<LibraryExtension> {
-            configureKotlinAndroid(
-                extension = this,
-            )
+            configureKotlin()
+            configureKotlinAndroid(this)
         }
     }
 }
