@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import com.stslex.atten.core.ui.navigation.Screen
+import com.stslex.atten.core.ui.navigation.Component
 import com.stslex.atten.feature.details.navigation.detailsGraph
 import com.stslex.atten.feature.home.navigation.homeGraph
 
@@ -20,7 +20,7 @@ internal fun InitialApp(
     ) {
         NavHost(
             navController = navHostController,
-            startDestination = Screen.Home
+            startDestination = Component.Home
         ) {
             homeGraph()
             detailsGraph()

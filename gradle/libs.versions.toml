@@ -30,6 +30,11 @@ serialization = "1.7.1"
 navigation = "2.9.0-beta03"
 datetime = "0.6.0"
 
+# decompose dependencies
+decompose = "3.3.0"
+essenty = "2.5.0"
+parcelize = "0.2.4"
+
 [libraries]
 android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -45,6 +50,8 @@ compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = 
 compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "android-compose" }
 compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "android-compose" }
 compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "compose-material3" }
+
+# todo check maybe we can replace decompose with compose-navigation
 compose-navigation = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigation" }
 
 coroutine-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutine" }
@@ -53,9 +60,11 @@ coroutine-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutine
 koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
 koin-android-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
-koin-ksp-compiler = { group = "io.insert-koin", name = "koin-ksp-compiler", version.ref = "koin-ksp" }
-koin-annotations = { group = "io.insert-koin", name = "koin-annotations", version.ref = "koin-ksp" }
 koin-compose = { group = "io.insert-koin", name = "koin-compose", version.ref = "koin" }
+koin-compose-viewmodel = { group = "io.insert-koin", name = "koin-compose-viewmodel", version.ref = "koin" }
+
+koin-ksp-compiler = { group = "io.insert-koin", name = "koin-ksp-compiler", version.ref = "koin-ksp" }
+koin-ksp-annotations = { group = "io.insert-koin", name = "koin-annotations", version.ref = "koin-ksp" }
 
 koin-test = { group = "io.insert-koin", name = "koin-test" }
 koin-test-junit = { group = "io.insert-koin", name = "koin-test-junit4" }
@@ -76,6 +85,13 @@ sqlite = { module = "androidx.sqlite:sqlite", version.ref = "sqlite" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
 
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "datetime" }
+
+decompose = { module = "com.arkivanov.decompose:decompose", version.ref = "decompose" }
+decompose-extensions = { module = "com.arkivanov.decompose:extensions-compose", version.ref = "decompose" }
+essenty-lifecycle = { module = "com.arkivanov.essenty:lifecycle", version.ref = "essenty" }
+essenty-stateKeeper = { module = "com.arkivanov.essenty:state-keeper", version.ref = "essenty" }
+essenty-backHandler = { module = "com.arkivanov.essenty:back-handler", version.ref = "essenty" }
+parcelize-darwin = { module = "com.arkivanov.parcelize.darwin:runtime", version.ref = "parcelize" }
 [bundles]
 test = [
     "kotlin-test",
@@ -95,11 +111,13 @@ kotlinCocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = 
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 
-convention-kmp-library = { id = "convention.kmp.library", version = "1.0" }
-convention-kmp-library-compose = { id = "convention.kmp.library.compose", version = "1.0" }
-convention-kmp-application = { id = "convention.kmp.application", version = "1.0" }
-convention-android-library-compose = { id = "convention.android.library.compose", version = "1.0" }
-convention-kmp-library-room = { id = "convention.kmp.library.room", version = "1.0" }
+convention-kmp-library = { id = "convention.kmp.library" }
+convention-kmp-library-compose = { id = "convention.kmp.library.compose" }
+convention-kmp-application = { id = "convention.kmp.application" }
+convention-android-library-compose = { id = "convention.android.library.compose" }
+convention-kmp-room = { id = "convention.kmp.room" }
+convention-kmp-navigation = { id = "convention.kmp.navigation" }
+convention-kmp-feature = { id = "convention.kmp.feature" }
 
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 room = { id = "androidx.room", version.ref = "room" }

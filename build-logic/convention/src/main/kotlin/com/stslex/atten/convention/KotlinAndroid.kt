@@ -43,7 +43,7 @@ internal fun Project.configureKotlinAndroid(
 
     dependencies {
         "implementation"(libs.findLibrary("koin-core").get())
-        "implementation"(libs.findLibrary("koin-annotations").get())
+        "implementation"(libs.findLibrary("koin-ksp-annotations").get())
         "implementation"(libs.findLibrary("koin-android").get())
         "implementation"(libs.findLibrary("coroutine-core").get())
         "implementation"(libs.findLibrary("coroutine-android").get())

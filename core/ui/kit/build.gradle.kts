@@ -7,6 +7,7 @@ kotlin {
     sourceSets.apply {
         commonMain.dependencies {
             implementation(project(":core:core"))
+            implementation(project(":core:core"))
             implementation(compose.material)
         }
         androidMain.dependencies {

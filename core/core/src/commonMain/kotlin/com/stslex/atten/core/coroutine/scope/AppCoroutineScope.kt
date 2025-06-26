@@ -1,12 +1,34 @@
 package com.stslex.atten.core.coroutine.scope
 
 import com.stslex.atten.core.coroutine.dispatcher.AppDispatcher
+import com.stslex.atten.core.logger.Log
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-interface AppCoroutineScope {
+class AppCoroutineScope(
+    private val scope: CoroutineScope,
+    private val appDispatcher: AppDispatcher,
+) {
+
+    private fun exceptionHandler(
+        eachDispatcher: CoroutineDispatcher,
+        onError: suspend (cause: Throwable) -> Unit = {},
+    ) = CoroutineExceptionHandler { _, throwable ->
+        Log.e(throwable)
+        scope.launch(eachDispatcher) {
+            onError(throwable)
+        }
+    }
 
     /**
      * Launches a coroutine and catches exceptions. The coroutine is launched on the default dispatcher of the AppDispatcher.
@@ -21,8 +43,27 @@ interface AppCoroutineScope {
         start: CoroutineStart = CoroutineStart.DEFAULT,
         onError: suspend (Throwable) -> Unit = {},
         onSuccess: suspend CoroutineScope.(T) -> Unit = {},
+        workDispatcher: CoroutineDispatcher = appDispatcher.default,
+        eachDispatcher: CoroutineDispatcher = appDispatcher.immediate,
+        exceptionHandler: CoroutineExceptionHandler = exceptionHandler(eachDispatcher, onError),
         action: suspend CoroutineScope.() -> T,
-    ): Job
+    ): Job = scope.launch(
+        start = start,
+        context = workDispatcher + exceptionHandler,
+        block = {
+            runCatching { action() }
+                .onSuccess {
+                    withContext(eachDispatcher) {
+                        onSuccess(it)
+                    }
+                }
+                .onFailure {
+                    withContext(eachDispatcher) {
+                        onError(it)
+                    }
+                }
+        }
+    )
 
     /**
      * Launches a flow and collects it in the screenModelScope. The flow is collected on the default dispatcher. of the AppDispatcher.
@@ -35,8 +76,17 @@ interface AppCoroutineScope {
      * */
     fun <T> launch(
         flow: Flow<T>,
+        workDispatcher: CoroutineDispatcher = appDispatcher.default,
+        eachDispatcher: CoroutineDispatcher = appDispatcher.immediate,
         onError: suspend (cause: Throwable) -> Unit = {},
-        each: suspend (T) -> Unit
-    ): Job
+        each: suspend (T) -> Unit,
+    ): Job = flow
+        .catch { onError(it) }
+        .onEach {
+            withContext(eachDispatcher) {
+                each(it)
+            }
+        }
+        .flowOn(workDispatcher)
+        .launchIn(scope)
 }
-

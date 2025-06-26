@@ -3,7 +3,7 @@ package com.stslex.atten.core.todo.data.repository
 import com.stslex.atten.core.coroutine.asyncMap
 import com.stslex.atten.core.coroutine.coroutineExceptionHandler
 import com.stslex.atten.core.coroutine.dispatcher.AppDispatcher
-import com.stslex.atten.core.coroutine.scope.AppCoroutineScopeImpl
+import com.stslex.atten.core.coroutine.scope.AppCoroutineScope
 import com.stslex.atten.core.database.db.ToDoDao
 import com.stslex.atten.core.paging.factory.PagerFactory
 import com.stslex.atten.core.paging.holder.ItemHolder
@@ -36,7 +36,7 @@ class ToDoRepositoryImpl(
 
     private val pager by lazy {
         pagerFactory.create(
-            scope = AppCoroutineScopeImpl(
+            scope = AppCoroutineScope(
                 scope = CoroutineScope(appDispatcher.io + SupervisorJob() + coroutineExceptionHandler),
                 appDispatcher = appDispatcher
             ),

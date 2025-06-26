@@ -1,13 +1,13 @@
 package com.stslex.atten.core.coroutine
 
-import com.stslex.atten.core.Logger
+import com.stslex.atten.core.logger.Log
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 
 val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
-    Logger.e(throwable)
+    Log.e(throwable)
 }
 
 suspend fun <T, R> List<T>.asyncMap(

@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.convention.kmp.application)
+    alias(libs.plugins.convention.kmp.navigation)
 }
 
 kotlin {

@@ -7,4 +7,5 @@ interface AppDispatcher {
     val default: CoroutineDispatcher
     val io: CoroutineDispatcher
     val main: MainCoroutineDispatcher
+    val immediate: MainCoroutineDispatcher
 }

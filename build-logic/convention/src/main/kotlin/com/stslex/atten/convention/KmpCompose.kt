@@ -21,6 +21,7 @@ fun Project.configureKMPCompose() = extensions.configure<KotlinMultiplatformExte
 
             implementation(libs.findLibrary("kotlinx-collections-immutable").get())
             implementation(libs.findLibrary("koin-compose").get())
+            implementation(libs.findLibrary("koin-compose-viewmodel").get())
             implementation(libs.findLibrary("lifecycle-viewmodel").get())
         }
     }

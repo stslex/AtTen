@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
+        android:name=".AtTenApp"
         android:allowBackup="false"
         android:allowClearUserData="true"
         android:enableOnBackInvokedCallback="true"

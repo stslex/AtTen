@@ -1,7 +1,7 @@
 package com.stslex.atten.core.paging.pager
 
-import com.stslex.atten.core.Logger
 import com.stslex.atten.core.coroutine.scope.AppCoroutineScope
+import com.stslex.atten.core.logger.Log
 import com.stslex.atten.core.paging.holder.ItemHolder
 import com.stslex.atten.core.paging.holder.ItemLoaderEvent
 import com.stslex.atten.core.paging.model.PagingConfig
@@ -44,7 +44,7 @@ class PagerImpl<T : PagingItem>(
 
     init {
         scope.launch(holder.event) { event ->
-            Logger.d("holder event: $event", TAG)
+            Log.d("holder event: $event", TAG)
             when (event) {
                 is ItemLoaderEvent.Create -> onItemCreated(event)
                 is ItemLoaderEvent.Insert -> onItemInserted(event)
@@ -56,7 +56,7 @@ class PagerImpl<T : PagingItem>(
     }
 
     override fun process(action: PagerAction) {
-        Logger.d("process action: $action", TAG)
+        Log.d("process action: $action", TAG)
         when (action) {
             is PagerAction.Initial -> processInitial()
             is PagerAction.Load -> processLoad(action.isForce)

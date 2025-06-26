@@ -2,10 +2,9 @@ package com.stslex.atten.core.ui.kit.mvi
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.stslex.atten.core.Logger
 import com.stslex.atten.core.coroutine.dispatcher.AppDispatcher
 import com.stslex.atten.core.coroutine.scope.AppCoroutineScope
-import com.stslex.atten.core.coroutine.scope.AppCoroutineScopeImpl
+import com.stslex.atten.core.logger.Log
 import com.stslex.atten.core.ui.kit.mvi.StoreComponent.Action
 import com.stslex.atten.core.ui.kit.mvi.StoreComponent.Event
 import com.stslex.atten.core.ui.kit.mvi.StoreComponent.Navigation
@@ -35,7 +34,7 @@ abstract class Store<S : State, E : Event, A : Action, N : Navigation>(
     private val _state: MutableStateFlow<S> = MutableStateFlow(initialState)
     override val state: StateFlow<S> = _state.asStateFlow()
 
-    protected val scope: AppCoroutineScope = AppCoroutineScopeImpl(
+    protected val scope: AppCoroutineScope = AppCoroutineScope(
         scope = viewModelScope,
         appDispatcher = appDispatcher
     )
@@ -48,7 +47,7 @@ abstract class Store<S : State, E : Event, A : Action, N : Navigation>(
         if (lastAction != action && action !is Action.RepeatLastAction) {
             _lastAction = action
         }
-        Logger.d("$screenName dispatchAction: $action", TAG)
+        Log.d("$screenName dispatchAction: $action", TAG)
         process(action)
     }
 
@@ -69,7 +68,7 @@ abstract class Store<S : State, E : Event, A : Action, N : Navigation>(
      * @see AppDispatcher
      * */
     protected fun sendEvent(event: E) {
-        Logger.d("$screenName sendEvent: $event", TAG)
+        Log.d("$screenName sendEvent: $event", TAG)
         scope.launch {
             this@Store._event.emit(event)
         }
@@ -81,7 +80,7 @@ abstract class Store<S : State, E : Event, A : Action, N : Navigation>(
      * @see Router
      * */
     protected fun consumeNavigation(event: N) {
-        Logger.d("$screenName consumeNavigation: $event", TAG)
+        Log.d("$screenName consumeNavigation: $event", TAG)
         router(event)
     }
 

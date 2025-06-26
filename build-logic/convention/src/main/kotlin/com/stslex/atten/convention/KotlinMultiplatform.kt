@@ -20,19 +20,20 @@ internal fun Project.configureKotlinMultiplatform(
 
     applyDefaultHierarchyTemplate()
 
+    dependencies {
+        add("kspCommonMainMetadata", libs.findLibrary("koin-ksp-compiler").get())
+    }
+
     //common dependencies
     sourceSets.apply {
-        dependencies {
-            val koinCompiler = libs.findLibrary("koin-ksp-compiler").get()
-            add("kspAndroid", koinCompiler)
-            add("kspIosSimulatorArm64", koinCompiler)
-            add("kspIosX64", koinCompiler)
-            add("kspIosArm64", koinCompiler)
-        }
         commonMain {
+            kotlin.srcDirs(
+                "build/generated/ksp/metadata/commonMain/kotlin",
+                "build/generated/ksp/commonMain/kotlin"
+            )
             dependencies {
                 implementation(libs.findLibrary("koin-core").get())
-                implementation(libs.findLibrary("koin-annotations").get())
+                implementation(libs.findLibrary("koin-ksp-annotations").get())
                 implementation(libs.findLibrary("coroutine-core").get())
                 implementation(libs.findLibrary("kotlinx-serialization-json").get())
             }

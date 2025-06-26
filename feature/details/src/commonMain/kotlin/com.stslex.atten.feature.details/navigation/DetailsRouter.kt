@@ -1,14 +1,14 @@
 package com.stslex.atten.feature.details.navigation
 
-import com.stslex.atten.core.ui.navigation.Navigator
 import com.stslex.atten.core.ui.kit.mvi.Router
+import com.stslex.atten.feature.details.ui.mvi.DetailsComponent
 import com.stslex.atten.feature.details.ui.store.DetailsStoreComponent.Navigation
 
 interface DetailsRouter : Router<Navigation>
 
-class DetailsRouterImpl(
-    private val navigator: Navigator
-) : DetailsRouter {
+class DetailsComponentImpl(
+    private val popBack: () -> Unit,
+) : DetailsComponent {
 
     override fun invoke(event: Navigation) {
         when (event) {

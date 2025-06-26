@@ -1,6 +1,6 @@
 package com.stslex.atten.feature.details.ui.store
 
-import com.stslex.atten.core.Logger
+import com.stslex.atten.core.logger.Logger
 import com.stslex.atten.core.coroutine.dispatcher.AppDispatcher
 import com.stslex.atten.core.ui.kit.mvi.Store
 import com.stslex.atten.core.ui.kit.mvi.StoreComponent.Event.Snackbar
