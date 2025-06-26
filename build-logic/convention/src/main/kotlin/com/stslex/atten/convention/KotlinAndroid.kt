@@ -3,6 +3,7 @@ package com.stslex.atten.convention
 import AppExt.APP_PREFIX
 import AppExt.findVersionInt
 import AppExt.libs
+import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
@@ -10,11 +11,10 @@ import org.gradle.kotlin.dsl.dependencies
 
 internal fun Project.configureKotlinAndroid(
     extension: CommonExtension<*, *, *, *, *, *>,
-    isApp: Boolean = false
 ) = extension.apply {
 
     //get module name from module path
-    val dropValue = if (isApp) 2 else 1
+    val dropValue = if (extension is ApplicationExtension) 2 else 1
     val moduleName = path.split(":")
         .drop(dropValue)
         .joinToString(".")

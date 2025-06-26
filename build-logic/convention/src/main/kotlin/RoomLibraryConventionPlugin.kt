@@ -1,7 +1,7 @@
 import AppExt.findPluginId
 import AppExt.libs
 import androidx.room.gradle.RoomExtension
-import com.google.devtools.ksp.gradle.KspExtension
+import com.stslex.atten.convention.configureKsp
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -14,12 +14,11 @@ class RoomLibraryConventionPlugin : Plugin<Project> {
         with(target) {
             pluginManager.apply {
                 apply(libs.findPluginId("room"))
-                apply(libs.findPluginId("ksp"))
                 apply(libs.findPluginId("kotlinMultiplatform"))
                 apply(libs.findPluginId("serialization"))
             }
 
-            extensions.configure<KspExtension> {
+            configureKsp {
                 arg("room.generateKotlin", "true")
             }
 

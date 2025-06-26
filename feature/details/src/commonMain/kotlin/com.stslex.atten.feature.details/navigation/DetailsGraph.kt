@@ -5,9 +5,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.navigation.NavGraphBuilder
-import com.stslex.atten.core.navigation.Screen
-import com.stslex.atten.core.navigation.navScreen
-import com.stslex.atten.core.ui.mvi.getStore
+import com.stslex.atten.core.ui.navigation.Screen
+import com.stslex.atten.core.ui.navigation.navScreen
+import com.stslex.atten.core.ui.kit.mvi.getStore
 import com.stslex.atten.feature.details.ui.DetailsScreen
 import com.stslex.atten.feature.details.ui.store.DetailsStore
 import com.stslex.atten.feature.details.ui.store.DetailsStoreComponent.Action

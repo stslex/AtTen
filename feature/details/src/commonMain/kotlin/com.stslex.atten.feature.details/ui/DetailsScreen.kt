@@ -13,8 +13,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.stslex.atten.core.ui.theme.AppDimension
-import com.stslex.atten.core.ui.theme.AppTheme
+import com.stslex.atten.core.ui.kit.theme.AppDimension
+import com.stslex.atten.core.ui.kit.theme.AppTheme
 import com.stslex.atten.feature.details.ui.components.DescriptionTextField
 import com.stslex.atten.feature.details.ui.components.TitleTextField
 import com.stslex.atten.feature.details.ui.model.ToDoDetailsUIModel

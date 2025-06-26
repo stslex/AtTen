@@ -1,7 +1,7 @@
 package com.stslex.atten.feature.details.navigation
 
-import com.stslex.atten.core.navigation.navigator.Navigator
-import com.stslex.atten.core.ui.mvi.Router
+import com.stslex.atten.core.ui.navigation.Navigator
+import com.stslex.atten.core.ui.kit.mvi.Router
 import com.stslex.atten.feature.details.ui.store.DetailsStoreComponent.Navigation
 
 interface DetailsRouter : Router<Navigation>

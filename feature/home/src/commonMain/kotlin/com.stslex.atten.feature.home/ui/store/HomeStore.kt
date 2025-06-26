@@ -5,8 +5,8 @@ import com.stslex.atten.core.paging.states.PagerAction
 import com.stslex.atten.core.paging.states.PagerLoadState
 import com.stslex.atten.core.paging.states.pagingMap
 import com.stslex.atten.core.paging.states.toUi
-import com.stslex.atten.core.ui.mvi.Store
-import com.stslex.atten.core.ui.mvi.StoreComponent.Event.Snackbar.Error
+import com.stslex.atten.core.ui.kit.mvi.Store
+import com.stslex.atten.core.ui.kit.mvi.StoreComponent.Event.Snackbar.Error
 import com.stslex.atten.feature.home.domain.interactor.HomeScreenInteractor
 import com.stslex.atten.feature.home.domain.model.CreateTodoDomainModel
 import com.stslex.atten.feature.home.navigation.HomeRouter

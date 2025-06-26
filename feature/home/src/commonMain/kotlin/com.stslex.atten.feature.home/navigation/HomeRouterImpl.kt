@@ -1,7 +1,7 @@
 package com.stslex.atten.feature.home.navigation
 
-import com.stslex.atten.core.navigation.Screen
-import com.stslex.atten.core.navigation.navigator.Navigator
+import com.stslex.atten.core.ui.navigation.Screen
+import com.stslex.atten.core.ui.navigation.Navigator
 import com.stslex.atten.feature.home.ui.store.HomeStoreComponent.Navigation
 
 class HomeRouterImpl(

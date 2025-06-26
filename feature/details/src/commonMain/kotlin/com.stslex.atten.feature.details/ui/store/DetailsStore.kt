@@ -2,8 +2,8 @@ package com.stslex.atten.feature.details.ui.store
 
 import com.stslex.atten.core.Logger
 import com.stslex.atten.core.coroutine.dispatcher.AppDispatcher
-import com.stslex.atten.core.ui.mvi.Store
-import com.stslex.atten.core.ui.mvi.StoreComponent.Event.Snackbar
+import com.stslex.atten.core.ui.kit.mvi.Store
+import com.stslex.atten.core.ui.kit.mvi.StoreComponent.Event.Snackbar
 import com.stslex.atten.feature.details.domain.interactor.DetailsInteractor
 import com.stslex.atten.feature.details.navigation.DetailsRouter
 import com.stslex.atten.feature.details.ui.model.toDomain

@@ -8,8 +8,15 @@ dependencies {
     compileOnly(libs.android.gradlePlugin) //if targetting Android
     compileOnly(libs.kotlin.gradlePlugin)
     compileOnly(libs.compose.gradlePlugin) //if you are using Compose Multiplatform
-    compileOnly(libs.ksp.gradlePlugin)
+    implementation(libs.ksp.gradlePlugin)
     compileOnly(libs.room.gradlePlugin) //if you are using Room
+}
+
+tasks {
+    validatePlugins {
+        enableStricterValidation = true
+        failOnWarning = true
+    }
 }
 
 gradlePlugin {

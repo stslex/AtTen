@@ -1,7 +1,7 @@
 package com.stslex.atten.feature.home.di
 
 import com.stslex.atten.core.di.AppModule
-import com.stslex.atten.core.ui.mvi.storeOf
+import com.stslex.atten.core.ui.kit.mvi.storeOf
 import com.stslex.atten.feature.home.domain.interactor.HomeScreenInteractor
 import com.stslex.atten.feature.home.domain.interactor.HomeScreenInteractorImpl
 import com.stslex.atten.feature.home.navigation.HomeRouter

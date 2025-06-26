@@ -6,9 +6,9 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompileCommon
 
 fun Project.configureKotlin() {
     tasks.withType<KotlinCompileCommon>().configureEach {
-        @Suppress("Deprecation")
-        kotlinOptions {
-            freeCompilerArgs = freeCompilerArgs + "-Xexpect-actual-classes"
+        @Suppress("MISSING_DEPENDENCY_SUPERCLASS_IN_TYPE_ARGUMENT")
+        compilerOptions {
+            freeCompilerArgs.addAll("-Xexpect-actual-classes")
         }
     }
 }

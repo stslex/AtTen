@@ -27,12 +27,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.stslex.atten.core.paging.states.PagingUiState
 import com.stslex.atten.core.paging.model.PagingConfig
+import com.stslex.atten.core.paging.states.PagingUiState
 import com.stslex.atten.core.paging.ui.PagingColumn
-import com.stslex.atten.core.ui.components.CardWithAnimatedBorder
-import com.stslex.atten.core.ui.theme.AppDimension
-import com.stslex.atten.core.ui.theme.AppTheme
+import com.stslex.atten.core.ui.kit.components.CardWithAnimatedBorder
+import com.stslex.atten.core.ui.kit.theme.AppDimension
+import com.stslex.atten.core.ui.kit.theme.AppTheme
 import com.stslex.atten.feature.home.ui.components.HomeScreenItem
 import com.stslex.atten.feature.home.ui.model.TodoUiModel
 import com.stslex.atten.feature.home.ui.store.HomeStoreComponent.State
@@ -73,7 +73,7 @@ internal fun HomeScreen(
             ) { index ->
                 state.paging.items.getOrNull(index)?.let { item ->
                     HomeScreenItem(
-                        modifier = Modifier.animateItemPlacement(),
+                        modifier = Modifier.animateItem(),
                         item = item,
                         onItemClick = onItemClicked,
                         onItemLongClick = onItemLongCLick

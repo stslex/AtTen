@@ -1,7 +1,7 @@
 package com.stslex.atten.feature.details.ui.store
 
 import androidx.compose.runtime.Stable
-import com.stslex.atten.core.ui.mvi.StoreComponent
+import com.stslex.atten.core.ui.kit.mvi.StoreComponent
 import com.stslex.atten.feature.details.ui.model.ToDoDetailsUIModel
 import kotlinx.datetime.LocalDateTime
 

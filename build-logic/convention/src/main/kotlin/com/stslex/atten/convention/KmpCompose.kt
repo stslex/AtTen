@@ -2,22 +2,23 @@ package com.stslex.atten.convention
 
 import AppExt.libs
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.compose.ComposePlugin
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
-fun Project.configureKMPCompose(
-    extension: KotlinMultiplatformExtension,
-    compose: ComposePlugin.Dependencies
-) = extension.apply {
+fun Project.configureKMPCompose() = extensions.configure<KotlinMultiplatformExtension> {
+    val dependencies = extensions.getByType<ComposePlugin.Dependencies>()
     sourceSets.apply {
         commonMain.dependencies {
-            // todo need to add compose dependencies
-            implementation(compose.ui)
-            implementation(compose.material3)
-            implementation(compose.foundation)
-            implementation(compose.components.uiToolingPreview)
-            implementation(compose.components.resources)
-            implementation(compose.runtime)
+            implementation(dependencies.ui)
+            implementation(dependencies.material3)
+            implementation(dependencies.foundation)
+            implementation(dependencies.components.uiToolingPreview)
+            implementation(dependencies.components.resources)
+            implementation(dependencies.runtime)
+            implementation(dependencies.materialIconsExtended)
+
             implementation(libs.findLibrary("kotlinx-collections-immutable").get())
             implementation(libs.findLibrary("koin-compose").get())
             implementation(libs.findLibrary("lifecycle-viewmodel").get())

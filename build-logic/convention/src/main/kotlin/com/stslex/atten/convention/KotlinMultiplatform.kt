@@ -1,7 +1,6 @@
 package com.stslex.atten.convention
 
 import AppExt.libs
-import com.google.devtools.ksp.gradle.KspExtension
 import org.gradle.api.Project
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.kotlin.dsl.configure
@@ -10,11 +9,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.cocoapods.CocoapodsExtension
 
 internal fun Project.configureKotlinMultiplatform(
-    extension: KotlinMultiplatformExtension,
-    kspExtension: KspExtension
-) = extension.apply {
-    kspExtension.arg("KOIN_CONFIG_CHECK", "true")
-
+) = extensions.configure<KotlinMultiplatformExtension> {
     jvmToolchain(17)
 
     // targets

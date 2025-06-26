@@ -1,6 +1,5 @@
 package com.stslex.atten.convention
 
-import AppExt.findVersionString
 import AppExt.libs
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.Project
@@ -10,7 +9,6 @@ fun Project.configureKotlinAndroidCompose(
     commonExtension: CommonExtension<*, *, *, *, *, *>,
 ) = commonExtension.apply {
     buildFeatures.compose = true
-    composeOptions.kotlinCompilerExtensionVersion = libs.findVersionString("compose-compiler")
 
     dependencies {
         "implementation"(libs.findLibrary("compose.ui").get())
