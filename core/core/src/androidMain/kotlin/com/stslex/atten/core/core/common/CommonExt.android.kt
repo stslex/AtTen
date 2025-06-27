@@ -1,4 +1,4 @@
-package com.stslex.atten.core.common
+package com.stslex.atten.core.core.common
 
 import com.stslex.atten.core.core.BuildConfig
 import java.util.UUID

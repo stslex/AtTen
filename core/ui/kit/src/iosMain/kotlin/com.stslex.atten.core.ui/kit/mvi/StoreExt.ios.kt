@@ -18,4 +18,4 @@ actual inline fun <reified T : ViewModel> Module.viewModelDefinition(
 actual inline fun <reified T : ViewModel> getViewModel(
     qualifier: Qualifier?,
     noinline parameters: ParametersDefinition?
-): T = koinInject(qualifier, parameters = parameters)
+): T = koinInject(qualifier)

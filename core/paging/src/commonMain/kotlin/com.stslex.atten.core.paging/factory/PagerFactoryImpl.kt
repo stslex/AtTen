@@ -1,6 +1,6 @@
 package com.stslex.atten.core.paging.factory
 
-import com.stslex.atten.core.coroutine.scope.AppCoroutineScope
+import com.stslex.atten.core.core.coroutine.scope.AppCoroutineScope
 import com.stslex.atten.core.paging.holder.ItemHolder
 import com.stslex.atten.core.paging.model.PagingConfig
 import com.stslex.atten.core.paging.model.PagingItem

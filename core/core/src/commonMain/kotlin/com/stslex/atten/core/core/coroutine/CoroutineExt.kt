@@ -1,6 +1,6 @@
-package com.stslex.atten.core.coroutine
+package com.stslex.atten.core.core.coroutine
 
-import com.stslex.atten.core.logger.Log
+import com.stslex.atten.core.core.logger.Log
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll

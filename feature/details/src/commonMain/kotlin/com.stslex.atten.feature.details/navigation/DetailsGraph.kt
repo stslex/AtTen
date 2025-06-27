@@ -1,17 +1,5 @@
 package com.stslex.atten.feature.details.navigation
 
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.navigation.NavGraphBuilder
-import com.stslex.atten.core.ui.navigation.Component
-import com.stslex.atten.core.ui.navigation.navScreen
-import com.stslex.atten.core.ui.kit.mvi.getStore
-import com.stslex.atten.feature.details.ui.DetailsScreen
-import com.stslex.atten.feature.details.ui.store.DetailsStore
-import com.stslex.atten.feature.details.ui.store.DetailsStoreComponent.Action
-
 //fun NavGraphBuilder.detailsGraph() {
 //    navScreen<Component.DetailScreen> { args ->
 //        val store = getStore<DetailsStore>()

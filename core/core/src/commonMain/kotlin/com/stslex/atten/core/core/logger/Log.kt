@@ -1,8 +1,8 @@
-package com.stslex.atten.core.logger
+package com.stslex.atten.core.core.logger
 
 import co.touchlab.kermit.Logger
-import com.stslex.atten.core.common.isDebug
-import com.stslex.atten.core.logger.Logger as AtTenLogger
+import com.stslex.atten.core.core.common.isDebug
+import com.stslex.atten.core.core.logger.Logger as AtTenLogger
 
 object Log : AtTenLogger {
 

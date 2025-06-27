@@ -1,6 +1,6 @@
 package com.stslex.atten.core.paging.model
 
-import com.stslex.atten.core.coroutine.asyncMap
+import com.stslex.atten.core.core.coroutine.asyncMap
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

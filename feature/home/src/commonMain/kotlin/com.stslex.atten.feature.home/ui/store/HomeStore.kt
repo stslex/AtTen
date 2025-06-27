@@ -1,6 +1,6 @@
 package com.stslex.atten.feature.home.ui.store
 
-import com.stslex.atten.core.coroutine.dispatcher.AppDispatcher
+import com.stslex.atten.core.core.coroutine.dispatcher.AppDispatcher
 import com.stslex.atten.core.paging.states.PagerAction
 import com.stslex.atten.core.paging.states.PagerLoadState
 import com.stslex.atten.core.paging.states.pagingMap

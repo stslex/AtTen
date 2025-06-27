@@ -1,4 +1,4 @@
-package com.stslex.atten.core.logger
+package com.stslex.atten.core.core.logger
 
 internal class AppLoggerCreator(
     private val tag: String

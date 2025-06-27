@@ -1,4 +1,4 @@
-package com.stslex.atten.core.common
+package com.stslex.atten.core.core.common
 
 expect val randomUuid: String
 

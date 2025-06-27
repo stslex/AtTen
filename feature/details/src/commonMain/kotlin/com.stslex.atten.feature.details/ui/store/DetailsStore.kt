@@ -1,7 +1,7 @@
 package com.stslex.atten.feature.details.ui.store
 
-import com.stslex.atten.core.logger.Logger
-import com.stslex.atten.core.coroutine.dispatcher.AppDispatcher
+import com.stslex.atten.core.core.coroutine.dispatcher.AppDispatcher
+import com.stslex.atten.core.core.logger.Log
 import com.stslex.atten.core.ui.kit.mvi.Store
 import com.stslex.atten.core.ui.kit.mvi.StoreComponent.Event.Snackbar
 import com.stslex.atten.feature.details.domain.interactor.DetailsInteractor
@@ -91,7 +91,7 @@ class DetailsStore(
                 }
             },
             onSuccess = {
-                Logger.d("Item updated")
+                Log.d("Item updated")
             },
             onError = { error ->
                 showError(error)

@@ -1,17 +1,17 @@
 package com.stslex.atten.core.todo.data.repository
 
-import com.stslex.atten.core.coroutine.asyncMap
-import com.stslex.atten.core.coroutine.coroutineExceptionHandler
-import com.stslex.atten.core.coroutine.dispatcher.AppDispatcher
-import com.stslex.atten.core.coroutine.scope.AppCoroutineScope
+import com.stslex.atten.core.core.coroutine.asyncMap
+import com.stslex.atten.core.core.coroutine.coroutineExceptionHandler
+import com.stslex.atten.core.core.coroutine.dispatcher.AppDispatcher
+import com.stslex.atten.core.core.coroutine.scope.AppCoroutineScope
 import com.stslex.atten.core.database.db.ToDoDao
 import com.stslex.atten.core.paging.factory.PagerFactory
-import com.stslex.atten.core.paging.holder.ItemHolder
 import com.stslex.atten.core.paging.model.PagingResponse
 import com.stslex.atten.core.paging.states.PagerAction
 import com.stslex.atten.core.paging.states.PagerLoadEvents
 import com.stslex.atten.core.paging.states.PagerLoadState
 import com.stslex.atten.core.paging.states.PagingState
+import com.stslex.atten.core.todo.data.ToDoItemHolder
 import com.stslex.atten.core.todo.data.model.CreateTodoDataModel
 import com.stslex.atten.core.todo.data.model.ToDoDataModel
 import com.stslex.atten.core.todo.data.model.UpdateTodoDataModel
@@ -26,10 +26,12 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.withContext
+import org.koin.core.annotation.Single
 
+@Single
 class ToDoRepositoryImpl(
     private val dao: ToDoDao,
-    private val itemsHolder: ItemHolder<ToDoDataModel>,
+    private val itemsHolder: ToDoItemHolder,
     pagerFactory: PagerFactory,
     private val appDispatcher: AppDispatcher
 ) : ToDoRepository {

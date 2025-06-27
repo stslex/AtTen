@@ -1,6 +1,6 @@
 package com.stslex.atten.core.paging.states
 
-import com.stslex.atten.core.coroutine.asyncMap
+import com.stslex.atten.core.core.coroutine.asyncMap
 import com.stslex.atten.core.paging.model.PagingConfig
 import com.stslex.atten.core.paging.model.PagingItem
 import com.stslex.atten.core.paging.model.PagingResponse

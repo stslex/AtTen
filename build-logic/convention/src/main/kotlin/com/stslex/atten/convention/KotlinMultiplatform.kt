@@ -7,6 +7,7 @@ import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.cocoapods.CocoapodsExtension
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 internal fun Project.configureKotlinMultiplatform(
 ) = extensions.configure<KotlinMultiplatformExtension> {
@@ -56,4 +57,8 @@ internal fun Project.configureKotlinMultiplatform(
 
     //applying the Cocoapods Configuration we made
     (this as ExtensionAware).extensions.configure<CocoapodsExtension>(::configureKotlinCocoapods)
+
+//    tasks.withType(KotlinCompile::class.java).all {
+//        if (name != "kspCommonMainKotlinMetadata") dependsOn("kspCommonMainKotlinMetadata")
+//    }
 }

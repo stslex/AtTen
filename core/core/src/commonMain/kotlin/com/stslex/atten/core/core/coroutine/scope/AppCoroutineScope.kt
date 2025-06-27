@@ -1,7 +1,7 @@
-package com.stslex.atten.core.coroutine.scope
+package com.stslex.atten.core.core.coroutine.scope
 
-import com.stslex.atten.core.coroutine.dispatcher.AppDispatcher
-import com.stslex.atten.core.logger.Log
+import com.stslex.atten.core.core.coroutine.dispatcher.AppDispatcher
+import com.stslex.atten.core.core.logger.Log
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope

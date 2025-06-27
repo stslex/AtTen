@@ -1,6 +1,6 @@
 package com.stslex.atten.core.paging.worker
 
-import com.stslex.atten.core.coroutine.scope.AppCoroutineScope
+import com.stslex.atten.core.core.coroutine.scope.AppCoroutineScope
 import com.stslex.atten.core.paging.model.PagingItem
 import com.stslex.atten.core.paging.model.PagingResponse
 import kotlinx.coroutines.CoroutineScope

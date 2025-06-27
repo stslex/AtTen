@@ -1,9 +1,8 @@
 package com.stslex.atten.core.ui.mvi.handler
 
-import com.stslex.atten.core.logger.Logger
-import com.stslex.atten.core.coroutine.dispatcher.AppDispatcher
-import com.stslex.atten.core.coroutine.scope.AppCoroutineScope
-import com.stslex.wizard.core.core.coroutine.AppDispatcherImpl
+import com.stslex.atten.core.core.coroutine.dispatcher.AppDispatcher
+import com.stslex.atten.core.core.coroutine.scope.AppCoroutineScope
+import com.stslex.atten.core.core.logger.Logger
 import com.stslex.atten.core.ui.mvi.Store
 import com.stslex.atten.core.ui.mvi.Store.Event
 import com.stslex.atten.core.ui.mvi.Store.State
@@ -66,7 +65,7 @@ interface HandlerStore<S : State, A : Store.Action, E : Event> {
      * */
     fun <T> Flow<T>.launch(
         onError: suspend (cause: Throwable) -> Unit = {},
-        workDispatcher: CoroutineDispatcher = AppDispatcherImpl.default,
+        workDispatcher: CoroutineDispatcher = appDispatcher.default,
         eachDispatcher: CoroutineDispatcher = appDispatcher.default,
         each: suspend (T) -> Unit
     ): Job

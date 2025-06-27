@@ -2,9 +2,9 @@ package com.stslex.atten.core.ui.mvi
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.stslex.atten.core.coroutine.dispatcher.AppDispatcher
-import com.stslex.atten.core.coroutine.scope.AppCoroutineScope
-import com.stslex.atten.core.logger.Log
+import com.stslex.atten.core.core.coroutine.dispatcher.AppDispatcher
+import com.stslex.atten.core.core.coroutine.scope.AppCoroutineScope
+import com.stslex.atten.core.core.logger.Log
 import com.stslex.atten.core.ui.mvi.Store.Action
 import com.stslex.atten.core.ui.mvi.Store.Event
 import com.stslex.atten.core.ui.mvi.Store.State

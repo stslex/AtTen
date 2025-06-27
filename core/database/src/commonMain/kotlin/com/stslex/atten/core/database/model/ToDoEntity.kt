@@ -3,7 +3,7 @@ package com.stslex.atten.core.database.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.stslex.atten.core.common.randomUuid
+import com.stslex.atten.core.core.common.randomUuid
 
 @Entity
 data class ToDoEntity(

@@ -1,7 +1,7 @@
 package com.stslex.atten.core.paging.pager
 
-import com.stslex.atten.core.coroutine.scope.AppCoroutineScope
-import com.stslex.atten.core.logger.Log
+import com.stslex.atten.core.core.coroutine.scope.AppCoroutineScope
+import com.stslex.atten.core.core.logger.Log
 import com.stslex.atten.core.paging.holder.ItemHolder
 import com.stslex.atten.core.paging.holder.ItemLoaderEvent
 import com.stslex.atten.core.paging.model.PagingConfig

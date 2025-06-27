@@ -1,12 +1,12 @@
-package com.stslex.atten.core.coroutine.dispatcher
+package com.stslex.atten.core.core.coroutine.dispatcher
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.MainCoroutineDispatcher
-import org.koin.core.annotation.Singleton
+import org.koin.core.annotation.Single
 
-@Singleton
+@Single
 class AppDispatcherImpl : AppDispatcher {
     override val default: CoroutineDispatcher = Dispatchers.Default
     override val io: CoroutineDispatcher = Dispatchers.IO
