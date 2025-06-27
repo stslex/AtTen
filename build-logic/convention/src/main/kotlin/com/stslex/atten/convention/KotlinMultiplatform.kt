@@ -1,10 +1,12 @@
 package com.stslex.atten.convention
 
 import AppExt.libs
+import com.stslex.atten.convention.configs.KspConfig
 import org.gradle.api.Project
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
+import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.cocoapods.CocoapodsExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
@@ -22,7 +24,7 @@ internal fun Project.configureKotlinMultiplatform(
     applyDefaultHierarchyTemplate()
 
     dependencies {
-        add("kspCommonMainMetadata", libs.findLibrary("koin-ksp-compiler").get())
+        add(KspConfig.COMMON_MAIN.configName, libs.findLibrary("koin-ksp-compiler").get())
     }
 
     //common dependencies
@@ -58,7 +60,17 @@ internal fun Project.configureKotlinMultiplatform(
     //applying the Cocoapods Configuration we made
     (this as ExtensionAware).extensions.configure<CocoapodsExtension>(::configureKotlinCocoapods)
 
-//    tasks.withType(KotlinCompile::class.java).all {
-//        if (name != "kspCommonMainKotlinMetadata") dependsOn("kspCommonMainKotlinMetadata")
-//    }
+
+    tasks.withType<KotlinCompile>().configureEach {
+        if (name != KspConfig.COMMON_MAIN.taskName) {
+            dependsOn(KspConfig.COMMON_MAIN.taskName)
+        }
+    }
+
+    tasks.matching { task ->
+        task.name.startsWith("ksp") && task.name != KspConfig.COMMON_MAIN.taskName
+    }
+        .configureEach {
+            dependsOn(KspConfig.COMMON_MAIN.taskName)
+        }
 }
