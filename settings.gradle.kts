@@ -19,8 +19,9 @@ rootProject.name = "AtTen"
 include(":commonApp")
 
 include(":core:core")
-include(":core:ui")
-include(":core:navigation")
+include(":core:ui:kit")
+include(":core:ui:navigation")
+include(":core:ui:mvi")
 include(":core:database")
 include(":core:paging")
 include(":core:todo")

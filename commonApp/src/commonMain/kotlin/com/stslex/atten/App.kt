@@ -1,22 +1,34 @@
 package com.stslex.atten
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import com.stslex.atten.config.KoinApp
-import com.stslex.atten.core.ui.theme.AppTheme
-import com.stslex.atten.ui.InitialApp
-import org.koin.core.KoinApplication
+import androidx.compose.ui.Modifier
+import com.stslex.atten.core.ui.kit.theme.AppTheme
+import com.stslex.atten.host.AppNavigationHost
+import com.stslex.atten.host.RootComponent
 
 @Composable
 fun App(
+    rootComponent: RootComponent,
     onThemeChange: (isDark: Boolean) -> Unit = {},
-    additionalSetup: KoinApplication.() -> Unit = {},
 ) {
-    KoinApp(additionalSetup) { controller ->
-        AppTheme(
-            onThemeChange = onThemeChange
-        ) {
-            InitialApp(
-                navHostController = controller
+    AppTheme(
+        onThemeChange = onThemeChange
+    ) {
+        Scaffold(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background),
+        ) { paddingValues ->
+            AppNavigationHost(
+                modifier = Modifier.padding(
+                    bottom = paddingValues.calculateBottomPadding()
+                ),
+                rootComponent = rootComponent
             )
         }
     }

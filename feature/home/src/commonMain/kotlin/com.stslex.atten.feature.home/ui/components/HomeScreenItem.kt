@@ -13,9 +13,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.stslex.atten.core.ui.components.CardWithAnimatedBorder
-import com.stslex.atten.core.ui.theme.AppDimension
-import com.stslex.atten.core.ui.theme.AppTheme
+import com.stslex.atten.core.ui.kit.components.CardWithAnimatedBorder
+import com.stslex.atten.core.ui.kit.theme.AppDimension
+import com.stslex.atten.core.ui.kit.theme.AppTheme
 import com.stslex.atten.feature.home.ui.model.TodoUiModel
 
 @Composable

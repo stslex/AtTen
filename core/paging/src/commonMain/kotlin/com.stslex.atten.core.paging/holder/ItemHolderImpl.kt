@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class ItemHolderImpl<T : PagingItem> : ItemHolder<T> {
+open class ItemHolderImpl<T : PagingItem> : ItemHolder<T> {
 
     private val _items = MutableStateFlow<List<T>>(emptyList())
     override val items: StateFlow<List<T>> = _items.asStateFlow()

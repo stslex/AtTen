@@ -2,20 +2,25 @@ package com.stslex.atten.core.database.di
 
 import com.stslex.atten.core.database.db.AppDatabase
 import com.stslex.atten.core.database.db.ToDoDao
-import com.stslex.atten.core.di.AppModule
+import org.koin.core.annotation.ComponentScan
 import org.koin.core.annotation.Module
-import org.koin.core.annotation.Singleton
+import org.koin.core.annotation.Single
 import org.koin.core.scope.Scope
-import org.koin.dsl.module
 
 @Module
-@Singleton
-class ModuleCoreDatabase : AppModule {
+@ComponentScan("com.stslex.atten.core.database")
+class ModuleCoreDatabase {
 
-    override val module = module {
-        single<AppDatabase> { getDatabase() }
-        single<ToDoDao> { get<AppDatabase>().getTodoDao() }
-    }
+//    val module = module {
+//        single<AppDatabase> { getDatabase() }
+//        single<ToDoDao> { get<AppDatabase>().getTodoDao() }
+//    }
+
+    @Single
+    fun appDatabase(scope: Scope): AppDatabase = scope.getDatabase()
+
+    @Single
+    fun todoDao(scope: Scope): ToDoDao = scope.get<AppDatabase>().getTodoDao()
 }
 
 internal expect fun Scope.getDatabase(): AppDatabase

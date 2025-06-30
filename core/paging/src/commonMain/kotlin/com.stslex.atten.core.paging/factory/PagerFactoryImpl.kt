@@ -1,14 +1,16 @@
 package com.stslex.atten.core.paging.factory
 
-import com.stslex.atten.core.coroutine.scope.AppCoroutineScope
-import com.stslex.atten.core.paging.model.PagingItem
-import com.stslex.atten.core.paging.model.PagingResponse
+import com.stslex.atten.core.core.coroutine.scope.AppCoroutineScope
 import com.stslex.atten.core.paging.holder.ItemHolder
 import com.stslex.atten.core.paging.model.PagingConfig
+import com.stslex.atten.core.paging.model.PagingItem
+import com.stslex.atten.core.paging.model.PagingResponse
 import com.stslex.atten.core.paging.pager.Pager
 import com.stslex.atten.core.paging.pager.PagerImpl
 import com.stslex.atten.core.paging.worker.PagingWorkerImpl
+import org.koin.core.annotation.Single
 
+@Single
 class PagerFactoryImpl : PagerFactory {
 
     override fun <T : PagingItem> create(

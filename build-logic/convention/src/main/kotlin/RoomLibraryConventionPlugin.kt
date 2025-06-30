@@ -1,7 +1,8 @@
 import AppExt.findPluginId
 import AppExt.libs
 import androidx.room.gradle.RoomExtension
-import com.google.devtools.ksp.gradle.KspExtension
+import com.stslex.atten.convention.configs.KspConfig
+import com.stslex.atten.convention.configureKsp
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -14,12 +15,11 @@ class RoomLibraryConventionPlugin : Plugin<Project> {
         with(target) {
             pluginManager.apply {
                 apply(libs.findPluginId("room"))
-                apply(libs.findPluginId("ksp"))
                 apply(libs.findPluginId("kotlinMultiplatform"))
                 apply(libs.findPluginId("serialization"))
             }
 
-            extensions.configure<KspExtension> {
+            configureKsp {
                 arg("room.generateKotlin", "true")
             }
 
@@ -30,14 +30,12 @@ class RoomLibraryConventionPlugin : Plugin<Project> {
                 schemaDirectory("$projectDir/schemas")
             }
 
+            dependencies {
+                val roomCompiler = libs.findLibrary("room-compiler").get()
+                KspConfig.platform.forEach { task -> add(task.configName, roomCompiler) }
+            }
+
             extensions.configure<KotlinMultiplatformExtension> {
-                dependencies {
-                    val roomCompiler = libs.findLibrary("room-compiler").get()
-                    add("kspAndroid", roomCompiler)
-                    add("kspIosSimulatorArm64", roomCompiler)
-                    add("kspIosX64", roomCompiler)
-                    add("kspIosArm64", roomCompiler)
-                }
                 sourceSets.apply {
                     commonMain.dependencies {
                         implementation(libs.findLibrary("room-runtime").get())
