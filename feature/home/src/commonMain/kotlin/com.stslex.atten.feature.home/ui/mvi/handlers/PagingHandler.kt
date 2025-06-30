@@ -5,6 +5,7 @@ import com.stslex.atten.core.paging.states.PagerLoadState
 import com.stslex.atten.core.paging.states.pagingMap
 import com.stslex.atten.core.paging.states.toUi
 import com.stslex.atten.core.ui.mvi.CommonEvents
+import com.stslex.atten.core.ui.mvi.handler.Handler
 import com.stslex.atten.feature.home.di.HomeScope
 import com.stslex.atten.feature.home.domain.interactor.HomeScreenInteractor
 import com.stslex.atten.feature.home.ui.model.toUi
@@ -12,7 +13,6 @@ import com.stslex.atten.feature.home.ui.mvi.HomeHandlerStore
 import com.stslex.atten.feature.home.ui.mvi.HomeStore.Action
 import com.stslex.atten.feature.home.ui.mvi.HomeStore.Event
 import com.stslex.atten.feature.home.ui.mvi.toUi
-import com.stslex.atten.core.ui.mvi.handler.Handler
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -37,6 +37,7 @@ internal class PagingHandler(
     }
 
     private fun HomeHandlerStore.actionInit() {
+        sendEvent(Event.List.ScrollTop)
         interactor.pagingState
             .map { pagingState ->
                 pagingState.pagingMap { it.toUi() }

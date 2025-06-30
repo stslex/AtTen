@@ -18,6 +18,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Delete
@@ -45,6 +47,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 internal fun HomeWidget(
     state: State,
+    lazyListState: LazyListState = rememberLazyListState(),
     onItemLongCLick: (id: String) -> Unit,
     onItemClicked: (id: String) -> Unit,
     onLoadNext: () -> Unit,
@@ -64,6 +67,7 @@ internal fun HomeWidget(
                 .padding(
                     horizontal = AppDimension.Padding.medium,
                 ),
+            state = lazyListState,
             pagingState = state.paging,
             onLoadNext = onLoadNext
         ) {

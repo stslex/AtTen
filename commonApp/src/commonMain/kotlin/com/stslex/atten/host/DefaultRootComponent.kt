@@ -9,6 +9,7 @@ import com.arkivanov.decompose.router.stack.navigate
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.value.Value
 import com.stslex.atten.core.ui.navigation.Config
+import com.stslex.atten.core.ui.navigation.Router
 import com.stslex.atten.feature.details.ui.mvi.DetailsComponent
 import com.stslex.atten.feature.home.ui.mvi.HomeComponent
 import com.stslex.atten.host.RootComponent.Child
@@ -37,21 +38,8 @@ class DefaultRootComponent(
         config: Config,
         context: ComponentContext
     ): Child = when (config) {
-        is Config.Home -> Child.Home(
-            HomeComponent.create(
-                popBack = ::popBack,
-                navTo = ::navigateTo,
-                componentContext = context
-            )
-        )
-
-        is Config.Detail -> Child.Details(
-            DetailsComponent.create(
-                popBack = ::popBack,
-                componentContext = context,
-                uuid = config.uuid
-            )
-        )
+        is Config.Home -> Child.Home(HomeComponent.create(context.router))
+        is Config.Detail -> Child.Details(DetailsComponent.create(context.router, config.uuid))
     }
 
     @OptIn(DelicateDecomposeApi::class)
@@ -68,4 +56,16 @@ class DefaultRootComponent(
     private fun popBack() {
         navigation.pop()
     }
+
+    private val ComponentContext.router: Router
+        get() = object : Router, ComponentContext by this {
+
+            override fun navTo(config: Config) {
+                navigateTo(config)
+            }
+
+            override fun popBack() {
+                this@DefaultRootComponent.popBack()
+            }
+        }
 }

@@ -1,5 +1,6 @@
 package com.stslex.atten.feature.home.ui
 
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
@@ -13,12 +14,12 @@ import com.stslex.atten.feature.home.ui.mvi.HomeStore.Action
 fun HomeScreen(component: HomeComponent) {
     NavComponentScreen(HomeFeature, component) { processor ->
         val hapticFeedback = LocalHapticFeedback.current
-
+        val lazyListState = rememberLazyListState()
         processor.handle { event ->
             when (event) {
-                is HomeStore.Event.Snackbar -> {
+                is HomeStore.Event.Snackbar -> Unit
 
-                }
+                is HomeStore.Event.List.ScrollTop -> lazyListState.requestScrollToItem(0)
 
                 HomeStore.Event.Haptic.Click -> {
                     hapticFeedback.performHapticFeedback(HapticFeedbackType.TextHandleMove)
@@ -40,6 +41,7 @@ fun HomeScreen(component: HomeComponent) {
 
         HomeWidget(
             state = processor.state.value,
+            lazyListState = lazyListState,
             onItemClicked = { id ->
                 processor.consume(Action.Click.OnItemClicked(id))
             },
