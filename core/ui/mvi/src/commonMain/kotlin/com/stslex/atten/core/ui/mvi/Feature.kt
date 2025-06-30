@@ -15,6 +15,12 @@ import org.koin.core.module.Module
 interface Feature<TProcessor : StoreProcessor<*, *, *>, TComponent : Component> :
     KoinScopeComponent {
 
+    val loadModule: Boolean
+        get() = false
+
+    val bindWithLifecycle: Boolean
+        get() = true
+
     val module: Module
 
     @Composable

@@ -35,9 +35,7 @@ class MainActivity : ComponentActivity() {
 fun AppAndroidPreview() {
     App(
         rootComponent = DefaultRootComponent(
-            componentContext = DefaultComponentContext(
-                LocalLifecycleOwner.current.lifecycle
-            ),
+            componentContext = DefaultComponentContext(LocalLifecycleOwner.current.lifecycle),
         ),
     )
 }

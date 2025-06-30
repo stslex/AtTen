@@ -1,13 +1,14 @@
 package com.stslex.atten.core.ui.mvi.processor
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
+import com.stslex.atten.core.ui.mvi.BaseStore
 import com.stslex.atten.core.ui.mvi.Store.Action
 import com.stslex.atten.core.ui.mvi.Store.Event
 import com.stslex.atten.core.ui.mvi.Store.State
-import com.stslex.atten.core.ui.mvi.BaseStore
 import com.stslex.atten.core.ui.navigation.Component
 import com.stslex.wizard.core.ui.mvi.v2.processor.ActionProcessor
 import com.stslex.wizard.core.ui.mvi.v2.processor.EffectsProcessor
@@ -60,6 +61,12 @@ inline fun <S : State,
             parametersOf(component)
         }
     )
+    DisposableEffect(store) {
+        store.initialActions.forEach { store.consume(it) }
+        onDispose {
+            store.disposeActions.forEach { store.consume(it) }
+        }
+    }
     val actionProcessor = remember { ActionProcessor(store) }
     val effectsProcessor = remember { EffectsProcessor(store) }
     val state = remember { store.state }.collectAsState()
@@ -71,4 +78,3 @@ inline fun <S : State,
         )
     }
 }
-

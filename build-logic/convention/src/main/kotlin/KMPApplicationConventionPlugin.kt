@@ -5,6 +5,7 @@ import AppExt.findVersionString
 import AppExt.libs
 import com.android.build.api.dsl.ApplicationExtension
 import com.stslex.atten.convention.configureKMPCompose
+import com.stslex.atten.convention.configureKMPComposeNavigation
 import com.stslex.atten.convention.configureKotlin
 import com.stslex.atten.convention.configureKotlinAndroid
 import com.stslex.atten.convention.configureKotlinAndroidCompose
@@ -30,6 +31,7 @@ class KMPApplicationConventionPlugin : Plugin<Project> {
         configureKotlinMultiplatform()
         configureKMPCompose()
         configureKotlin()
+        configureKMPComposeNavigation()
 
         extensions.configure<ApplicationExtension> {
             configureKotlinAndroid(this)

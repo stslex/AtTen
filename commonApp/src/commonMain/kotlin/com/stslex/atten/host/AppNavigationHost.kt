@@ -5,6 +5,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.stack.Children
 import com.arkivanov.decompose.extensions.compose.stack.animation.stackAnimation
+import com.stslex.atten.feature.details.ui.DetailsScreen
+import com.stslex.atten.feature.home.ui.HomeScreen
 
 @Composable
 internal fun AppNavigationHost(
@@ -17,8 +19,8 @@ internal fun AppNavigationHost(
         animation = stackAnimation(),
     ) { created ->
         when (val instance = created.instance) {
-            is RootComponent.Child.Details -> TODO()
-            is RootComponent.Child.Home -> TODO()
+            is RootComponent.Child.Details -> DetailsScreen(instance.component)
+            is RootComponent.Child.Home -> HomeScreen(instance.component)
         }
     }
 }

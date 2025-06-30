@@ -1,4 +1,4 @@
-package com.stslex.atten.feature.home.ui.store
+package com.stslex.atten.feature.home.ui.mvi
 
 import androidx.compose.runtime.Stable
 import com.stslex.atten.core.paging.states.PagerLoadState

@@ -14,8 +14,11 @@ fun <TProcessor : StoreProcessor<*, *, *>, TComponent : Component> NavComponentS
     component: TComponent,
     content: @Composable (TProcessor) -> Unit
 ) {
-    rememberKoinModules(unloadModules = true) {
-        listOf(feature.module)
+    if (feature.loadModule) {
+        rememberKoinModules(unloadModules = true) {
+            listOf(feature.module)
+        }
     }
+
     content(feature.processor(component))
 }

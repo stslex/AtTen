@@ -1,5 +1,6 @@
 package com.stslex.atten.core.ui.mvi
 
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.stslex.atten.core.core.coroutine.dispatcher.AppDispatcher
@@ -8,9 +9,9 @@ import com.stslex.atten.core.core.logger.Log
 import com.stslex.atten.core.ui.mvi.Store.Action
 import com.stslex.atten.core.ui.mvi.Store.Event
 import com.stslex.atten.core.ui.mvi.Store.State
+import com.stslex.atten.core.ui.mvi.handler.Handler
+import com.stslex.atten.core.ui.mvi.handler.HandlerCreator
 import com.stslex.atten.core.ui.mvi.handler.HandlerStore
-import com.stslex.wizard.core.ui.mvi.v2.Handler
-import com.stslex.wizard.core.ui.mvi.v2.HandlerCreator
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -33,15 +34,17 @@ import kotlinx.coroutines.flow.update
  * @param HStore The type of the handler store, which provides context to action handlers. Must inherit from [handler.HandlerStore].
  * @param name A descriptive name for the store, used for logging.
  * @param initialState The initial state of the store.
- * @param handlerCreator A factory function that creates an [com.stslex.wizard.core.ui.mvi.v2.Handler] for a given action.
+ * @param handlerCreator A factory function that creates an [Handler] for a given action.
  * @param initialActions A list of actions to be consumed immediately after the store is initialized. Defaults to an empty list.
  */
+@Immutable
 open class BaseStore<S : State, A : Action, E : Event, HStore : HandlerStore<S, A, E>>(
     name: String,
     initialState: S,
     override val appDispatcher: AppDispatcher,
     private val handlerCreator: HandlerCreator<S, A, E, HStore>,
-    initialActions: List<A> = emptyList(),
+    val initialActions: List<A> = emptyList(),
+    val disposeActions: List<A> = emptyList()
 ) : ViewModel(), Store<S, A, E>, HandlerStore<S, A, E> {
 
     private val _event: MutableSharedFlow<E> = MutableSharedFlow()
@@ -56,10 +59,6 @@ open class BaseStore<S : State, A : Action, E : Event, HStore : HandlerStore<S, 
     private var _lastAction: A? = null
     override val lastAction: A?
         get() = _lastAction
-
-    init {
-        initialActions.forEach { consume(it) }
-    }
 
     @Suppress("UNCHECKED_CAST")
     override fun consume(action: A) {

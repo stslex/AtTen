@@ -1,6 +1,5 @@
-package com.stslex.wizard.core.ui.mvi.v2
+package com.stslex.atten.core.ui.mvi.handler
 
-import com.stslex.atten.core.ui.mvi.handler.HandlerStore
 import com.stslex.atten.core.ui.mvi.Store.Action
 import com.stslex.atten.core.ui.mvi.Store.Event
 import com.stslex.atten.core.ui.mvi.Store.State

@@ -4,7 +4,7 @@ import com.stslex.atten.core.ui.mvi.handler.HandlerStore
 import com.stslex.atten.core.ui.mvi.Store.Action
 import com.stslex.atten.core.ui.mvi.Store.Event
 import com.stslex.atten.core.ui.mvi.Store.State
-import com.stslex.wizard.core.ui.mvi.v2.Handler
+import com.stslex.atten.core.ui.mvi.handler.Handler
 
 fun <S : State, A : Action, E : Event, HStore : HandlerStore<S, A, E>> Handler<A, HStore>.invoke(
     store: HStore,

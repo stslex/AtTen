@@ -16,7 +16,9 @@ fun App(
     rootComponent: RootComponent,
     onThemeChange: (isDark: Boolean) -> Unit = {},
 ) {
-    AppTheme {
+    AppTheme(
+        onThemeChange = onThemeChange
+    ) {
         Scaffold(
             modifier = Modifier
                 .fillMaxSize()

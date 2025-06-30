@@ -6,6 +6,7 @@ import com.stslex.atten.core.paging.states.PagerLoadState
 import com.stslex.atten.core.paging.states.PagingState
 import com.stslex.atten.core.paging.states.pagingMap
 import com.stslex.atten.core.todo.data.repository.ToDoRepository
+import com.stslex.atten.feature.home.di.HomeScope
 import com.stslex.atten.feature.home.domain.model.CreateTodoDomainModel
 import com.stslex.atten.feature.home.domain.model.ToDoDomainModel
 import com.stslex.atten.feature.home.domain.model.toData
@@ -14,7 +15,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
+import org.koin.core.annotation.Factory
+import org.koin.core.annotation.Scope
+import org.koin.core.annotation.Scoped
 
+@Factory
+@Scope(HomeScope::class)
+@Scoped
 class HomeScreenInteractorImpl(
     private val repository: ToDoRepository,
 ) : HomeScreenInteractor {

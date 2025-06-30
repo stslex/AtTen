@@ -1,4 +1,4 @@
-package com.stslex.atten.feature.details.ui.store
+package com.stslex.atten.feature.details.ui.mvi
 
 import androidx.compose.runtime.Stable
 

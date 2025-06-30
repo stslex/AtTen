@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.convention.kmp.application)
-    alias(libs.plugins.convention.kmp.navigation)
 }
 
 kotlin {
@@ -10,6 +9,7 @@ kotlin {
                 implementation(project(":core:core"))
                 implementation(project(":core:ui:kit"))
                 implementation(project(":core:ui:navigation"))
+                implementation(project(":core:ui:mvi"))
                 implementation(project(":core:database"))
                 implementation(project(":core:paging"))
                 implementation(project(":core:todo"))

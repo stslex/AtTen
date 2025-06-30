@@ -10,9 +10,12 @@ sealed interface Config {
     val isBackAllow: Boolean
         get() = true
 
-    data object Home : Config
+    data object Home : Config {
+
+        override val isBackAllow: Boolean = false
+    }
 
     data class Detail(
-        val id: String
+        val uuid: String
     ) : Config
 }
