@@ -33,5 +33,8 @@ jobs:
           LOCAL_PROPERTIES: ${{ secrets.LOCAL_PROPERTIES }}
         run: echo "$LOCAL_PROPERTIES" > ./local.properties
 
+      - name: generate Ksp metadata
+        run: ./gradlew kspKotlinMetadata
+
       - name: Build with Gradle
         run: cd iosApp && xcodebuild -workspace ./iosApp.xcworkspace -scheme iosApp -configuration Debug -destination 'platform=iOS Simulator,OS=latest,name=iPhone 15' CODE_SIGNING_ALLOWED='NO'
