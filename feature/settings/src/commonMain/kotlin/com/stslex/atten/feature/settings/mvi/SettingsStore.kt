@@ -1,10 +1,10 @@
 package com.stslex.atten.feature.settings.mvi
 
 import androidx.compose.runtime.Stable
+import com.stslex.atten.core.ui.mvi.Store
 import com.stslex.atten.feature.settings.mvi.SettingsStore.Action
 import com.stslex.atten.feature.settings.mvi.SettingsStore.Event
 import com.stslex.atten.feature.settings.mvi.SettingsStore.State
-import com.stslex.atten.core.ui.mvi.Store
 
 interface SettingsStore : Store<State, Action, Event> {
 
@@ -51,6 +51,9 @@ interface SettingsStore : Store<State, Action, Event> {
     }
 
     @Stable
-    sealed interface Event : Store.Event
+    sealed interface Event : Store.Event {
+
+        data object GoogleAuth : Event
+    }
 }
 

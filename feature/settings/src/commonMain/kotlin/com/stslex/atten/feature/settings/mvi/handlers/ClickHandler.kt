@@ -1,9 +1,10 @@
 package com.stslex.atten.feature.settings.mvi.handlers
 
+import com.stslex.atten.core.ui.mvi.handler.Handler
 import com.stslex.atten.feature.settings.di.SettingsScope
 import com.stslex.atten.feature.settings.mvi.SettingsHandlerStore
+import com.stslex.atten.feature.settings.mvi.SettingsStore
 import com.stslex.atten.feature.settings.mvi.SettingsStore.Action
-import com.stslex.atten.core.ui.mvi.handler.Handler
 import org.koin.core.annotation.Factory
 import org.koin.core.annotation.Scope
 import org.koin.core.annotation.Scoped
@@ -25,6 +26,6 @@ class ClickHandler : Handler<Action.Click, SettingsHandlerStore> {
     }
 
     private fun SettingsHandlerStore.actionLogin() {
-        // Handle login action
+        sendEvent(SettingsStore.Event.GoogleAuth)
     }
 }
