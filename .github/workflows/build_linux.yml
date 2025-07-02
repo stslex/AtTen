@@ -19,7 +19,7 @@ jobs:
         uses: actions/checkout@v2
 
       - run: |
-          echo "${{ secrets.KEYSTORE }}" > keystore.jks.gpg --armor --output myfile.txt.asc --detach-sign myfile.txt
+          echo "${{ secrets.KEYSTORE }}" > keystore.jks.asc
           gpg -d --passphrase "${{ secrets.KEYSTORE_PASSPHRASE }}" --batch keystore.jks.asc > keystore.jks
 
       - name: set up JDK 17
