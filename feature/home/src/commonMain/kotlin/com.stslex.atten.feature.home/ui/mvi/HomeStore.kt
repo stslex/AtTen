@@ -46,6 +46,12 @@ interface HomeStore : Store<State, Action, Event> {
             val snackbar: CommonEvents.Snackbar
         ) : Event
 
+        @Stable
+        sealed interface List : Event {
+
+            data object ScrollTop : List
+        }
+
         sealed interface Haptic : Event {
 
             data object Click : Haptic

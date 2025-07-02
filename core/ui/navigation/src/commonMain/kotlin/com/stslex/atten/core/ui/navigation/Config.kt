@@ -10,11 +10,13 @@ sealed interface Config {
     val isBackAllow: Boolean
         get() = true
 
+    @Serializable
     data object Home : Config {
 
         override val isBackAllow: Boolean = false
     }
 
+    @Serializable
     data class Detail(
         val uuid: String
     ) : Config
