@@ -56,6 +56,9 @@ fun HomeScreen(component: HomeComponent) {
             },
             onItemLongCLick = { id ->
                 processor.consume(Action.Click.OnSelectItemClicked(id))
+            },
+            onSettingsClick = {
+                processor.consume(Action.Click.OnSettingsClicked)
             }
         )
     }

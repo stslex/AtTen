@@ -1,5 +1,6 @@
 package com.stslex.atten.di
 
+import com.stslex.atten.feature.settings.di.ModuleFeatureSettings
 import com.stslex.atten.core.core.di.ModuleCore
 import com.stslex.atten.core.database.di.ModuleCoreDatabase
 import com.stslex.atten.core.paging.di.ModuleCorePaging
@@ -16,4 +17,5 @@ val appModules: List<Module> = listOf(
     ModuleCorePaging().module,
     ModuleFeatureHome().module,
     ModuleFeatureDetails().module,
+    ModuleFeatureSettings().module
 )

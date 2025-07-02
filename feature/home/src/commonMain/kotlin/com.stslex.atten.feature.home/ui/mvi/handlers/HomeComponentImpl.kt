@@ -15,6 +15,7 @@ internal class HomeComponentImpl(
         when (action) {
             is Action.Navigation.Back -> router.popBack()
             is Action.Navigation.NavigateToDetail -> router.navTo(Config.Detail(action.id))
+            is Action.Navigation.Settings -> router.navTo(Config.Settings)
         }
     }
 }

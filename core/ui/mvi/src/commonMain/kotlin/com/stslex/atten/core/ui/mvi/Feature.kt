@@ -5,6 +5,9 @@ import com.stslex.atten.core.ui.mvi.processor.StoreProcessor
 import com.stslex.atten.core.ui.navigation.Component
 import org.koin.core.component.KoinScopeComponent
 import org.koin.core.module.Module
+import org.koin.core.qualifier.qualifier
+import org.koin.core.scope.Scope
+import kotlin.reflect.KClass
 
 /**
  * Feature is a Koin feature module that provides a StoreProcessor.
@@ -12,17 +15,26 @@ import org.koin.core.module.Module
  *
  * @see [StoreProcessor]
  * */
-interface Feature<TProcessor : StoreProcessor<*, *, *>, TComponent : Component> :
-    KoinScopeComponent {
+abstract class Feature<TProcessor : StoreProcessor<*, *, *>, TComponent : Component>(
+    scopeClass: KClass<*>
+) : KoinScopeComponent {
 
-    val loadModule: Boolean
+    abstract val module: Module
+
+    private val scopeName: String = requireNotNull(scopeClass.qualifiedName) {
+        "Scope name is null. Please check the SettingsFeature class."
+    }
+
+    open val loadModule: Boolean
         get() = false
 
-    val bindWithLifecycle: Boolean
-        get() = true
-
-    val module: Module
+    final override val scope: Scope by lazy {
+        getKoin().getOrCreateScope(
+            scopeId = scopeName,
+            qualifier = qualifier(scopeName)
+        )
+    }
 
     @Composable
-    fun processor(component: TComponent): TProcessor
+    abstract fun processor(component: TComponent): TProcessor
 }

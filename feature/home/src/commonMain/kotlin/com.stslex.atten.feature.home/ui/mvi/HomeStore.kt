@@ -102,6 +102,9 @@ interface HomeStore : Store<State, Action, Event> {
 
             @Stable
             data object OnCreateItemClicked : Click
+
+            @Stable
+            data object OnSettingsClicked : Click
         }
 
         @Stable
@@ -109,6 +112,9 @@ interface HomeStore : Store<State, Action, Event> {
 
             @Stable
             data class NavigateToDetail(val id: String) : Navigation
+
+            @Stable
+            data object Settings : Navigation
 
             @Stable
             data object Back : Navigation

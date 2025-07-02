@@ -1,12 +1,12 @@
 package com.stslex.atten.feature.home.ui.mvi.handlers
 
+import com.stslex.atten.core.ui.mvi.handler.Handler
 import com.stslex.atten.feature.home.di.HomeScope
 import com.stslex.atten.feature.home.domain.interactor.HomeScreenInteractor
 import com.stslex.atten.feature.home.domain.model.CreateTodoDomainModel
 import com.stslex.atten.feature.home.ui.mvi.HomeHandlerStore
 import com.stslex.atten.feature.home.ui.mvi.HomeStore.Action
 import com.stslex.atten.feature.home.ui.mvi.HomeStore.Event
-import com.stslex.atten.core.ui.mvi.handler.Handler
 import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.collections.immutable.toImmutableSet
 import org.koin.core.annotation.Factory
@@ -27,7 +27,12 @@ internal class ClickHandler(
             is Action.Click.OnDeleteItemsClicked -> actionOnDeleteItemClicked()
             is Action.Click.OnItemClicked -> actionOnItemClicked(action)
             is Action.Click.OnSelectItemClicked -> actionOnSelectItemClicked(action)
+            is Action.Click.OnSettingsClicked -> actionSettingsClick()
         }
+    }
+
+    private fun HomeHandlerStore.actionSettingsClick() {
+        consume(Action.Navigation.Settings)
     }
 
     private fun HomeHandlerStore.actionOnItemClicked(

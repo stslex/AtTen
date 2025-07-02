@@ -20,4 +20,7 @@ sealed interface Config {
     data class Detail(
         val uuid: String
     ) : Config
+
+    @Serializable
+    data object Settings : Config
 }

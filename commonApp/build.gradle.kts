@@ -16,6 +16,7 @@ kotlin {
 
                 implementation(project(":feature:home"))
                 implementation(project(":feature:details"))
+                implementation(project(":feature:settings"))
             }
         }
     }

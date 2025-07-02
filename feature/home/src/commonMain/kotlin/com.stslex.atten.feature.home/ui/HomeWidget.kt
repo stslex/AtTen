@@ -9,7 +9,6 @@ import androidx.compose.animation.scaleOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,13 +20,19 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Login
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.stslex.atten.core.paging.model.PagingConfig
 import com.stslex.atten.core.paging.states.PagingUiState
@@ -43,7 +48,7 @@ import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.collections.immutable.toImmutableList
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 internal fun HomeWidget(
     state: State,
@@ -53,16 +58,86 @@ internal fun HomeWidget(
     onLoadNext: () -> Unit,
     onCreateItemClick: () -> Unit,
     onDeleteItemsClick: () -> Unit,
+    onSettingsClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Box(
+    Scaffold(
         modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
             .systemBarsPadding(),
-    ) {
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(
+                        text = "Home",
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                },
+                navigationIcon = {
+                    IconButton(
+                        onClick = onSettingsClick,
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.Login,
+                            contentDescription = "Back",
+                            tint = MaterialTheme.colorScheme.onBackground,
+                        )
+                    }
+                },
+            )
+        },
+        floatingActionButtonPosition = FabPosition.EndOverlay,
+        floatingActionButton = {
+            val buttonShapeRadius by animateDpAsState(
+                targetValue = if (state.selectedItems.isNotEmpty()) {
+                    AppDimension.Radius.largest
+                } else {
+                    AppDimension.Radius.medium
+                }
+            )
+            CardWithAnimatedBorder(
+                modifier = Modifier
+                    .padding(AppDimension.Padding.big)
+                    .wrapContentSize()
+                    .width(IntrinsicSize.Max)
+                    .height(IntrinsicSize.Max),
+                onClick = {
+                    if (state.selectedItems.isNotEmpty()) {
+                        onDeleteItemsClick()
+                    } else {
+                        onCreateItemClick()
+                    }
+                },
+                isAnimated = state.selectedItems.isNotEmpty(),
+                cornerRadius = buttonShapeRadius,
+                backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
+                disableBorderColor = MaterialTheme.colorScheme.onSecondaryContainer
+            ) {
+                AnimatedContent(
+                    modifier = Modifier.padding(AppDimension.Padding.big),
+                    targetState = state.selectedItems.isNotEmpty(),
+                    transitionSpec = {
+                        fadeIn().plus(scaleIn()) togetherWith
+                                fadeOut().plus(scaleOut())
+                    }
+                ) { isDeleting ->
+                    Icon(
+                        imageVector = if (isDeleting) {
+                            Icons.Filled.Delete
+                        } else {
+                            Icons.Filled.Create
+                        },
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSecondaryContainer
+                    )
+                }
+            }
+        }
+    ) { paddingValues ->
         PagingColumn(
             modifier = Modifier
+                .padding(paddingValues)
                 .fillMaxSize()
                 .padding(
                     horizontal = AppDimension.Padding.medium,
@@ -84,53 +159,6 @@ internal fun HomeWidget(
                     )
                 }
                 Spacer(modifier = Modifier.height(AppDimension.Padding.medium))
-            }
-        }
-
-        val buttonShapeRadius by animateDpAsState(
-            targetValue = if (state.selectedItems.isNotEmpty()) {
-                AppDimension.Radius.largest
-            } else {
-                AppDimension.Radius.medium
-            }
-        )
-
-        CardWithAnimatedBorder(
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(AppDimension.Padding.big)
-                .wrapContentSize()
-                .width(IntrinsicSize.Max)
-                .height(IntrinsicSize.Max),
-            onClick = {
-                if (state.selectedItems.isNotEmpty()) {
-                    onDeleteItemsClick()
-                } else {
-                    onCreateItemClick()
-                }
-            },
-            isAnimated = state.selectedItems.isNotEmpty(),
-            cornerRadius = buttonShapeRadius,
-            backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
-            disableBorderColor = MaterialTheme.colorScheme.onSecondaryContainer
-        ) {
-            AnimatedContent(
-                modifier = Modifier.padding(AppDimension.Padding.big),
-                targetState = state.selectedItems.isNotEmpty(),
-                transitionSpec = {
-                    fadeIn().plus(scaleIn()) togetherWith
-                            fadeOut().plus(scaleOut())
-                }
-            ) { isDeleting ->
-                Icon(
-                    imageVector = if (isDeleting) {
-                        Icons.Filled.Delete
-                    } else {
-                        Icons.Filled.Create
-                    },
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSecondaryContainer
-                )
             }
         }
     }
@@ -163,7 +191,8 @@ internal fun HomeScreenPreview() {
             onItemClicked = {},
             onCreateItemClick = {},
             onItemLongCLick = {},
-            onDeleteItemsClick = {}
+            onDeleteItemsClick = {},
+            onSettingsClick = {}
         )
     }
 }
