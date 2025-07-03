@@ -5,7 +5,6 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.State
 import com.stslex.atten.core.ui.mvi.Store
 import com.stslex.wizard.core.ui.mvi.v2.processor.ActionProcessor
-import com.stslex.wizard.core.ui.mvi.v2.processor.EffectsProcessor
 import kotlinx.coroutines.CoroutineScope
 
 @Immutable

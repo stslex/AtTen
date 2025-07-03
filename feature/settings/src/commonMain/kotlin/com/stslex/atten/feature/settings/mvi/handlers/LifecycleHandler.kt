@@ -1,9 +1,9 @@
 package com.stslex.atten.feature.settings.mvi.handlers
 
+import com.stslex.atten.core.ui.mvi.handler.Handler
 import com.stslex.atten.feature.settings.di.SettingsScope
 import com.stslex.atten.feature.settings.mvi.SettingsHandlerStore
 import com.stslex.atten.feature.settings.mvi.SettingsStore.Action
-import com.stslex.atten.core.ui.mvi.handler.Handler
 import kotlinx.coroutines.delay
 import org.koin.core.annotation.Factory
 import org.koin.core.annotation.Scope

@@ -11,11 +11,6 @@ import org.koin.core.scope.Scope
 @ComponentScan("com.stslex.atten.core.database")
 class ModuleCoreDatabase {
 
-//    val module = module {
-//        single<AppDatabase> { getDatabase() }
-//        single<ToDoDao> { get<AppDatabase>().getTodoDao() }
-//    }
-
     @Single
     fun appDatabase(scope: Scope): AppDatabase = scope.getDatabase()
 

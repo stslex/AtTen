@@ -51,9 +51,6 @@ interface SettingsStore : Store<State, Action, Event> {
     }
 
     @Stable
-    sealed interface Event : Store.Event {
-
-        data object GoogleAuth : Event
-    }
+    sealed interface Event : Store.Event
 }
 
