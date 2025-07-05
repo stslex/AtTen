@@ -14,6 +14,8 @@ kotlin {
                 implementation(project(":core:paging"))
                 implementation(project(":core:todo"))
                 implementation(project(":core:auth"))
+                implementation(project(":core:network"))
+                implementation(project(":core:store"))
 
                 implementation(project(":feature:home"))
                 implementation(project(":feature:details"))
