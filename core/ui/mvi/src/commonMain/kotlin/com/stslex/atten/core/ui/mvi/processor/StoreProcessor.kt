@@ -11,7 +11,6 @@ import com.stslex.atten.core.ui.mvi.Store.Event
 import com.stslex.atten.core.ui.mvi.Store.State
 import com.stslex.atten.core.ui.navigation.Component
 import com.stslex.wizard.core.ui.mvi.v2.processor.ActionProcessor
-import com.stslex.wizard.core.ui.mvi.v2.processor.EffectsProcessor
 import kotlinx.coroutines.CoroutineScope
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.component.KoinScopeComponent

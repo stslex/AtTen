@@ -8,6 +8,7 @@ pluginManagement {
     }
 }
 
+@Suppress("UnstableApiUsage")
 dependencyResolutionManagement {
     repositories {
         google()
@@ -25,6 +26,8 @@ include(":core:ui:mvi")
 include(":core:database")
 include(":core:paging")
 include(":core:todo")
+include(":core:auth")
 
 include(":feature:home")
 include(":feature:details")
+include(":feature:settings")

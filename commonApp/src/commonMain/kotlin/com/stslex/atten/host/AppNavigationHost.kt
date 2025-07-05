@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.stack.Children
 import com.arkivanov.decompose.extensions.compose.stack.animation.stackAnimation
+import com.stslex.atten.feature.settings.ui.SettingsScreen
 import com.stslex.atten.feature.details.ui.DetailsScreen
 import com.stslex.atten.feature.home.ui.HomeScreen
 
@@ -21,6 +22,7 @@ internal fun AppNavigationHost(
         when (val instance = created.instance) {
             is RootComponent.Child.Details -> DetailsScreen(instance.component)
             is RootComponent.Child.Home -> HomeScreen(instance.component)
+            is RootComponent.Child.Settings -> SettingsScreen(instance.component)
         }
     }
 }

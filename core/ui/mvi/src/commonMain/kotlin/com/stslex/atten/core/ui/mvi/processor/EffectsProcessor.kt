@@ -1,4 +1,4 @@
-package com.stslex.wizard.core.ui.mvi.v2.processor
+package com.stslex.atten.core.ui.mvi.processor
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable

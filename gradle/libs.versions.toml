@@ -35,6 +35,8 @@ decompose = "3.3.0"
 essenty = "2.5.0"
 parcelize = "0.2.4"
 
+gms = "21.3.0"
+
 [libraries]
 android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -85,6 +87,8 @@ sqlite = { module = "androidx.sqlite:sqlite", version.ref = "sqlite" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
 
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "datetime" }
+
+gms-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "gms" }
 
 decompose = { module = "com.arkivanov.decompose:decompose", version.ref = "decompose" }
 decompose-extensions = { module = "com.arkivanov.decompose:extensions-compose", version.ref = "decompose" }

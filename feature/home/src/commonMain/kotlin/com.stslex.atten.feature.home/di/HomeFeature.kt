@@ -9,8 +9,6 @@ import com.stslex.atten.feature.home.ui.mvi.HomeStore.Action
 import com.stslex.atten.feature.home.ui.mvi.HomeStore.Event
 import com.stslex.atten.feature.home.ui.mvi.HomeStore.State
 import org.koin.core.module.Module
-import org.koin.core.qualifier.qualifier
-import org.koin.core.scope.Scope
 import org.koin.ksp.generated.module
 
 internal typealias HomeStoreProcessor = StoreProcessor<State, Action, Event>
@@ -21,20 +19,11 @@ internal typealias HomeStoreProcessor = StoreProcessor<State, Action, Event>
  *
  * @see [com.stslex.atten.feature.home.ui.mvi.HomeStore]
  * */
-internal object HomeFeature : Feature<HomeStoreProcessor, HomeComponent> {
+internal object HomeFeature : Feature<HomeStoreProcessor, HomeComponent>(
+    scopeClass = HomeScope::class
+) {
 
     override val module: Module by lazy { ModuleFeatureHome().module }
-
-    private val scopeName = requireNotNull(HomeScope::class.qualifiedName) {
-        "Scope name is null. Please check the HomeFeature class."
-    }
-
-    override val scope: Scope by lazy {
-        getKoin().getOrCreateScope(
-            scopeId = scopeName,
-            qualifier = qualifier(scopeName)
-        )
-    }
 
     @Composable
     override fun processor(
