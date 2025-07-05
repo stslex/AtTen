@@ -28,7 +28,7 @@ lifecycle = "2.8.2"
 immutableCollection = "0.3.5"
 serialization = "1.7.1"
 navigation = "2.9.0-beta03"
-datetime = "0.6.0"
+datetime = "0.7.0"
 
 # decompose dependencies
 decompose = "3.3.0"
@@ -36,6 +36,11 @@ essenty = "2.5.0"
 parcelize = "0.2.4"
 
 gms = "21.3.0"
+
+ktor = "3.2.1"
+buildConfig = "5.6.7"
+multiplatformSettings = "1.3.0"
+securityCrypto = "1.1.0-beta01"
 
 [libraries]
 android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
@@ -68,6 +73,17 @@ koin-compose-viewmodel = { group = "io.insert-koin", name = "koin-compose-viewmo
 koin-ksp-compiler = { group = "io.insert-koin", name = "koin-ksp-compiler", version.ref = "koin-ksp" }
 koin-ksp-annotations = { group = "io.insert-koin", name = "koin-annotations", version.ref = "koin-ksp" }
 
+# ktor
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
+ktor-client-auth = { group = "io.ktor", name = "ktor-client-auth", version.ref = "ktor" }
+ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
+ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
+ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktor" }
+slf4j-simple = { group = "org.slf4j", name = "slf4j-simple", version = "1.7.9" }
+
 koin-test = { group = "io.insert-koin", name = "koin-test" }
 koin-test-junit = { group = "io.insert-koin", name = "koin-test-junit4" }
 coroutine-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version = "1.8.0" }
@@ -84,6 +100,8 @@ room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "
 sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
 sqlite = { module = "androidx.sqlite:sqlite", version.ref = "sqlite" }
 
+androidx-security-crypto = { module = "androidx.security:security-crypto", version.ref = "securityCrypto" }
+
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
 
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "datetime" }
@@ -96,6 +114,8 @@ essenty-lifecycle = { module = "com.arkivanov.essenty:lifecycle", version.ref = 
 essenty-stateKeeper = { module = "com.arkivanov.essenty:state-keeper", version.ref = "essenty" }
 essenty-backHandler = { module = "com.arkivanov.essenty:back-handler", version.ref = "essenty" }
 parcelize-darwin = { module = "com.arkivanov.parcelize.darwin:runtime", version.ref = "parcelize" }
+
+multiplatform-settings = { module = "com.russhwolf:multiplatform-settings", version.ref = "multiplatformSettings" }
 [bundles]
 test = [
     "kotlin-test",
@@ -105,7 +125,14 @@ test = [
     "mockito",
     "junit"
 ]
-
+ktor = [
+    "ktor-client-core",
+    "ktor-client-logging",
+    "ktor-client-content-negotiation",
+    "ktor-serialization-kotlinx-json",
+    "ktor-client-cio",
+    "ktor-client-auth"
+]
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
@@ -126,3 +153,4 @@ convention-kmp-feature = { id = "convention.kmp.feature" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 room = { id = "androidx.room", version.ref = "room" }
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+buildConfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildConfig" }

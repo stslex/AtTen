@@ -9,7 +9,8 @@ import androidx.sqlite.execSQL
 import com.stslex.atten.core.database.model.ToDoEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 @Database(
     entities = [ToDoEntity::class],
@@ -25,6 +26,7 @@ abstract class AppDatabase : RoomDatabase() {
     }
 }
 
+@OptIn(ExperimentalTime::class)
 fun getRoomDatabase(
     builder: RoomDatabase.Builder<AppDatabase>
 ): AppDatabase {
