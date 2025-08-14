@@ -1,12 +1,14 @@
 package com.stslex.atten.core.todo.data.model
 
 import com.stslex.atten.core.database.model.ToDoEntity
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
+@OptIn(ExperimentalTime::class)
 fun ToDoEntity.toData() = ToDoDataModel(
     uuid = uuid,
     title = title,
@@ -15,6 +17,7 @@ fun ToDoEntity.toData() = ToDoDataModel(
     updatedAt = Instant.fromEpochMilliseconds(createdAt).toLocalDateTime(TimeZone.UTC),
 )
 
+@OptIn(ExperimentalTime::class)
 fun UpdateTodoDataModel.toUpdatedEntity() = ToDoEntity(
     uuid = uuid,
     title = title,
@@ -23,6 +26,7 @@ fun UpdateTodoDataModel.toUpdatedEntity() = ToDoEntity(
     updatedAt = Clock.System.now().toEpochMilliseconds()
 )
 
+@OptIn(ExperimentalTime::class)
 fun CreateTodoDataModel.toCreateEntity(): ToDoEntity = Clock.System.now()
     .toEpochMilliseconds()
     .let { currentDateTime ->
