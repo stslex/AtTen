@@ -10,4 +10,3 @@ interface GoogleAuthController {
 
     fun auth(block: (Result<GoogleAuthResult>) -> Unit)
 }
-

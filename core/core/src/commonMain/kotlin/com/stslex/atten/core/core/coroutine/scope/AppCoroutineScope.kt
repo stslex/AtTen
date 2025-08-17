@@ -17,7 +17,7 @@ import kotlinx.coroutines.withContext
 
 class AppCoroutineScope(
     private val scope: CoroutineScope,
-    private val appDispatcher: AppDispatcher,
+    val appDispatcher: AppDispatcher,
 ) {
 
     private fun exceptionHandler(
