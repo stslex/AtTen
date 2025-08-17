@@ -16,7 +16,7 @@ import org.koin.core.annotation.Singleton
 
 @Single
 @Singleton
-class AuthApiClientImpl(
+internal class AuthApiClientImpl(
     private val appHttpApi: AppHttpApi,
     private val userStore: UserStore,
 ) : AuthApiClient {

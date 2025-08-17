@@ -30,13 +30,16 @@ object ResultUtils {
         onError: suspend (AppError) -> Unit = { logger.e(it, it.message) },
         onLoading: suspend () -> Unit = {},
         onSuccess: suspend (T) -> Unit,
-    ): Job = scope.launch(this) { result ->
-        when (result) {
-            is AppResult.Success -> onSuccess(result.data)
-            is AppResult.Error -> onError(result.error)
-            AppResult.Loading -> onLoading()
+    ): Job = scope
+        .launch(
+            flow = this,
+            onError = { onError(UnresolveError(it.message, it)) }) { result ->
+            when (result) {
+                is AppResult.Success -> onSuccess(result.data)
+                is AppResult.Error -> onError(result.error)
+                AppResult.Loading -> onLoading()
+            }
         }
-    }
 
     fun <T : Any, R : Any> flowRunCatching(
         mapper: Mapping<T, R>,

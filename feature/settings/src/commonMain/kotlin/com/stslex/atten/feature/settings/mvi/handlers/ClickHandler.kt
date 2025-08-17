@@ -19,8 +19,8 @@ import org.koin.core.annotation.Scoped
 class ClickHandler(
     private val authController: GoogleAuthController,
     private val repository: AuthRepository,
-    private val store: SettingsHandlerStore
-) : Handler<Action.Click, SettingsHandlerStore>, SettingsHandlerStore by store {
+//    private val store: SettingsHandlerStore
+) : Handler<Action.Click, SettingsHandlerStore> {
 
     private var loginJob: Job? = null
 
@@ -31,11 +31,11 @@ class ClickHandler(
         }
     }
 
-    private fun actionBack() {
-        store.consume(Action.Navigation.NavBack)
+    private fun SettingsHandlerStore.actionBack() {
+        consume(Action.Navigation.NavBack)
     }
 
-    private fun actionLogin() {
+    private fun SettingsHandlerStore.actionLogin() {
         authController.auth { result ->
             result
                 .onSuccess { consumeLogin(it) }
@@ -43,9 +43,22 @@ class ClickHandler(
         }
     }
 
-    private fun consumeLogin(googleInfo: GoogleAuthResult) {
-        logger.i("consumeLogin: $googleInfo")
-        val token = googleInfo.accessToken
+    private fun SettingsHandlerStore.consumeLogin(result: GoogleAuthResult) {
+        logger.i("consumeLogin: $result")
+        val token = when (result) {
+            GoogleAuthResult.Cancelled -> {
+                logger.i("Google auth cancelled by user")
+                return
+            }
+
+            is GoogleAuthResult.Success -> result.data.accessToken.also {
+                if (it.isNullOrBlank()) {
+                    logger.e("Access token is null or empty")
+                    return
+                }
+            }
+        }
+
         if (token.isNullOrEmpty()) {
             logger.e(message = "Access token is null or empty")
             // todo handle error, show message to user
@@ -56,6 +69,6 @@ class ClickHandler(
             .onSuccess { logger.i("login success: $it") }
             .onError { logger.e(it, "login error") }
             .onLoading { logger.i("login loading...") }
-            .collect(store.scope)
+            .collect(scope)
     }
 }

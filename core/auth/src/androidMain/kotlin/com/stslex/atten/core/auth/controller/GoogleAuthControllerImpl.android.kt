@@ -14,6 +14,7 @@ import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.common.Scopes
 import com.google.android.gms.common.api.Scope
 import com.stslex.atten.core.auth.callback.GoogleAuthCallback
+import com.stslex.atten.core.auth.model.GoogleAuthData
 import com.stslex.atten.core.auth.model.GoogleAuthResult
 import com.stslex.atten.core.core.logger.Log
 import com.stslex.atten.core.ui.kit.utils.ActivityHolder
@@ -34,18 +35,28 @@ internal actual class GoogleAuthControllerImpl actual constructor(
         ) { result ->
             logger.d("activity_result: $result, ${result.data}")
             val activity = checkNotNull(activityHolder.activity as? ComponentActivity)
-            val result = if (result.resultCode == Activity.RESULT_OK) {
-                val authorizationResult = Identity
-                    .getAuthorizationClient(activity)
-                    .getAuthorizationResultFromIntent(result.data)
-                val uiResult = GoogleAuthResult(
-                    accessToken = authorizationResult.accessToken,
-                    serverAuthCode = authorizationResult.serverAuthCode
-                )
-                Result.success(uiResult)
-            } else {
-                val msg = "auth fail with ${result.resultCode} code"
-                Result.failure(IllegalStateException(msg))
+            val result = when (result.resultCode) {
+                Activity.RESULT_OK -> {
+                    val authorizationResult = Identity
+                        .getAuthorizationClient(activity)
+                        .getAuthorizationResultFromIntent(result.data)
+                    val uiResult = GoogleAuthData(
+                        accessToken = authorizationResult.accessToken,
+                        serverAuthCode = authorizationResult.serverAuthCode
+                    )
+                    Result.success(GoogleAuthResult.Success(uiResult))
+                }
+
+                Activity.RESULT_CANCELED -> {
+                    logger.i("auth cancelled by user")
+                    Result.success(GoogleAuthResult.Cancelled)
+                    return@rememberLauncherForActivityResult
+                }
+
+                else -> {
+                    val msg = "auth fail with ${result.resultCode} code"
+                    Result.failure(IllegalStateException(msg))
+                }
             }
             callback.process(result)
         }
@@ -73,11 +84,11 @@ internal actual class GoogleAuthControllerImpl actual constructor(
                         logger.e(e, "Couldn't start Authorization UI: " + e.localizedMessage)
                     }
                 } else {
-                    val uiResult = GoogleAuthResult(
+                    val uiResult = GoogleAuthData(
                         accessToken = result.accessToken,
                         serverAuthCode = result.serverAuthCode
                     )
-                    callback.process(Result.success(uiResult))
+                    callback.process(Result.success(GoogleAuthResult.Success(uiResult)))
                 }
             }
             .addOnFailureListener {
@@ -91,4 +102,5 @@ internal actual class GoogleAuthControllerImpl actual constructor(
         private val logger = Log.tag(TAG)
         private const val TAG = "GOOGLE_AUTH_CONTROLLER"
     }
+
 }

@@ -10,7 +10,7 @@ import org.koin.core.annotation.Singleton
 
 @Single
 @Singleton
-class AppHttpApiImpl(
+internal class AppHttpApiImpl(
     private val appDispatcher: AppDispatcher,
     private val appHttpClient: AppHttpClient
 ) : AppHttpApi {

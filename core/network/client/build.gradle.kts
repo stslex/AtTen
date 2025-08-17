@@ -12,7 +12,7 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(project(":core:core"))
-                implementation(project(":core:network:api"))
+                api(project(":core:network:api"))
                 implementation(project(":core:store"))
                 implementation(libs.bundles.ktor)
             }

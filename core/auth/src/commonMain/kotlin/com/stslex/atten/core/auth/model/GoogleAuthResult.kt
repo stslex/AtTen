@@ -1,9 +1,8 @@
 package com.stslex.atten.core.auth.model
 
-import androidx.compose.runtime.Stable
+sealed interface GoogleAuthResult {
 
-@Stable
-data class GoogleAuthResult(
-    val serverAuthCode: String?,
-    val accessToken: String?,
-)
+    data class Success(val data: GoogleAuthData) : GoogleAuthResult
+
+    data object Cancelled : GoogleAuthResult
+}
