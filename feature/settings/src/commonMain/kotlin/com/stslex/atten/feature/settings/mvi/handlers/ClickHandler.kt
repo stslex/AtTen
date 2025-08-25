@@ -2,10 +2,10 @@ package com.stslex.atten.feature.settings.mvi.handlers
 
 import com.stslex.atten.core.auth.controller.GoogleAuthController
 import com.stslex.atten.core.auth.model.GoogleAuthResult
-import com.stslex.atten.core.auth.repository.AuthRepository
 import com.stslex.atten.core.core.result.ResultUtils.onSuccess
 import com.stslex.atten.core.ui.mvi.handler.Handler
 import com.stslex.atten.feature.settings.di.SettingsScope
+import com.stslex.atten.feature.settings.domain.SettingsInteractor
 import com.stslex.atten.feature.settings.mvi.SettingsHandlerStore
 import com.stslex.atten.feature.settings.mvi.SettingsStore.Action
 import kotlinx.coroutines.Job
@@ -17,8 +17,8 @@ import org.koin.core.annotation.Scoped
 @Scope(SettingsScope::class)
 @Scoped()
 class ClickHandler(
-    private val authController: GoogleAuthController,
-    private val repository: AuthRepository,
+    private val googleAuthController: GoogleAuthController,
+    private val interactor: SettingsInteractor,
 //    private val store: SettingsHandlerStore
 ) : Handler<Action.Click, SettingsHandlerStore> {
 
@@ -27,7 +27,8 @@ class ClickHandler(
     override fun SettingsHandlerStore.invoke(action: Action.Click) {
         when (action) {
             Action.Click.Back -> actionBack()
-            Action.Click.Login -> actionLogin()
+            Action.Click.LoginGoogle -> actionLoginGoole()
+            Action.Click.LoginGithub -> actionLoginGithub()
         }
     }
 
@@ -35,11 +36,20 @@ class ClickHandler(
         consume(Action.Navigation.NavBack)
     }
 
-    private fun SettingsHandlerStore.actionLogin() {
-        authController.auth { result ->
+    private fun SettingsHandlerStore.actionLoginGithub() {
+        loginJob?.cancel()
+        loginJob = interactor.authGithub()
+            .onSuccess { logger.i("login github success: $it") }
+            .onError { logger.e(it, "login github error") }
+            .onLoading { logger.i("login github loading...") }
+            .collect(scope)
+    }
+
+    private fun SettingsHandlerStore.actionLoginGoole() {
+        googleAuthController.auth { result ->
             result
                 .onSuccess { consumeLogin(it) }
-                .onFailure { logger.e(it, "auth error") }
+                .onFailure { logger.e(it, "google auth error") }
         }
     }
 
@@ -65,7 +75,7 @@ class ClickHandler(
             return
         }
         loginJob?.cancel()
-        loginJob = repository.auth(token)
+        loginJob = interactor.authGoogle(token)
             .onSuccess { logger.i("login success: $it") }
             .onError { logger.e(it, "login error") }
             .onLoading { logger.i("login loading...") }

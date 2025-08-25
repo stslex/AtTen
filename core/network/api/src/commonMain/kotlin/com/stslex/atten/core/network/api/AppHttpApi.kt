@@ -5,4 +5,6 @@ import io.ktor.client.HttpClient
 interface AppHttpApi {
 
     suspend fun <T> request(block: suspend HttpClient.() -> T): T
+
+    suspend fun <T> requestDefault(block: suspend HttpClient.() -> T): T
 }

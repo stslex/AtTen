@@ -1,7 +1,7 @@
 package com.stslex.atten.core.auth.repository.model
 
 import com.stslex.atten.core.core.result.Mapping
-import com.stslex.atten.core.network.api.model.TokenResponseModel
+import com.stslex.atten.core.network.api.model.response.TokenResponseModel
 
 object TokenDataMapper : Mapping<TokenResponseModel, TokenDataModel> {
 

@@ -33,7 +33,7 @@ object ResultUtils {
     ): Job = scope
         .launch(
             flow = this,
-            onError = { onError(UnresolveError(it.message, it)) }) { result ->
+            onError = { onError(UnresolveError(it, it.message)) }) { result ->
             when (result) {
                 is AppResult.Success -> onSuccess(result.data)
                 is AppResult.Error -> onError(result.error)
@@ -60,7 +60,7 @@ object ResultUtils {
                 if (error is AppError) {
                     AppResult.Error(error)
                 } else {
-                    AppResult.Error(UnresolveError(error.message, error))
+                    AppResult.Error(UnresolveError(error, error.message))
                 }
             }
         )
@@ -94,4 +94,33 @@ object ResultUtils {
             }
         }
     )
+
+    suspend fun <T : Any, R : Any> suspendRunCatching(
+        mapper: Mapping<T, R>,
+        block: suspend () -> T
+    ): AppResult<R> = suspendRunCatching { mapper(block()) }
+
+    suspend fun <T : Any> suspendRunCatching(
+        block: suspend () -> T
+    ): AppResult<T> = runCatching {
+        block()
+    }.fold(
+        onSuccess = { data ->
+            AppResult.Success(data)
+        },
+        onFailure = { error ->
+            logger.e(error, error.message)
+            if (error is AppError) {
+                AppResult.Error(error)
+            } else {
+                AppResult.Error(
+                    UnresolveError(
+                        message = error.message,
+                        cause = error
+                    )
+                )
+            }
+        }
+    )
+
 }

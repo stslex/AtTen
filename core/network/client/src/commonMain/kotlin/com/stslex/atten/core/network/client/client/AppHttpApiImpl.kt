@@ -20,4 +20,11 @@ internal class AppHttpApiImpl(
     ): T = withContext(appDispatcher.io) {
         block(appHttpClient.client)
     }
+
+    override suspend fun <T> requestDefault(
+        block: suspend HttpClient.() -> T
+    ): T = withContext(appDispatcher.io) {
+        block(appHttpClient.defaultClient)
+    }
+
 }

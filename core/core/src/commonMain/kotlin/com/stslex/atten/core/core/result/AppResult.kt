@@ -1,6 +1,7 @@
 package com.stslex.atten.core.core.result
 
 import com.stslex.atten.core.core.model.AppError
+import com.stslex.atten.core.core.model.UnresolveError
 
 sealed interface AppResult<out T : Any> : AppResultMapper<T> {
 
@@ -19,23 +20,35 @@ sealed interface AppResult<out T : Any> : AppResultMapper<T> {
         override fun <R : Any> map(mapper: Mapping<Nothing, R>): AppResult<R> = Loading
     }
 
-    fun onSuccess(action: (T) -> Unit): AppResult<T> = this.apply {
-        (this as? Success<T>)?.let { action(it.data) }
-    }
-
-    fun onError(action: (AppError) -> Unit): AppResult<T> =
-        this.apply { (this as? Error)?.let { action(it.error) } }
-
-    fun onLoading(action: () -> Unit): AppResult<T> = this.apply {
-        if (this is Loading) action()
-    }
-
     companion object {
 
         fun <T : Any> success(value: T): AppResult<T> = Success(value)
 
-        fun error(error: AppError): AppResult<*> = Error(error)
+        fun <T : Any> error(error: AppError): AppResult<T> = Error(error)
 
-        fun loading(): AppResult<*> = Loading
+        fun <T : Any> error(
+            error: Throwable
+        ): AppResult<T> = if (error is AppError) {
+            error(error)
+        } else {
+            error(UnresolveError(error))
+        }
+
+        fun <T : Any> loading(): AppResult<T> = Loading
+
+        inline fun <T : Any> AppResult<T>.onError(
+            action: (AppError) -> Unit
+        ): AppResult<T> = apply { (this as? Error)?.let { action(it.error) } }
+
+        inline fun <T : Any> AppResult<T>.onLoading(action: () -> Unit): AppResult<T> = apply {
+            if (this is Loading) action()
+        }
+
+        inline fun <T : Any> AppResult<T>.onSuccess(
+            action: (T) -> Unit
+        ): AppResult<T> = this.apply {
+            (this as? Success<T>)?.let { action(it.data) }
+        }
+
     }
 }
