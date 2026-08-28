@@ -22,6 +22,13 @@ internal class AppLoggerCreator(
         )
     }
 
+    override fun e(message: String) {
+        Log.e(
+            tag = tag,
+            message = message
+        )
+    }
+
     override fun i(message: String) {
         Log.i(
             tag = tag,

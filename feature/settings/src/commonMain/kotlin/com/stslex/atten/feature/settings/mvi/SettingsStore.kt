@@ -39,7 +39,10 @@ interface SettingsStore : Store<State, Action, Event> {
             data object Back : Click
 
             @Stable
-            data object Login : Click
+            data object LoginGoogle : Click
+
+            @Stable
+            data object LoginGithub : Click
         }
 
         @Stable

@@ -15,6 +15,7 @@ import com.stslex.atten.feature.settings.mvi.SettingsStore.Action
 import com.stslex.atten.feature.settings.mvi.SettingsStore.State
 import com.stslex.atten.feature.settings.ui.components.SettingsTopbar
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun SettingsWidget(
@@ -42,10 +43,17 @@ internal fun SettingsWidget(
             )
 
             Button(
-                onClick = { consume(Action.Click.Login) },
+                onClick = { consume(Action.Click.LoginGoogle) },
                 modifier = Modifier.padding(top = 16.dp)
             ) {
-                Text(text = "Login")
+                Text(text = "Login google")
+            }
+
+            Button(
+                onClick = { consume(Action.Click.LoginGithub) },
+                modifier = Modifier.padding(top = 16.dp)
+            ) {
+                Text(text = "Login github")
             }
 
         }

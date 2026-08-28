@@ -10,7 +10,7 @@ import org.koin.core.annotation.Singleton
 
 @Single
 @Singleton
-class AppHttpApiImpl(
+internal class AppHttpApiImpl(
     private val appDispatcher: AppDispatcher,
     private val appHttpClient: AppHttpClient
 ) : AppHttpApi {
@@ -20,4 +20,11 @@ class AppHttpApiImpl(
     ): T = withContext(appDispatcher.io) {
         block(appHttpClient.client)
     }
+
+    override suspend fun <T> requestDefault(
+        block: suspend HttpClient.() -> T
+    ): T = withContext(appDispatcher.io) {
+        block(appHttpClient.defaultClient)
+    }
+
 }

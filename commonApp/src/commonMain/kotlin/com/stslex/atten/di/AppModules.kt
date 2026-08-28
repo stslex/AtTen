@@ -5,6 +5,7 @@ import com.stslex.atten.core.core.di.ModuleCore
 import com.stslex.atten.core.database.di.ModuleCoreDatabase
 import com.stslex.atten.core.network.client.di.ModuleCoreNetwork
 import com.stslex.atten.core.paging.di.ModuleCorePaging
+import com.stslex.atten.core.store.di.ModuleCoreStore
 import com.stslex.atten.core.todo.di.ModuleCoreToDo
 import com.stslex.atten.core.ui.kit.utils.ModuleCoreUiUtils
 import com.stslex.atten.feature.details.di.ModuleFeatureDetails
@@ -20,6 +21,7 @@ val appModules: List<Module> = listOf(
     ModuleCorePaging().module,
     ModuleCoreUiUtils().module,
     ModuleCoreAuth().module,
+    ModuleCoreStore().module,
     ModuleCoreNetwork().module,
     ModuleFeatureHome().module,
     ModuleFeatureDetails().module,

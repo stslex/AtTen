@@ -5,4 +5,6 @@ import io.ktor.client.HttpClient
 interface AppHttpClient {
 
     val client: HttpClient
+
+    val defaultClient: HttpClient
 }

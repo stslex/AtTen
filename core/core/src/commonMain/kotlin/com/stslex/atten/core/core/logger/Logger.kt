@@ -7,6 +7,8 @@ interface Logger {
         message: String? = null
     )
 
+    fun e(message: String)
+
     fun d(message: String)
 
     fun i(message: String)

@@ -44,6 +44,15 @@ internal class AppHttpClientImpl(
         installAuth()
     }
 
+    override val defaultClient: HttpClient = HttpClient(CIO) {
+        install(HttpCache.Companion)
+        expectSuccess = true
+        HttpResponseValidator { handleResponseExceptionWithRequest(errorHandler) }
+        setupNegotiation()
+        setupLogging()
+        installAuth()
+    }
+
     private fun HttpClientConfig<CIOEngineConfig>.setupNegotiation() {
         install(ContentNegotiation) {
             json(
